@@ -1,8 +1,6 @@
 package net.firemuffin303.civilizedmobs.common.entity;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Sets;
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
@@ -17,7 +15,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.mob.*;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -46,15 +43,13 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.function.BiPredicate;
 
-public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEntity, Merchant {
-    public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<CivilizedPiglinEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST;
-    private static final TrackedData<WorkerPiglinData> PIGLIN_DATA;
+public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, Merchant,WorkerContainer {
+    public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WorkerPiglinEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST;
+    private static final TrackedData<WorkerData> PIGLIN_DATA;
 
     @Nullable
     private PlayerEntity customer;
@@ -64,7 +59,7 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-    public CivilizedPiglinEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
+    public WorkerPiglinEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
         super(entityType, world);
         this.offers = new TradeOfferList();
         this.offers.add((new TradeOffer(new ItemStack(Items.GOLD_INGOT),new ItemStack(Items.GOLD_BLOCK),1,2,1.0f)));
@@ -75,7 +70,7 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
         if(this.isAlive()){
             if(!this.getWorld().isClient && !this.offers.isEmpty()){
                 this.setCustomer(player);
-                this.sendOffers(player,this.getDisplayName(),this.getPiglinData().getLevel());
+                this.sendOffers(player,this.getDisplayName(),this.getWorkerData().getLevel());
             }
             return ActionResult.success(this.getWorld().isClient);
         }
@@ -91,7 +86,7 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
     @Override
     protected void initDataTracker() {
         super.initDataTracker();
-        this.dataTracker.startTracking(PIGLIN_DATA,new WorkerPiglinData(VillagerProfession.NONE,1));
+        this.dataTracker.startTracking(PIGLIN_DATA,new WorkerData(VillagerProfession.NONE,1));
     }
 
     protected void mobTick() {
@@ -105,29 +100,29 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if(nbt.contains("WorkerPiglinData",10)){
-            DataResult<WorkerPiglinData> dataDataResult = WorkerPiglinData.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE,nbt.get("WorkerPiglinData")));
+        if(nbt.contains("WorkerData",10)){
+            DataResult<WorkerData> dataDataResult = WorkerData.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE,nbt.get("WorkerData")));
             Logger logger = CivilizedMobs.LOGGER;
             Objects.requireNonNull(logger);
-            dataDataResult.resultOrPartial(logger::error).ifPresent(this::setPiglinData);
+            dataDataResult.resultOrPartial(logger::error).ifPresent(this::setWorkerData);
         }
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        DataResult<NbtElement> dataResult = WorkerPiglinData.CODEC.encodeStart(NbtOps.INSTANCE,this.getPiglinData());
+        DataResult<NbtElement> dataResult = WorkerData.CODEC.encodeStart(NbtOps.INSTANCE,this.getWorkerData());
         Logger logger = CivilizedMobs.LOGGER;
         Objects.requireNonNull(logger);
         dataResult.resultOrPartial(logger::error).ifPresent(nbtElement -> {
-            nbt.put("WorkerPiglinData",nbtElement);
+            nbt.put("WorkerData",nbtElement);
         });
     }
 
     //--- Brain ---
 
     @Override
-    protected Brain.Profile<CivilizedPiglinEntity> createBrainProfile() {
+    protected Brain.Profile<WorkerPiglinEntity> createBrainProfile() {
         return Brain.createProfile(CivilPiglinBrain.MEMORY_MODULES,CivilPiglinBrain.SENSORS);
     }
 
@@ -137,8 +132,8 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
     }
 
     @Override
-    public Brain<CivilizedPiglinEntity> getBrain() {
-        return (Brain<CivilizedPiglinEntity>) super.getBrain();
+    public Brain<WorkerPiglinEntity> getBrain() {
+        return (Brain<WorkerPiglinEntity>) super.getBrain();
     }
 
 
@@ -174,14 +169,6 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
     @Override
     protected void playZombificationSound() {
 
-    }
-
-    public void setPiglinData(WorkerPiglinData workerPiglinData){
-        this.dataTracker.set(PIGLIN_DATA, workerPiglinData);
-    }
-
-    public WorkerPiglinData getPiglinData() {
-        return this.dataTracker.get(PIGLIN_DATA);
     }
 
     //------- Merchant -------
@@ -243,6 +230,17 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
         return this.getWorld().isClient;
     }
 
+    // ------ Worker Data ------
+    @Override
+    public void setWorkerData(WorkerData workerData) {
+        this.dataTracker.set(PIGLIN_DATA, workerData);
+    }
+
+    @Override
+    public WorkerData getWorkerData() {
+        return this.dataTracker.get(PIGLIN_DATA);
+    }
+
     //------- Gecko Lib-------
 
     @Override
@@ -262,11 +260,12 @@ public class CivilizedPiglinEntity extends AbstractPiglinEntity implements GeoEn
 
     static {
         POINTS_OF_INTEREST = ImmutableMap.of(MemoryModuleType.JOB_SITE, (civilizedPiglinEntity, registryEntry) -> {
-            return civilizedPiglinEntity.getPiglinData().getProfession().heldWorkstation().test(registryEntry);
+            return civilizedPiglinEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
         });
 
-        PIGLIN_DATA = DataTracker.registerData(CivilizedPiglinEntity.class, ModEntityType.CIVIL_PIGLIN_DATA);
+        PIGLIN_DATA = DataTracker.registerData(WorkerPiglinEntity.class, ModEntityType.WORKER_DATA);
     }
+
 
 
 }

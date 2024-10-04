@@ -9,5 +9,7 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
         pack.addProvider(ModelDataGen::new);
         pack.addProvider(DynamicDataGen::new);
+        pack.addProvider(ModTagDataGen.ProfessionTagDataGen::new);
+        pack.addProvider(ModTagDataGen.AcquirablePOIDataGen::new);
     }
 }
