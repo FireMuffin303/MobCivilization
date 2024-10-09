@@ -58,7 +58,7 @@ public class CivilPiglinBrain {
                         ForgetCompletedPointOfInterestTask.create(villagerProfession.acquirableWorkstation(),MemoryModuleType.POTENTIAL_JOB_SITE),
 
                         FindPointOfInterestTask.create(villagerProfession == VillagerProfession.NONE ? registryEntry -> registryEntry.isIn(ModTags.PIGLIN_ACQUIRABLE_JOB_SITE) : villagerProfession.acquirableWorkstation(),MemoryModuleType.JOB_SITE,MemoryModuleType.POTENTIAL_JOB_SITE, true,Optional.empty()),
-                        new ModWalkTowardJobsiteTask(0.5f),
+                        new ModWalkTowardJobsiteTask(0.75f),
                         WorkerGoToWorkTask.create(),
                         ModLoseOnSiteLossTask.create(),
                         ForgetAngryAtTargetTask.create()));
