@@ -1,25 +1,30 @@
 package net.firemuffin303.civilizedmobs.common.entity;
 
+import com.eliotlash.mclib.math.functions.classic.Mod;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.ai.pathing.MobNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.world.ServerWorld;
@@ -29,6 +34,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.village.*;
 import net.minecraft.world.World;
@@ -40,19 +46,32 @@ import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiPredicate;
 
-public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, Merchant,WorkerContainer {
+//TODO : Turn Worker Logic to Interface for easier entity Setup;
+public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant,WorkerContainer {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WorkerPiglinEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST;
     private static final TrackedData<WorkerData> PIGLIN_DATA;
+    private long lastRestockTime;
+    private int experience;
+    private int levelUpTimer;
+    private boolean levelingUp;
+    private VillagerGossips gossip;
+    private long lastGossipDecayTime;
 
     @Nullable
     private PlayerEntity customer;
+
+    @Nullable
+    private PlayerEntity lastCustomer;
 
     @Nullable
     protected TradeOfferList offers;
@@ -61,24 +80,48 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
 
     public WorkerPiglinEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
         super(entityType, world);
-        this.offers = new TradeOfferList();
-        this.offers.add((new TradeOffer(new ItemStack(Items.GOLD_INGOT),new ItemStack(Items.GOLD_BLOCK),1,2,1.0f)));
+        this.gossip = new VillagerGossips();
+        ((MobNavigation)this.getNavigation()).setCanPathThroughDoors(true);
     }
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         if(this.isAlive()){
-            if(!this.getWorld().isClient && !this.offers.isEmpty()){
-                this.setCustomer(player);
-                this.sendOffers(player,this.getDisplayName(),this.getWorkerData().getLevel());
+            boolean bl = this.getOffers().isEmpty();
+            // If TraderOffer is Empty, Player cannot trade.
+            if(bl){
+                if(!this.getWorld().isClient){
+                    this.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY,this.getSoundVolume(),this.getSoundPitch());
+                }
+                return ActionResult.success(this.getWorld().isClient);
+            }else{
+                // If TraderOffer is present, prepare Offers, set Customer and Show Trade UI.
+                if(!this.getWorld().isClient && this.getCustomer() == null  && this.offers != null && !this.offers.isEmpty()){
+                    this.prepareOffersFor(player);
+                    this.setCustomer(player);
+                    this.sendOffers(player,this.getDisplayName(),this.getWorkerData().getLevel());
+                }
+                return ActionResult.success(this.getWorld().isClient);
             }
-            return ActionResult.success(this.getWorld().isClient);
+
         }
         return super.interactMob(player,hand);
     }
 
     public void setOffers(TradeOfferList offers){
         this.offers = offers;
+    }
+
+    // Add Gossip Hurt when being hit.
+    public void setAttacker(@Nullable LivingEntity attacker) {
+        if (attacker != null && this.getWorld() instanceof ServerWorld) {
+            ((ServerWorld)this.getWorld()).handleInteraction(ModEntityInteraction.WORKER_PIGLIN_HURT, attacker, this);
+            if (this.isAlive() && attacker instanceof PlayerEntity) {
+                this.getWorld().sendEntityStatus(this, (byte)13);
+            }
+        }
+
+        super.setAttacker(attacker);
     }
 
     //--- Data ---
@@ -93,8 +136,57 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         this.getWorld().getProfiler().push("piglinBrain");
         this.getBrain().tick((ServerWorld)this.getWorld(), this);
         this.getWorld().getProfiler().pop();
+
+        // Level up when no Customer and timer is up.
+        if (this.customer == null  && this.levelUpTimer > 0) {
+            --this.levelUpTimer;
+            if (this.levelUpTimer <= 0) {
+                if (this.levelingUp) {
+                    this.levelUp();
+                    this.levelingUp = false;
+                }
+
+                this.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, 200, 0));
+            }
+        }
+
+        //Gossip Trade
+        if (this.lastCustomer != null && this.getWorld() instanceof ServerWorld) {
+            ((ServerWorld)this.getWorld()).handleInteraction(EntityInteraction.TRADE, this.lastCustomer, this);
+            this.getWorld().sendEntityStatus(this, (byte)14);
+            this.lastCustomer = null;
+        }
+
         CivilPiglinBrain.tickActivities(this);
         super.mobTick();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        this.decayGossip();
+    }
+
+    private void levelUp() {
+        this.setWorkerData(this.getWorkerData().withLevel(this.getWorkerData().getLevel()+1));
+        this.fillTrade();
+    }
+
+    @Override
+    public @Nullable Entity moveToWorld(ServerWorld destination) {
+        this.resetCustomer();
+        return super.moveToWorld(destination);
+    }
+
+    private void resetCustomer() {
+        this.setCustomer(null);
+        this.clearSpecialPrices();
+    }
+
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        super.onDeath(damageSource);
+        this.resetCustomer();
     }
 
     @Override
@@ -105,6 +197,23 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
             Logger logger = CivilizedMobs.LOGGER;
             Objects.requireNonNull(logger);
             dataDataResult.resultOrPartial(logger::error).ifPresent(this::setWorkerData);
+        }
+
+        if(nbt.contains("Offers",10)){
+            this.offers = new TradeOfferList(nbt.getCompound("Offers"));
+        }
+
+
+
+        this.lastRestockTime = nbt.getLong("LastRestock");
+        this.experience = nbt.getInt("Xp");
+
+        NbtList nbtList = nbt.getList("Gossips", 10);
+        this.gossip.deserialize(new Dynamic<>(NbtOps.INSTANCE, nbtList));
+        this.lastGossipDecayTime = nbt.getLong("LastGossipDecay");
+
+        if (this.getWorld() instanceof ServerWorld) {
+            this.reinitializeBrain((ServerWorld)this.getWorld());
         }
     }
 
@@ -117,6 +226,16 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         dataResult.resultOrPartial(logger::error).ifPresent(nbtElement -> {
             nbt.put("WorkerData",nbtElement);
         });
+
+        TradeOfferList tradeOffers = this.getOffers();
+        if(!tradeOffers.isEmpty()){
+            nbt.put("Offers",tradeOffers.toNbt());
+        }
+
+        nbt.putLong("LastRestock",this.lastRestockTime);
+        nbt.putInt("Xp",this.experience);
+        nbt.put("Gossips", this.gossip.serialize(NbtOps.INSTANCE));
+        nbt.putLong("LastGossipDecay", this.lastGossipDecayTime);
     }
 
     //--- Brain ---
@@ -136,6 +255,12 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         return (Brain<WorkerPiglinEntity>) super.getBrain();
     }
 
+    public void reinitializeBrain(ServerWorld world) {
+        Brain<WorkerPiglinEntity> brain = this.getBrain();
+        brain.stopAllTasks(world,this);
+        this.brain = brain.copy();
+        CivilPiglinBrain.create(this,this.getBrain());
+    }
 
     //--- Attribute & Spawn ---
 
@@ -174,7 +299,20 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     //------- Merchant -------
     @Override
     public void setCustomer(@Nullable PlayerEntity customer) {
+        boolean bl = this.getCustomer() != null && customer == null;
         this.customer = customer;
+        if(bl){
+            this.resetCustomer();
+        }
+
+    }
+
+    private void clearSpecialPrices() {
+
+        for (TradeOffer tradeOffer : this.getOffers()) {
+            tradeOffer.clearSpecialPrice();
+        }
+
     }
 
     @Override
@@ -186,6 +324,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     public TradeOfferList getOffers() {
         if(this.offers == null){
             this.offers = new TradeOfferList();
+            this.fillTrade();
         }
         return this.offers;
     }
@@ -197,7 +336,21 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
 
     @Override
     public void trade(TradeOffer offer) {
+        int xp = 3 + this.random.nextInt(4);
+        offer.use();
+        this.experience += offer.getMerchantExperience();
+        this.lastCustomer = this.getCustomer();
+        int level = this.getWorkerData().getLevel();
+        if(VillagerData.canLevelUp(level) && this.experience >= WorkerData.getUpperLevelExperience(level)){
+            this.levelUpTimer = 40;
+            this.levelingUp = true;
+            xp += 5;
+        }
 
+
+        if(offer.shouldRewardPlayerExperience()){
+            this.getWorld().spawnEntity(new ExperienceOrbEntity(this.getWorld(),this.getX(),this.getY()+0.5d,this.getZ(),xp));
+        }
     }
 
     @Override
@@ -207,7 +360,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
 
     @Override
     public int getExperience() {
-        return 0;
+        return this.experience;
     }
 
     @Override
@@ -217,7 +370,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
 
     @Override
     public boolean isLeveledMerchant() {
-        return false;
+        return true;
     }
 
     @Override
@@ -230,15 +383,102 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         return this.getWorld().isClient;
     }
 
+    @Override
+    public boolean canRefreshTrades() {
+        return true;
+    }
+
     // ------ Worker Data ------
     @Override
     public void setWorkerData(WorkerData workerData) {
+        WorkerData workerData1 = this.getWorkerData();
+        if(workerData1.getProfession() != workerData.getProfession()){
+            this.offers = null;
+        }
         this.dataTracker.set(PIGLIN_DATA, workerData);
     }
 
     @Override
     public WorkerData getWorkerData() {
         return this.dataTracker.get(PIGLIN_DATA);
+    }
+
+    @Override
+    public boolean shouldRestock() {
+        return this.getWorld().getTime() > this.lastRestockTime + (10L * 20L);
+    }
+
+    @Override
+    public void restock() {
+        for(TradeOffer tradeOffer : this.getOffers()){
+            tradeOffer.resetUses();
+            this.lastRestockTime = this.getWorld().getTime();
+        }
+    }
+
+    @Override
+    public void fillTrade() {
+        WorkerData workerData = this.getWorkerData();
+        Map<Integer,List<TradeOffer>> integerListMap = ModWorkerOffers.PIGLIN_TRADES.get(workerData.getProfession());
+        if(integerListMap == null){ return; }
+        List<TradeOffer> tradeOffers = integerListMap.get(workerData.getLevel());
+        if(!tradeOffers.isEmpty()){
+            TradeOfferList tradeOfferList = this.getOffers();
+            this.fillRecipesFromPool(this,tradeOfferList,tradeOffers,2);
+        }
+    }
+
+    // Gossip
+    public int getReputation(PlayerEntity player) {
+        return this.gossip.getReputationFor(player.getUuid(), (gossipType) -> {
+            return true;
+        });
+    }
+
+    private void decayGossip() {
+        long l = this.getWorld().getTime();
+        if (this.lastGossipDecayTime == 0L) {
+            this.lastGossipDecayTime = l;
+        } else if (l >= this.lastGossipDecayTime + 24000L) {
+            this.gossip.decay();
+            this.lastGossipDecayTime = l;
+        }
+    }
+
+    private void prepareOffersFor(PlayerEntity player) {
+        int i = this.getReputation(player);
+        if (i != 0) {
+            for (TradeOffer tradeOffer : this.getOffers()) {
+                tradeOffer.increaseSpecialPrice(-MathHelper.floor((float) i * tradeOffer.getPriceMultiplier()));
+            }
+        }
+
+        if (player.hasStatusEffect(StatusEffects.HERO_OF_THE_VILLAGE)) {
+            StatusEffectInstance statusEffectInstance = player.getStatusEffect(StatusEffects.HERO_OF_THE_VILLAGE);
+            int j = statusEffectInstance.getAmplifier();
+
+            for (TradeOffer tradeOffer2 : this.getOffers()) {
+                double d = 0.3 + 0.0625 * (double) j;
+                int k = (int) Math.floor(d * (double) tradeOffer2.getOriginalFirstBuyItem().getCount());
+                tradeOffer2.increaseSpecialPrice(-Math.max(k, 1));
+            }
+        }
+
+    }
+    // ------ Interaction Observer ------
+
+    @Override
+    public void onInteractionWith(EntityInteraction interaction, Entity entity) {
+        if (interaction == EntityInteraction.ZOMBIE_VILLAGER_CURED) {
+            this.gossip.startGossip(entity.getUuid(), VillageGossipType.MAJOR_POSITIVE, 20);
+            this.gossip.startGossip(entity.getUuid(), VillageGossipType.MINOR_POSITIVE, 25);
+        } else if (interaction == EntityInteraction.TRADE) {
+            this.gossip.startGossip(entity.getUuid(), VillageGossipType.TRADING, 2);
+        } else if (interaction == ModEntityInteraction.WORKER_PIGLIN_HURT) {
+            this.gossip.startGossip(entity.getUuid(), VillageGossipType.MINOR_NEGATIVE, 25);
+        } else if (interaction == ModEntityInteraction.WORKER_PIGLIN_KILLED) {
+            this.gossip.startGossip(entity.getUuid(), VillageGossipType.MAJOR_NEGATIVE, 25);
+        }
     }
 
     //------- Gecko Lib-------

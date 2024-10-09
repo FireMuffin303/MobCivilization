@@ -5,12 +5,15 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.entity.task.ModLoseOnSiteLossTask;
+import net.firemuffin303.civilizedmobs.common.entity.task.ModWorkTask;
 import net.firemuffin303.civilizedmobs.common.entity.task.WorkerGoToWorkTask;
 import net.firemuffin303.civilizedmobs.common.entity.task.ModWalkTowardJobsiteTask;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.MemoryModuleState;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class CivilPiglinBrain {
     protected static final List<SensorType<? extends Sensor<? super WorkerPiglinEntity>>> SENSORS;
@@ -34,11 +38,14 @@ public class CivilPiglinBrain {
     protected static Brain<?> create(WorkerPiglinEntity workerPiglinEntity, Brain<WorkerPiglinEntity> brain) {
         addCoreActivities(workerPiglinEntity, brain);
         addIdleActivities(workerPiglinEntity, brain);
+        addWorkActivities(brain);
         brain.setCoreActivities(ImmutableSet.of(Activity.CORE));
         brain.setDefaultActivity(Activity.IDLE);
-        brain.resetPossibleActivities();
+        brain.doExclusively(Activity.IDLE);
+        brain.refreshActivities(workerPiglinEntity.getWorld().getTimeOfDay(),workerPiglinEntity.getWorld().getTime());
         return brain;
     }
+
 
     private static void addCoreActivities(WorkerPiglinEntity workerPiglinEntity, Brain<WorkerPiglinEntity> brain) {
         VillagerProfession villagerProfession = workerPiglinEntity.getWorkerData().getProfession();
@@ -47,38 +54,49 @@ public class CivilPiglinBrain {
                 ImmutableList.of(new LookAroundTask(45, 90),
                         new WanderAroundTask(),
                         OpenDoorsTask.create(),
-                        //ForgetCompletedPointOfInterestTask.create(civilziedProfession.heldWorkstation(),MemoryModuleType.JOB_SITE),
-                        //ForgetCompletedPointOfInterestTask.create(civilziedProfession.acquirableWorkstation(),MemoryModuleType.POTENTIAL_JOB_SITE),
+                        ForgetCompletedPointOfInterestTask.create(villagerProfession.heldWorkstation(),MemoryModuleType.JOB_SITE),
+                        ForgetCompletedPointOfInterestTask.create(villagerProfession.acquirableWorkstation(),MemoryModuleType.POTENTIAL_JOB_SITE),
 
                         FindPointOfInterestTask.create(villagerProfession == VillagerProfession.NONE ? registryEntry -> registryEntry.isIn(ModTags.PIGLIN_ACQUIRABLE_JOB_SITE) : villagerProfession.acquirableWorkstation(),MemoryModuleType.JOB_SITE,MemoryModuleType.POTENTIAL_JOB_SITE, true,Optional.empty()),
                         new ModWalkTowardJobsiteTask(0.5f),
                         WorkerGoToWorkTask.create(),
-                        //ModLoseOnSiteLossTask.create(),
+                        ModLoseOnSiteLossTask.create(),
                         ForgetAngryAtTargetTask.create()));
     }
 
     private static void addIdleActivities(WorkerPiglinEntity workerPiglinEntity, Brain<WorkerPiglinEntity> brain) {
-        brain.setTaskList(Activity.IDLE, 10, ImmutableList.of(getIdleTasks(), FindInteractionTargetTask.create(EntityType.PLAYER, 4)));
+        brain.setTaskList(Activity.IDLE, 10, ImmutableList.of(
+                new RandomTask<>(ImmutableList.of(
+                        Pair.of(StrollTask.create(0.6F), 2),
+                        Pair.of(FindEntityTask.create(EntityType.PIGLIN, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(FindEntityTask.create(EntityType.PIGLIN_BRUTE, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE, 0.6F, 2, 100), 2),
+                        Pair.of(GoToIfNearbyTask.create(MemoryModuleType.JOB_SITE, 0.6F, 5), 2),
+                        Pair.of(new WaitTask(30, 60), 1))),
+                FindInteractionTargetTask.create(EntityType.PLAYER, 4)));
     }
 
     private static void addWorkActivities(Brain<WorkerPiglinEntity> civilizedPiglinEntityBrain){
-        civilizedPiglinEntityBrain.setTaskList(Activity.WORK,10,
-                ImmutableList.of()
+        civilizedPiglinEntityBrain.setTaskList(Activity.WORK,
+                ImmutableList.of(
+                        Pair.of(5,new RandomTask<>(
+                                ImmutableList.of(
+                                        Pair.of(new ModWorkTask(),7),
+                                        Pair.of(GoToIfNearbyTask.create(MemoryModuleType.JOB_SITE,0.4f,4),2),
+                                        Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE,0.4f,1,10),5)
+
+                                )
+                            )
+                        ),
+                        Pair.of(10,FindInteractionTargetTask.create(EntityType.PLAYER,4)),
+                        Pair.of(99,ScheduleActivityTask.create())
+                ),
+                ImmutableSet.of(Pair.of(MemoryModuleType.JOB_SITE, MemoryModuleState.VALUE_PRESENT))
         );
     }
 
-    private static RandomTask<WorkerPiglinEntity> getIdleTasks() {
-        return new RandomTask(ImmutableList.of(
-                        Pair.of(StrollTask.create(0.6F), 2),
-                        Pair.of(FindEntityTask.create(EntityType.PIGLIN, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
-                Pair.of(FindEntityTask.create(EntityType.PIGLIN_BRUTE, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
-                Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE, 0.6F, 2, 100), 2),
-                Pair.of(GoToIfNearbyTask.create(MemoryModuleType.JOB_SITE, 0.6F, 5), 2),
-                Pair.of(new WaitTask(30, 60), 1)));
-    }
-
     protected static void tickActivities(WorkerPiglinEntity piglin) {
-        piglin.getBrain().resetPossibleActivities(ImmutableList.of(Activity.IDLE));
+        piglin.getBrain().resetPossibleActivities(ImmutableList.of(Activity.WORK,Activity.IDLE));
     }
 
     static {
@@ -112,7 +130,8 @@ public class CivilPiglinBrain {
         POINTS_OF_INTEREST = ImmutableMap.of(MemoryModuleType.JOB_SITE,(civilizedPiglinEntity, registryEntry) -> {
             return civilizedPiglinEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
         },MemoryModuleType.POTENTIAL_JOB_SITE,(workerPiglinEntity, registryEntry) -> {
-            return VillagerProfession.IS_ACQUIRABLE_JOB_SITE.test(registryEntry);
+            Predicate<RegistryEntry<PointOfInterestType>> IS_ACQUIRABLE_JOB_SITE = poi -> poi.isIn(ModTags.PIGLIN_ACQUIRABLE_JOB_SITE);
+            return  IS_ACQUIRABLE_JOB_SITE.test(registryEntry);
         });
     }
 }

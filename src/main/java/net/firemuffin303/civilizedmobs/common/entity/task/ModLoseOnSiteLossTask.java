@@ -16,7 +16,7 @@ public class ModLoseOnSiteLossTask {
                     WorkerData workerData = entity.getWorkerData();
                     if (workerData.getProfession() != VillagerProfession.NONE && entity.getExperience() == 0 && workerData.getLevel() <= 1) {
                         entity.setWorkerData(entity.getWorkerData().withProfession(VillagerProfession.NONE));
-                        //entity.reinitializeBrain(world);
+                        entity.reinitializeBrain(world);
                         return true;
                     } else {
                         return false;

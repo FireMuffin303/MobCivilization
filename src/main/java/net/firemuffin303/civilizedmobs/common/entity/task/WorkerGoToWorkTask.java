@@ -1,6 +1,7 @@
 package net.firemuffin303.civilizedmobs.common.entity.task;
 
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
+import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.task.Task;
@@ -36,7 +37,9 @@ public class WorkerGoToWorkTask {
                                 }).findFirst();
                             }).ifPresent((profession) -> {
                                 workerContainer.setWorkerData(workerContainer.getWorkerData().withProfession(profession));
-                                //entity.reinitializeBrain(world);
+                                if(entity instanceof WorkerPiglinEntity workerPiglinEntity){
+                                    workerPiglinEntity.reinitializeBrain(world);
+                                }
                             });
                             return true;
                         }
