@@ -1,12 +1,14 @@
 {
   "replace": false,
   "values": [
-    "minecraft:butcher",
     "minecraft:armorer",
+    "minecraft:butcher",
+    "minecraft:cleric",
+    "minecraft:cartographer",
     "minecraft:leatherworker",
     "minecraft:librarian",
     "minecraft:weaponsmith",
-    "minecraft:cleric",
+    "minecraft:toolsmith",
     "minecraft:fletcher"
   ]
 }

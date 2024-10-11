@@ -20,12 +20,14 @@ public class ModTagDataGen {
         @Override
         protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
             this.getOrCreateTagBuilder(ModTags.PIGLIN_ACQUIRABLE_JOB_SITE).add(
-                    PointOfInterestTypes.BUTCHER,
                     PointOfInterestTypes.ARMORER,
+                    PointOfInterestTypes.BUTCHER,
+                    PointOfInterestTypes.CLERIC,
+                    PointOfInterestTypes.CARTOGRAPHER,
                     PointOfInterestTypes.LEATHERWORKER,
                     PointOfInterestTypes.LIBRARIAN,
                     PointOfInterestTypes.WEAPONSMITH,
-                    PointOfInterestTypes.CLERIC,
+                    PointOfInterestTypes.TOOLSMITH,
                     PointOfInterestTypes.FLETCHER
             );
         }

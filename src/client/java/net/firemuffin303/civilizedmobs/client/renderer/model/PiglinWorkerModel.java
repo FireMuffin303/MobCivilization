@@ -21,12 +21,7 @@ public class PiglinWorkerModel extends GeoModel<WorkerPiglinEntity> {
     public Identifier getTextureResource(WorkerPiglinEntity workerPiglinEntity) {
         VillagerProfession villagerProfession = workerPiglinEntity.getWorkerData().getProfession();
         String path = villagerProfession.id();
-        int level = 0;
-        if(!villagerProfession.equals(VillagerProfession.NONE)){
-            level = workerPiglinEntity.getWorkerData().getLevel();
-        }
-
-        return new Identifier(CivilizedMobs.MOD_ID,"textures/entity/piglin_worker/"+path+"_"+level+".png");
+        return new Identifier(CivilizedMobs.MOD_ID,"textures/entity/piglin_worker/"+path+".png");
     }
 
     @Override
