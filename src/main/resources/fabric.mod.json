@@ -21,11 +21,7 @@
     ]
   },
   "mixins": [
-    "mobcivilization.mixins.json",
-    {
-      "config": "mobcivilization.client.mixins.json",
-      "environment": "client"
-    }
+    "mobcivilization.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

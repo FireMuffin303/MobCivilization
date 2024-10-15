@@ -25,6 +25,7 @@ public class ModelDataGen extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.CIVIL_PIGLIN_SPAWN_EGG,SPAWN_EGG);
+        itemModelGenerator.register(ModItems.QUEST_SPAWN_EGG,SPAWN_EGG);
 
     }
 

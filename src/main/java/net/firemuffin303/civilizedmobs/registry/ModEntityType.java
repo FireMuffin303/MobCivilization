@@ -3,9 +3,12 @@ package net.firemuffin303.civilizedmobs.registry;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
+import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
+import net.firemuffin303.civilizedmobs.common.entity.quest.QuestEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
+import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.registry.Registries;
@@ -31,6 +34,13 @@ public class ModEntityType {
                     .setDimensions(0.6f,1.95f)
                     .maxTrackingRange(8)
                     .build("worker_piglin"));
+
+    public static EntityType<QuestEntity> QUEST_ENTITY = register("quest_entity",
+            EntityType.Builder.create(QuestEntity::new,SpawnGroup.MISC)
+                    .setDimensions(0.6f,1.95f)
+                    .maxTrackingRange(8)
+                    .build("quest_entity")
+            );
 
     public static <T extends Entity> EntityType<T> register(String id, EntityType<T> entityType){
         return Registry.register(Registries.ENTITY_TYPE, Identifier.of(CivilizedMobs.MOD_ID,id),entityType);
