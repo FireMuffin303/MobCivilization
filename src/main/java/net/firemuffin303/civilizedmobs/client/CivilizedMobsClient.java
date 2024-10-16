@@ -34,7 +34,7 @@ public class CivilizedMobsClient implements ClientModInitializer {
                 if(minecraftClient.player != null){
                     ScreenHandler screenHandler = minecraftClient.player.currentScreenHandler;
                     if(screenHandler.syncId == syncID && screenHandler instanceof QuestScreenHandler questScreenHandler){
-                        questScreenHandler.setQuestList(minecraftClient.player.getUuid(),quests);
+                        questScreenHandler.setQuestList(quests);
                         questScreenHandler.setLevel(level);
                         questScreenHandler.setXpProgress(xp);
                     }

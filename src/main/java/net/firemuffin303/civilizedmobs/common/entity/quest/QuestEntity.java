@@ -12,6 +12,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.SimpleNamedScreenHandlerFactory;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -35,14 +37,15 @@ public class QuestEntity extends PathAwareEntity implements QuestContainer, GeoE
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-        if(this.isAlive()){
-            if(!this.getWorld().isClient){
+        if(this.isAlive() && !this.getWorld().isClient){
+            boolean hasQuest = !this.questData.getQuestList(player).isEmpty();
+            if(hasQuest){
                 OptionalInt optionalInt = player.openHandledScreen(new SimpleNamedScreenHandlerFactory((syncId, playerInventory, player1) -> {
-                    return new QuestScreenHandler(syncId,playerInventory);
-                }, Text.of(this.getDisplayName().getString())));
+                    return new QuestScreenHandler(syncId,playerInventory,this);
+                    }, Text.of(this.getDisplayName().getString())));
 
                 if(optionalInt.isPresent()){
-                    QuestList questList = this.questData.getQuestList(player.getUuid(),this.random,this.getWorld().getRegistryManager());
+                    QuestList questList = this.questData.getQuestList(player);
                     QuestData.Trustful trustful = this.questData.getTrust(player.getUuid());
                     PacketByteBuf packetByteBuf = new PacketByteBuf(Unpooled.buffer());
 
@@ -51,12 +54,13 @@ public class QuestEntity extends PathAwareEntity implements QuestContainer, GeoE
                     packetByteBuf.writeInt(trustful.getXp());
                     packetByteBuf.writeInt(trustful.getLevel());
 
-
                     ServerPlayNetworking.send((ServerPlayerEntity) player, CivilizedMobs.QUEST_SCREEN_PAYLOAD_ID,packetByteBuf);
+
                 }
-
-
+            }else{
+                this.getWorld().playSound(null,this.getBlockPos(), SoundEvents.ENTITY_PIGLIN_ANGRY, SoundCategory.NEUTRAL,1.0f,1.0f);
             }
+
             return ActionResult.success(this.getWorld().isClient);
         }
         return super.interactMob(player, hand);

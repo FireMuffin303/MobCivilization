@@ -41,12 +41,14 @@ public class QuestScreen extends HandledScreen<QuestScreenHandler> {
             this.questButtonWidgets[index] = this.addDrawableChild(new QuestButtonWidget(i + 5, k, index, button -> {
                 if (button instanceof QuestButtonWidget questButtonWidget) {
                     this.selectedIndex = questButtonWidget.index;
+                    CivilizedMobs.LOGGER.info(""+this.selectedIndex);
                 }
             }));
             k += 20;
         }
 
-        this.doneButtonWidget = this.addDrawable(new DoneButtonWidget(i +20,j+10,buttonWidget -> {
+        this.doneButtonWidget = this.addDrawableChild(new DoneButtonWidget(i +220,j+60,buttonWidget -> {
+
             if(buttonWidget instanceof DoneButtonWidget){
                 Objects.requireNonNull(this.client);
                 Objects.requireNonNull(this.client.player);
@@ -120,12 +122,14 @@ public class QuestScreen extends HandledScreen<QuestScreenHandler> {
 
             }
 
-            for(QuestButtonWidget questButtonWidget : this.questButtonWidgets){
-                questButtonWidget.visible = questButtonWidget.index < questList.size();
+            if(!questList.isEmpty()){
+                for(QuestButtonWidget questButtonWidget : this.questButtonWidgets){
+                    questButtonWidget.visible = questButtonWidget.index < questList.size();
+                }
             }
+
         }
 
-        this.doneButtonWidget.active = this.selectedIndex != 1;
 
 
 

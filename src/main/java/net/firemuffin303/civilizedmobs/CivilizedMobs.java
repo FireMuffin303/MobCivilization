@@ -27,6 +27,8 @@ import net.minecraft.util.Identifier;
 import net.minecraft.village.raid.Raid;
 import org.slf4j.Logger;
 
+import java.util.UUID;
+
 public class CivilizedMobs implements ModInitializer {
 
     public static String MOD_ID = "civil_mobs";
@@ -63,9 +65,10 @@ public class CivilizedMobs implements ModInitializer {
             int syncID = packetByteBuf.readInt();
             int index = packetByteBuf.readInt();
             minecraftServer.execute(() ->{
+
                 ScreenHandler screenHandler = serverPlayerEntity.currentScreenHandler;
                 if(screenHandler instanceof QuestScreenHandler questScreenHandler && screenHandler.syncId == syncID){
-                    questScreenHandler.sendQuest(index);
+                    questScreenHandler.sendQuest(serverPlayerEntity,index);
                 }
             });
         });

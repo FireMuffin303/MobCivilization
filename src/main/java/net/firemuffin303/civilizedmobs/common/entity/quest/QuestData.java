@@ -9,6 +9,7 @@ import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.quest.QuestList;
 import net.firemuffin303.civilizedmobs.common.quest.QuestPool;
 import net.firemuffin303.civilizedmobs.common.quest.QuestPoolTypes;
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
@@ -36,11 +37,11 @@ public class QuestData {
         trustful.questList = quests;
     }
 
-    public QuestList getQuestList(UUID uuid, net.minecraft.util.math.random.Random random,DynamicRegistryManager dynamicRegistryManager){
-        Trustful trustful = this.getTrust(uuid);
+    public QuestList getQuestList(Entity entity){
+        Trustful trustful = this.getTrust(entity.getUuid());
         if(trustful.questList == null){
             trustful.questList = new QuestList();
-            this.fillQuest(trustful.questList,uuid,random,dynamicRegistryManager,2);
+            this.fillQuest(trustful.questList,entity.getUuid(),entity.getWorld().getRandom(),entity.getWorld().getRegistryManager(),2);
 
         }
         return trustful.questList;
