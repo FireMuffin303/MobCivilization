@@ -3,10 +3,7 @@ package net.firemuffin303.civilizedmobs.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.firemuffin303.civilizedmobs.registry.ModItems;
-import net.minecraft.data.client.BlockStateModelGenerator;
-import net.minecraft.data.client.ItemModelGenerator;
-import net.minecraft.data.client.Model;
-import net.minecraft.data.client.TextureKey;
+import net.minecraft.data.client.*;
 import net.minecraft.util.Identifier;
 
 import java.util.Optional;
@@ -26,7 +23,6 @@ public class ModelDataGen extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.CIVIL_PIGLIN_SPAWN_EGG,SPAWN_EGG);
         itemModelGenerator.register(ModItems.QUEST_SPAWN_EGG,SPAWN_EGG);
-
     }
 
     private static Model createMincraftItem(String string, TextureKey... textureSlots) {

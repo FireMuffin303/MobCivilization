@@ -1,10 +1,12 @@
 package net.firemuffin303.civilizedmobs.common.entity;
 
 import com.google.common.collect.Maps;
+import net.firemuffin303.muffinsquestlib.MuffinsQuestLib;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Util;
 import net.minecraft.village.TradeOffer;
+import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
 
 import java.util.List;
@@ -73,4 +75,12 @@ public class ModWorkerOffers {
         }));
         }
     ));
+
+    public static final Map<Integer,List<TradeOffers.Factory>> PIGLIN_QUEST_OFFER = Util.make(Maps.newHashMap(), questMap ->{
+        questMap.put(1,List.of(new MuffinsQuestLib.QuestTradeOffer(16,1,5,1)));
+        questMap.put(2,List.of(new MuffinsQuestLib.QuestTradeOffer(16,1,10,1)));
+        questMap.put(3,List.of(new MuffinsQuestLib.QuestTradeOffer(16,1,20,1)));
+        questMap.put(4,List.of(new MuffinsQuestLib.QuestTradeOffer(24,1,30,1)));
+        questMap.put(5,List.of(new MuffinsQuestLib.QuestTradeOffer(32,1,40,1)));
+    });
 }

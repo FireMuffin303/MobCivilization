@@ -24,6 +24,8 @@ loom {
 }
 
 repositories {
+    mavenLocal()
+
     maven {
         name = 'GeckoLib'
         url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
@@ -50,6 +52,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+    modImplementation("net.firemuffin303:muffins_questlib:${quest_lib}")
     implementation("com.eliotlash.mclib:mclib:20")
 }
 

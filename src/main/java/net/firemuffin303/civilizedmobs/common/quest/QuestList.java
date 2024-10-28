@@ -36,10 +36,10 @@ public class QuestList extends ArrayList<Quest> {
 
     public void toPacket(PacketByteBuf buf){
         buf.writeCollection(this,(buf1, quest) -> {
-            buf1.writeItemStack(quest.firstQuestItem());
-            buf1.writeItemStack(quest.secondQuestItem());
-            buf1.writeInt(quest.time());
-            buf1.writeInt(quest.experience());
+            buf1.writeItemStack(quest.firstQuestItem);
+            buf1.writeItemStack(quest.secondQuestItem);
+            buf1.writeInt(quest.time);
+            buf1.writeInt(quest.experience);
         });
     }
 
