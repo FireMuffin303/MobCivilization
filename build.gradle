@@ -53,6 +53,7 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
     modImplementation("net.firemuffin303:muffins_questlib:${quest_lib}")
+    modRuntimeOnly("net.firemuffin303:muffinsdebugtools:${debugtools}")
     implementation("com.eliotlash.mclib:mclib:20")
 }
 

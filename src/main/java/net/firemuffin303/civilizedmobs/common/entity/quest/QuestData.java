@@ -161,7 +161,7 @@ public class QuestData {
         }
 
         public static boolean canLevelUp(int level) {
-            return level >= 0 && level < 5;
+            return level >= 1 && level < 5;
         }
 
         public void setTradeList(TradeOfferList tradeOffers) {

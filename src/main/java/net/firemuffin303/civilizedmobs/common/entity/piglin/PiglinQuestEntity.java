@@ -1,5 +1,6 @@
 package net.firemuffin303.civilizedmobs.common.entity.piglin;
 
+import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.CivilPiglinBrain;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
@@ -8,6 +9,7 @@ import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
 import net.minecraft.entity.EntityInteraction;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
+import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -36,6 +38,7 @@ import software.bernie.geckolib.core.animation.*;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
+import java.util.List;
 import java.util.UUID;
 
 public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity, Merchant, QuestContainer {
@@ -69,11 +72,17 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-        if(!this.getWorld().isClient && this.getCustomer() == null){
-            this.prepareOffersFor(player);
-            this.setCustomer(player);
-            this.sendOffers(player,this.getDisplayName(),this.questData.getTrust(this.getCustomer().getUuid()).getLevel());
+        if(this.isAlive()){
+            if(!this.getWorld().isClient && this.getCustomer() == null){
+                this.prepareOffersFor(player);
+                this.setCustomer(player);
+                this.sendOffers(player,this.getDisplayName(),this.questData.getTrust(this.getCustomer().getUuid()).getLevel());
+            }else if(this.getWorld().isClient){
+                this.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY,this.getSoundVolume(),this.getSoundPitch());
+                return ActionResult.success(this.getWorld().isClient);
+            }
         }
+
         return ActionResult.success(this.getWorld().isClient);
     }
 
@@ -82,6 +91,10 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     }
 
     protected void mobTick() {
+        this.getWorld().getProfiler().push("piglinQuestBrain");
+        this.getBrain().tick((ServerWorld)this.getWorld(), this);
+        this.getWorld().getProfiler().pop();
+
         // Level up when no Customer and timer is up.
         if (this.customer == null  && this.levelUpTimer > 0) {
             --this.levelUpTimer;
@@ -95,7 +108,12 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
             }
         }
 
+        if(this.shouldRestock()){
+            this.restock();
+        }
 
+
+        PiglinQuestBrain.tickActivities(this);
         super.mobTick();
     }
 
@@ -103,6 +121,23 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         QuestData.Trustful trustful = this.questData.getTrust(this.lastCustomer.getUuid());
         trustful.setLevel(trustful.getLevel()+1);
         this.questData.fillTrade(trustful.getTradeOffers(),this.lastCustomer,2);
+    }
+    //Brain
+
+
+    @Override
+    protected Brain.Profile<PiglinQuestEntity> createBrainProfile() {
+        return Brain.createProfile(PiglinQuestBrain.MEMORY_MODULES,PiglinQuestBrain.SENSORS);
+    }
+
+    @Override
+    protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
+        return PiglinQuestBrain.create(this,this.createBrainProfile().deserialize(dynamic));
+    }
+
+    @Override
+    public Brain<PiglinQuestEntity> getBrain() {
+        return (Brain<PiglinQuestEntity>) super.getBrain();
     }
 
     //-- Data --
@@ -156,6 +191,9 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         this.lastCustomer = this.getCustomer();
         QuestData.Trustful trustful = this.questData.getTrust(this.customer.getUuid());
         int level = trustful.getLevel();
+
+        UUID uuid = this.customer.getUuid();
+        this.questData.increaseXp(uuid,offer.getMerchantExperience());
         if(VillagerData.canLevelUp(level) && trustful.getXp() >= QuestData.Trustful.getUpperLevelExperience(level)) {
             this.levelUpTimer = 40;
             this.levelingUp = true;
@@ -165,8 +203,8 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         if(offer.shouldRewardPlayerExperience()){
             this.getWorld().spawnEntity(new ExperienceOrbEntity(this.getWorld(),this.getX(),this.getY()+0.5d,this.getZ(),xp));
         }
-        UUID uuid = this.customer.getUuid();
-        this.questData.increaseXp(uuid,offer.getMerchantExperience());
+
+
 
     }
 
@@ -198,6 +236,24 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     @Override
     public boolean isClient() {
         return this.getWorld().isClient;
+    }
+
+    public boolean shouldRestock() {
+
+        return this.getWorld().getTime() > this.lastRestockTime + (30L * 20L);
+    }
+
+    public void restock(){
+        List<UUID> uuids = this.questData.getEntityTrust().keySet().stream().toList();
+        for(UUID uuid1 : uuids){
+            TradeOfferList tradeOfferList = this.questData.getTrust(uuid1).getTradeOffers();
+            for(TradeOffer tradeOffer : tradeOfferList){
+                tradeOffer.resetUses();
+            }
+            this.lastRestockTime = this.getWorld().getTime();
+
+        }
+
     }
     //---------
 
