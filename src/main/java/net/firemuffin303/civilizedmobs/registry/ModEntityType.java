@@ -35,7 +35,7 @@ public class ModEntityType {
 
     public static EntityType<PiglinQuestEntity> PIGLIN_QUEST_ENTITY = register("piglin_quest_entity",
             EntityType.Builder.create(PiglinQuestEntity::new,SpawnGroup.MISC)
-                    .setDimensions(0.6f,1.95f)
+                    .setDimensions(1.5f,2.55f)
                     .maxTrackingRange(8)
                     .build("quest_entity")
             );

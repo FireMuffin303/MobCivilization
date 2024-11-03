@@ -291,7 +291,7 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     }
 
     private PlayState registerControllers(AnimationState<GeoAnimatable> geoAnimatableAnimationState) {
-        geoAnimatableAnimationState.setAnimation(RawAnimation.begin().then("animation.civil_piglin.idle", Animation.LoopType.LOOP));
+        //geoAnimatableAnimationState.setAnimation(RawAnimation.begin().then("animation.civil_piglin.idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
     }
 
