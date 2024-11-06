@@ -1,5 +1,6 @@
 {
-  "entity.civil_mobs.quest_entity": "Quest Entity",
+  "command.civil_mobs.quest.clear.success": "Removed Quest from {}",
+  "entity.civil_mobs.piglin_quest_entity": "Quest Entity",
   "entity.civil_mobs.worker_piglin": "Piglin Worker",
   "quest.level.0": "Level 1",
   "quest.level.1": "Level 2",

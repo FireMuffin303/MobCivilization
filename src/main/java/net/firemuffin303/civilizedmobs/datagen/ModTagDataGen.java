@@ -3,15 +3,31 @@ package net.firemuffin303.civilizedmobs.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.BiomeTags;
 import net.minecraft.village.VillagerProfession;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeKeys;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModTagDataGen {
+    public static class BiomeTagDataProvider extends FabricTagProvider<Biome> {
+        public BiomeTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+            super(output, RegistryKeys.BIOME, registriesFuture);
+        }
+
+        @Override
+        protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+            this.getOrCreateTagBuilder(ModDataGen.PIGLIN_VILLAGE_HAS_STRUCTURE).add(BiomeKeys.CRIMSON_FOREST);
+        }
+    }
+
     public static class AcquirablePOIDataGen extends FabricTagProvider<PointOfInterestType> {
         public AcquirablePOIDataGen(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
             super(output, RegistryKeys.POINT_OF_INTEREST_TYPE, registriesFuture);

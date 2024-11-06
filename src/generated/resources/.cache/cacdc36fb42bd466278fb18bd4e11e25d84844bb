@@ -1,4 +1,10 @@
-// 1.20.1	2024-10-16T22:37:07.7305229	Civilized Mobs/civil_mobs
-44f60072d85eea10619002c206febbf00e377dee data\civil_mobs\civil_mobs\quest_pool\wither_quest_pool.json
-44f60072d85eea10619002c206febbf00e377dee data\civil_mobs\civil_mobs\quest_pool\illager_quest_pool.json
-44f60072d85eea10619002c206febbf00e377dee data\civil_mobs\civil_mobs\quest_pool\piglin_quest_pool.json
+// 1.20.1	2024-11-06T23:44:28.1414926	Civilized Mobs/civil_mobs
+4e999b4eb4eef3f8ec2a88ef4f944704b4e31a8c data\civil_mobs\worldgen\template_pool\village\piglin\terminators.json
+f44dca15cacb5f11fc56c5060e18ea0febc9e0e7 data\civil_mobs\worldgen\template_pool\village\piglin\streets.json
+fa9690c108b60b5ce474394c62226d626c274d12 data\civil_mobs\worldgen\template_pool\village\piglin\entity\unemployed.json
+48fc9b58206e3842df56278bcb485fd9b17355f7 data\civil_mobs\worldgen\template_pool\village\piglin\decor.json
+85b8a44c43dfba3f0eb18f79430e6744fe017714 data\civil_mobs\worldgen\template_pool\village\piglin\entity\animals.json
+245db4001b5db8b9f4ef17d6486347dbc5ab09b6 data\civil_mobs\worldgen\structure_set\nether_village.json
+892b0f411b944f5ac0f48984c5d6b7baabaad08f data\civil_mobs\worldgen\structure\piglin_village.json
+5d4c2917f5f0debbe64faa3523d83779e5dcbe5e data\civil_mobs\worldgen\template_pool\village\piglin\town_center.json
+fbcad9939b8bc893abecd0c1b6ecefc84a4e8b42 data\civil_mobs\worldgen\template_pool\village\piglin\houses.json
