@@ -26,6 +26,51 @@
         "projection": "rigid"
       },
       "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/crossroad_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/crossroad_02",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/crossroad_03",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/crossroad_04",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/crossroad_05",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
     }
   ],
   "fallback": "civil_mobs:village/piglin/terminators"

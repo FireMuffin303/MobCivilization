@@ -83,9 +83,9 @@ public class StructureData {
 
         registerable.register(PIGLIN_VILLAGE_HOUSES,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/armorer_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/butcher_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tannery_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tannery_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/armorer_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
                 ), StructurePool.Projection.RIGID));
 
         registerable.register(PIGLIN_VILLAGE_DECOR,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
@@ -98,7 +98,12 @@ public class StructureData {
                 ImmutableList.of(
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/corner_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/corner_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/corner_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/corner_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/crossroad_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/crossroad_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/crossroad_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/crossroad_04",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/streets/crossroad_05",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
                 ), StructurePool.Projection.RIGID));
 
         registerable.register(PIGLIN_VILLAGE_TERMINATOR,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
