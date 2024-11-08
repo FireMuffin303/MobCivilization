@@ -3,7 +3,52 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/houses/armorer_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
         "location": "civil_mobs:village/piglin/houses/butcher_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/houses/cartographer_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/houses/cleric_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/houses/fletcher_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/houses/library_01",
         "processors": "minecraft:empty",
         "projection": "rigid"
       },
@@ -21,7 +66,7 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "civil_mobs:village/piglin/houses/armorer_01",
+        "location": "civil_mobs:village/piglin/houses/weaponsmith_01",
         "processors": "minecraft:empty",
         "projection": "rigid"
       },
