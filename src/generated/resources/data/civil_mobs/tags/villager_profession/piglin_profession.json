@@ -7,6 +7,7 @@
     "minecraft:librarian",
     "minecraft:weaponsmith",
     "minecraft:cleric",
-    "minecraft:fletcher"
+    "minecraft:fletcher",
+    "minecraft:cartographer"
   ]
 }

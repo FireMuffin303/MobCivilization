@@ -48,6 +48,8 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.TEMPLATE_POOL,StructureData::bootstrap);
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE,StructureData::structureBootstrap);
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE_SET,StructureData::structureSetBootstrap);
+        registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE,StructureData::configuredFeatureBootstrap);
+        registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE,StructureData::placedFeatureBootstrap);
 
     }
 }

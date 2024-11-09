@@ -2,8 +2,18 @@
   "elements": [
     {
       "element": {
-        "element_type": "minecraft:feature_pool_element",
-        "feature": "minecraft:pile_pumpkin",
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/decor/lamp_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 5
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/decor/lamp_02",
+        "processors": "minecraft:empty",
         "projection": "rigid"
       },
       "weight": 5
@@ -11,7 +21,31 @@
     {
       "element": {
         "element_type": "minecraft:feature_pool_element",
-        "feature": "minecraft:pile_hay",
+        "feature": "civil_mobs:pile_nether_wart_block",
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:feature_pool_element",
+        "feature": "civil_mobs:pile_soul_soil_block",
+        "projection": "rigid"
+      },
+      "weight": 3
+    },
+    {
+      "element": {
+        "element_type": "minecraft:feature_pool_element",
+        "feature": "civil_mobs:pile_soul_sand_block",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:feature_pool_element",
+        "feature": "civil_mobs:pile_warped_wart_block",
         "projection": "rigid"
       },
       "weight": 1

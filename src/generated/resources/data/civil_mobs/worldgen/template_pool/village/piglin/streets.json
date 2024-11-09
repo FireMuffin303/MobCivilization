@@ -71,6 +71,60 @@
         "projection": "rigid"
       },
       "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/straight_01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/straight_02",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/straight_03",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/straight_04",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/straight_05",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/piglin/streets/straight_06",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
     }
   ],
   "fallback": "civil_mobs:village/piglin/terminators"
