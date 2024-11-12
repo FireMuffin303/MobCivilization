@@ -6,19 +6,20 @@ import net.firemuffin303.civilizedmobs.common.entity.CivilPiglinBrain;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
-import net.minecraft.entity.EntityInteraction;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ExperienceOrbEntity;
+import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.AbstractPiglinEntity;
+import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.PiglinActivity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -29,12 +30,15 @@ import net.minecraft.village.Merchant;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.VillagerData;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.*;
+import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
@@ -58,14 +62,33 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
 
     //--- Attribute & Spawn ---
     public static DefaultAttributeContainer.Builder createAttribute(){
-        return HostileEntity.createHostileAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH,16.0)
+        return HostileEntity.createHostileAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH,80.0)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED,0.349999994039535)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE,5.0);
     }
 
     @Override
+    public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.GOLDEN_AXE));
+        return super.initialize(world,difficulty,spawnReason,entityData,entityNbt);
+    }
+
+    @Override
     public boolean canImmediatelyDespawn(double distanceSquared) {
         return false;
+    }
+
+    @Override
+    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+        super.dropEquipment(source, lootingMultiplier, allowDrops);
+        Entity entity = source.getAttacker();
+        if (entity instanceof CreeperEntity creeperEntity) {
+            if (creeperEntity.shouldDropHead()) {
+                ItemStack itemStack = new ItemStack(Items.PIGLIN_HEAD);
+                creeperEntity.onHeadDropped();
+                this.dropStack(itemStack);
+            }
+        }
     }
 
     //-- Interact Logic --
@@ -153,6 +176,17 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         super.readCustomDataFromNbt(nbt);
         this.lastRestockTime = nbt.getLong("LastRestock");
         this.questData.readData(nbt);
+    }
+
+    //--- Sound ---
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_PIGLIN_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_PIGLIN_DEATH;
     }
 
     //--- Merchant ---

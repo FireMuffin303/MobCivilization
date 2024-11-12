@@ -1,0 +1,38 @@
+package net.firemuffin303.civilizedmobs.common.entity.brain;
+
+import com.google.common.collect.ImmutableSet;
+import net.firemuffin303.civilizedmobs.registry.ModTags;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.LivingTargetCache;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.ai.brain.sensor.Sensor;
+import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.PiglinBrain;
+import net.minecraft.server.world.ServerWorld;
+
+import java.util.Optional;
+import java.util.Set;
+
+public class PiglinZombifiedSensor extends Sensor<LivingEntity> {
+    @Override
+    protected void sense(ServerWorld world, LivingEntity entity) {
+        Brain<?> brain = entity.getBrain();
+        LivingTargetCache livingTargetCache = brain.getOptionalRegisteredMemory(MemoryModuleType.VISIBLE_MOBS).orElse(LivingTargetCache.empty());
+        Optional<LivingEntity> zombified = Optional.empty();
+        for (LivingEntity livingEntity : livingTargetCache.iterate(this::isZombified)) {
+            zombified = Optional.of(livingEntity);
+        }
+        brain.remember(MemoryModuleType.NEAREST_VISIBLE_ZOMBIFIED,zombified);
+
+    }
+
+    @Override
+    public Set<MemoryModuleType<?>> getOutputMemoryModules() {
+        return ImmutableSet.of(MemoryModuleType.NEAREST_VISIBLE_ZOMBIFIED,MemoryModuleType.VISIBLE_MOBS);
+    }
+
+    private boolean isZombified(LivingEntity livingEntity){
+        return PiglinBrain.isZombified(livingEntity.getType()) || livingEntity.getType().isIn(ModTags.PIGLIN_SCARED_ZOMBIFIED);
+    }
+}

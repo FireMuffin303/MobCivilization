@@ -20,6 +20,9 @@ loom {
             vmArg("-Dfabric-api.datagen.modid=civil_mobs")
             runDir "build/datagen"
         }
+        client{
+            vmArg("-Dgeckolib.disable_examples=true")
+        }
     }
 
     accessWidenerPath = file("src/main/resources/civil_mobs.accesswidener")
@@ -36,6 +39,7 @@ repositories {
             includeGroupByRegex("software\\.bernie.*")
             includeGroup("com.eliotlash.mclib")
         }
+
     }
 
     maven {
@@ -61,6 +65,8 @@ dependencies {
 }
 
 processResources {
+
+
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
     inputs.property "loader_version", project.loader_version

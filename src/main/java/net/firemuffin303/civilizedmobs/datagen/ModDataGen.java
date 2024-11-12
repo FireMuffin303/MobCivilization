@@ -40,6 +40,7 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(ModTagDataGen.ProfessionTagDataGen::new);
         pack.addProvider(ModTagDataGen.AcquirablePOIDataGen::new);
         pack.addProvider(ModTagDataGen.BiomeTagDataProvider::new);
+        pack.addProvider(ModTagDataGen.EntityTypeTagDataProvider::new);
         pack.addProvider(LoottableDataProvider.ChestDataProvider::new);
     }
 

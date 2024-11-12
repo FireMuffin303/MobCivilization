@@ -6,11 +6,13 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.packet.ModC2SHandler;
 import net.firemuffin303.civilizedmobs.common.quest.QuestPool;
 import net.firemuffin303.civilizedmobs.common.quest.QuestPoolTypes;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.event.ModServerEntityEvents;
+import net.firemuffin303.civilizedmobs.registry.ModBrains;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModItems;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -30,10 +32,6 @@ public class CivilizedMobs implements ModInitializer {
     public static String MOD_ID = "civil_mobs";
     public static Logger LOGGER = LogUtils.getLogger();
 
-    //Payload
-    public static final Identifier QUEST_SCREEN_PAYLOAD_ID = new Identifier(MOD_ID,"quest_screen_payload");
-    public static final Identifier UPDATE_QUEST_C2S_PAYLOAD_ID = new Identifier(MOD_ID,"update_quest_c2s_payload");
-    public static final Identifier SELECT_QUEST_C2S_PAYLOAD_ID = new Identifier(MOD_ID,"select_quest_c2s_payload");
 
     public static final RegistryKey<Registry<QuestPool>> QUEST_POOL = RegistryKey.ofRegistry(new Identifier(MOD_ID,"quest_pool"));
     //public static final Registry<QuestPool> QUEST_POOL_REGISTRY = FabricRegistryBuilder.createSimple(QUEST_POOL).attribute(RegistryAttribute.MODDED).buildAndRegister();
@@ -51,6 +49,7 @@ public class CivilizedMobs implements ModInitializer {
 
         Registry.register(Registries.ITEM_GROUP, Identifier.of(MOD_ID,"main"),ITEM_GROUP);
 
+        ModBrains.init();
         ModEntityType.init();
         ModItems.init();
         QuestPoolTypes.init();
@@ -58,7 +57,7 @@ public class CivilizedMobs implements ModInitializer {
 
         TrackedDataHandlerRegistry.register(ModEntityType.WORKER_DATA);
         FabricDefaultAttributeRegistry.register(ModEntityType.CIVIL_PIGLIN, WorkerPiglinEntity.createAttribute());
-        FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_QUEST_ENTITY, WorkerPiglinEntity.createAttribute());
+        FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_QUEST_ENTITY, PiglinQuestEntity.createAttribute());
 
         ServerEntityEvents.ENTITY_LOAD.register(ModServerEntityEvents::IllagerLoaded);
     }

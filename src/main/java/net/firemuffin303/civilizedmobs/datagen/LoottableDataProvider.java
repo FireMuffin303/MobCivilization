@@ -29,6 +29,7 @@ public class LoottableDataProvider {
     public static final Identifier VILLAGE_PIGLIN_TANNERY_CHEST = new Identifier(CivilizedMobs.MOD_ID,"chests/village/piglin/village_tannery");
     public static final Identifier VILLAGE_PIGLIN_WEAPONSMITH_CHEST = new Identifier(CivilizedMobs.MOD_ID,"chests/village/piglin/village_weaponsmith");
     public static final Identifier VILLAGE_PIGLIN_TENT = new Identifier(CivilizedMobs.MOD_ID,"chests/village/piglin/tent_01");
+    public static final Identifier VILLAGE_PIGLIN_GENERIC_HOUSE = new Identifier(CivilizedMobs.MOD_ID,"chests/village/piglin/generic_house");
 
     public static class ChestDataProvider extends SimpleFabricLootTableProvider {
         public ChestDataProvider(FabricDataOutput output) {
@@ -145,7 +146,17 @@ public class LoottableDataProvider {
                             .build()
             ));
 
-
+            exporter.accept(LoottableDataProvider.VILLAGE_PIGLIN_GENERIC_HOUSE,LootTable.builder().pool(
+                    LootPool.builder().rolls(UniformLootNumberProvider.create(1.0f,5.0f))
+                            .with(ItemEntry.builder(Items.NETHER_WART_BLOCK).weight(3))
+                            .with(ItemEntry.builder(Items.BLACKSTONE).weight(3))
+                            .with(ItemEntry.builder(Items.STRING).weight(3))
+                            .with(ItemEntry.builder(Items.GRAVEL).weight(3))
+                            .with(ItemEntry.builder(Items.NETHERRACK).weight(3))
+                            .with(ItemEntry.builder(Items.CRIMSON_FUNGUS).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .with(ItemEntry.builder(Items.PORKCHOP).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .build()
+            ));
 
         }
     }

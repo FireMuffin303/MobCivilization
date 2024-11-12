@@ -3,6 +3,7 @@ package net.firemuffin303.civilizedmobs.datagen;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
+import net.minecraft.entity.EntityType;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.village.VillagerProfession;
@@ -14,6 +15,24 @@ import net.minecraft.world.poi.PointOfInterestTypes;
 import java.util.concurrent.CompletableFuture;
 
 public class ModTagDataGen {
+    public static class EntityTypeTagDataProvider extends FabricTagProvider.EntityTypeTagProvider{
+
+        public EntityTypeTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+            super(output, completableFuture);
+        }
+
+        @Override
+        protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+            this.getOrCreateTagBuilder(ModTags.PIGLIN_NEMESIS)
+                    .add(EntityType.WITHER)
+                    .add(EntityType.WITHER_SKELETON);
+
+            this.getOrCreateTagBuilder(ModTags.PIGLIN_SCARED_ZOMBIFIED)
+                    .add(EntityType.ZOMBIFIED_PIGLIN)
+                    .add(EntityType.ZOGLIN);
+        }
+    }
+
     public static class BiomeTagDataProvider extends FabricTagProvider<Biome> {
         public BiomeTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
             super(output, RegistryKeys.BIOME, registriesFuture);

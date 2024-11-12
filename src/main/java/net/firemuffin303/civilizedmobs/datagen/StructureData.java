@@ -121,7 +121,9 @@ public class StructureData {
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/library_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tannery_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tent_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tent_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/generic_house_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/generic_house_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
                         ), StructurePool.Projection.RIGID));
 
         registerable.register(PIGLIN_VILLAGE_DECOR,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
@@ -197,6 +199,7 @@ public class StructureData {
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PIGLIN_VILLAGE_TERMINATOR);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PIGLIN_VILLAGE_DECOR);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PIGLIN_VILLAGE_UNEMPLOYED);
+        entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PIGLIN_VILLAGE_LEADER);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PIGLIN_VILLAGE_ANIMAL);
     }
 

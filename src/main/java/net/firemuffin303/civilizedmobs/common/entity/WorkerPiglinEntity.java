@@ -21,6 +21,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -36,6 +37,8 @@ import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.village.*;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import net.minecraft.world.poi.PointOfInterestType;
@@ -87,7 +90,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         if(this.isAlive()){
             boolean bl = this.getOffers().isEmpty();
             // If TraderOffer is Empty, Player cannot trade.
-            if(bl){
+            if(bl || player.isCreative() ? false : !PiglinBrain.wearsGoldArmor(player)){
                 if(!this.getWorld().isClient){
                     this.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY,this.getSoundVolume(),this.getSoundPitch());
                 }
@@ -265,7 +268,20 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     public static DefaultAttributeContainer.Builder createAttribute(){
         return HostileEntity.createHostileAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH,16.0)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED,0.349999994039535)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE,5.0);
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE,2.0);
+    }
+
+    @Override
+    public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        if(world.getRandom().nextFloat() < 0.5f){
+            this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.GOLDEN_SWORD));
+        }
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    }
+
+    @Override
+    protected boolean isDisallowedInPeaceful() {
+        return false;
     }
 
     public static boolean canSpawn(EntityType<PiglinEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) {
@@ -275,6 +291,30 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     @Override
     public boolean canImmediatelyDespawn(double distanceSquared) {
         return false;
+    }
+
+    @Override
+    protected void dropEquipment(DamageSource source, int lootingMultiplier, boolean allowDrops) {
+        super.dropEquipment(source, lootingMultiplier, allowDrops);
+        Entity entity = source.getAttacker();
+        if (entity instanceof CreeperEntity creeperEntity) {
+            if (creeperEntity.shouldDropHead()) {
+                ItemStack itemStack = new ItemStack(Items.PIGLIN_HEAD);
+                creeperEntity.onHeadDropped();
+                this.dropStack(itemStack);
+            }
+        }
+    }
+
+    //--- Sound ---
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_PIGLIN_HURT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_PIGLIN_DEATH;
     }
 
     //--- Piglin ---
