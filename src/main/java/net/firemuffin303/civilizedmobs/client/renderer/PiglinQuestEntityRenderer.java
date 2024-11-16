@@ -1,20 +1,17 @@
 package net.firemuffin303.civilizedmobs.client.renderer;
 
 import net.firemuffin303.civilizedmobs.client.renderer.model.PiglinQuestEntityModel;
-import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinQuestEntity;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.util.math.RotationAxis;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
-import software.bernie.geckolib.renderer.layer.ItemArmorGeoLayer;
 
 public class PiglinQuestEntityRenderer extends GeoEntityRenderer<PiglinQuestEntity> {
     public PiglinQuestEntityRenderer(EntityRendererFactory.Context renderManager) {
@@ -23,10 +20,10 @@ public class PiglinQuestEntityRenderer extends GeoEntityRenderer<PiglinQuestEnti
             @Override
             protected ItemStack getStackForBone(GeoBone bone, PiglinQuestEntity animatable) {
                 switch (bone.getName()){
-                    case "left_arm" -> {
+                    case "left_arm_item" -> {
                         return animatable.isLeftHanded() ? animatable.getMainHandStack() : animatable.getOffHandStack();
                     }
-                    case "right_arm" -> {
+                    case "right_arm_item" -> {
                         return animatable.isLeftHanded() ? animatable.getOffHandStack() : animatable.getMainHandStack();
                     }
                 }
@@ -36,16 +33,17 @@ public class PiglinQuestEntityRenderer extends GeoEntityRenderer<PiglinQuestEnti
             @Override
             protected ModelTransformationMode getTransformTypeForStack(GeoBone bone, ItemStack stack, PiglinQuestEntity animatable) {
                 return switch (bone.getName()) {
-                    case "left_arm", "right_arm" -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
+                    case "left_arm_item", "right_arm_item" -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
                     default -> super.getTransformTypeForStack(bone, stack, animatable);
                 };
             }
 
             @Override
             protected void renderStackForBone(MatrixStack poseStack, GeoBone bone, ItemStack stack, PiglinQuestEntity animatable, VertexConsumerProvider bufferSource, float partialTick, int packedLight, int packedOverlay) {
+                poseStack.scale(2,2,2);
+
                 if(stack == animatable.getMainHandStack()){
                     poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
-                    poseStack.translate(0.0,0.0,-0.9);
                     if (stack.getItem() instanceof ShieldItem) {
                         poseStack.translate(0.0, 0.125, -0.25);
                     }

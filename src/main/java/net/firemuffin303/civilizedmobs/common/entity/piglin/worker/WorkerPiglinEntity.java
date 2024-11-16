@@ -1,9 +1,12 @@
-package net.firemuffin303.civilizedmobs.common.entity;
+package net.firemuffin303.civilizedmobs.common.entity.piglin.worker;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
+import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
+import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.block.Blocks;
@@ -11,6 +14,7 @@ import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.pathing.MobNavigation;
+import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -27,6 +31,8 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -41,6 +47,7 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -55,10 +62,11 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 
 //TODO : Turn Worker Logic to Interface for easier entity Setup;
-public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant,WorkerContainer {
+public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant, WorkerContainer {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WorkerPiglinEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST;
     private static final TrackedData<WorkerData> PIGLIN_DATA;
     private long lastRestockTime;
@@ -83,6 +91,8 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         super(entityType, world);
         this.gossip = new VillagerGossips();
         ((MobNavigation)this.getNavigation()).setCanPathThroughDoors(true);
+        this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
+        this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }
 
     @Override
@@ -186,9 +196,31 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
 
     @Override
     public void onDeath(DamageSource damageSource) {
-        super.onDeath(damageSource);
+        this.releaseTicketFor(this,MemoryModuleType.JOB_SITE);
+        this.releaseTicketFor(this,MemoryModuleType.POTENTIAL_JOB_SITE);
         this.resetCustomer();
+        super.onDeath(damageSource);
     }
+
+    public void releaseTicketFor(WorkerPiglinEntity entity,MemoryModuleType<GlobalPos> pos) {
+        if (entity.getWorld() instanceof ServerWorld) {
+            MinecraftServer minecraftServer = ((ServerWorld)entity.getWorld()).getServer();
+            entity.getBrain().getOptionalRegisteredMemory(pos).ifPresent((posx) -> {
+                ServerWorld serverWorld = minecraftServer.getWorld(posx.getDimension());
+                if (serverWorld != null) {
+                    PointOfInterestStorage pointOfInterestStorage = serverWorld.getPointOfInterestStorage();
+                    Optional<RegistryEntry<PointOfInterestType>> optional = pointOfInterestStorage.getType(posx.getPos());
+                    BiPredicate<WorkerPiglinEntity, RegistryEntry<PointOfInterestType>> biPredicate = POINTS_OF_INTEREST.get(pos);
+                    if (optional.isPresent() && biPredicate.test(entity,optional.get())) {
+                        pointOfInterestStorage.releaseTicket(posx.getPos());
+                        DebugInfoSender.sendPointOfInterest(serverWorld, posx.getPos());
+                    }
+
+                }
+            });
+        }
+    }
+
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
@@ -457,12 +489,12 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     @Override
     public void fillTrade() {
         WorkerData workerData = this.getWorkerData();
-        Map<Integer,List<TradeOffer>> integerListMap = ModWorkerOffers.PIGLIN_TRADES.get(workerData.getProfession());
+        Map<Integer,List<TradeOffers.Factory>> integerListMap = ModWorkerOffers.PIGLIN_TRADES.get(workerData.getProfession());
         if(integerListMap == null){ return; }
-        List<TradeOffer> tradeOffers = integerListMap.get(workerData.getLevel());
-        if(!tradeOffers.isEmpty()){
+        List<TradeOffers.Factory> factories = integerListMap.get(workerData.getLevel());
+        if(!factories.isEmpty()){
             TradeOfferList tradeOfferList = this.getOffers();
-            this.fillRecipesFromPool(this,tradeOfferList,tradeOffers,2);
+            this.fillRecipesFromPool(this,tradeOfferList,factories,2);
         }
     }
 

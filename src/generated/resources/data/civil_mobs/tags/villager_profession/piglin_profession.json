@@ -3,11 +3,12 @@
   "values": [
     "minecraft:armorer",
     "minecraft:butcher",
+    "minecraft:cleric",
+    "minecraft:cartographer",
     "minecraft:leatherworker",
     "minecraft:librarian",
     "minecraft:weaponsmith",
-    "minecraft:cleric",
-    "minecraft:fletcher",
-    "minecraft:cartographer"
+    "minecraft:toolsmith",
+    "minecraft:fletcher"
   ]
 }

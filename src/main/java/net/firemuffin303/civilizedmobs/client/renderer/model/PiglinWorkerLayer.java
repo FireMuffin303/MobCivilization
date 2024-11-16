@@ -2,7 +2,7 @@ package net.firemuffin303.civilizedmobs.client.renderer.model;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
-import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;

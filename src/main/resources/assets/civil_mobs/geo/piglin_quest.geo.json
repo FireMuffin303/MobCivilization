@@ -48,12 +48,22 @@
 					]
 				},
 				{
+					"name": "left_arm_item",
+					"parent": "left_arm",
+					"pivot": [14,7,0]
+				},
+				{
 					"name": "right_arm",
 					"parent": "body",
 					"pivot": [-10, 28, 0],
 					"cubes": [
 						{"origin": [-18, 6, -4], "size": [8, 22, 8], "uv": [0, 60]}
 					]
+				},
+				{
+					"name": "right_arm_item",
+					"parent": "right_arm",
+					"pivot": [-14,7,0]
 				},
 				{
 					"name": "head",

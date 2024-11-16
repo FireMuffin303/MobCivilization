@@ -9,12 +9,27 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
+import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.world.gen.structure.StructureKeys;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModTagDataGen {
+    public static class StructureTagDataProvider extends FabricTagProvider<Structure>{
+
+        public StructureTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
+            super(output, RegistryKeys.STRUCTURE, registriesFuture);
+        }
+
+        @Override
+        protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+            this.getOrCreateTagBuilder(ModTags.ON_NETHER_FORTRESS_EXPLORER_MAP).add(StructureKeys.FORTRESS);
+            this.getOrCreateTagBuilder(ModTags.ON_BASTION_EXPLORER_MAP).add(StructureKeys.BASTION_REMNANT);
+        }
+    }
+
     public static class EntityTypeTagDataProvider extends FabricTagProvider.EntityTypeTagProvider{
 
         public EntityTypeTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
@@ -75,12 +90,13 @@ public class ModTagDataGen {
             getOrCreateTagBuilder(ModTags.PIGLIN_PROFESSION).add(
                     VillagerProfession.ARMORER,
                     VillagerProfession.BUTCHER,
+                    VillagerProfession.CLERIC,
+                    VillagerProfession.CARTOGRAPHER,
                     VillagerProfession.LEATHERWORKER,
                     VillagerProfession.LIBRARIAN,
                     VillagerProfession.WEAPONSMITH,
-                    VillagerProfession.CLERIC,
-                    VillagerProfession.FLETCHER,
-                    VillagerProfession.CARTOGRAPHER
+                    VillagerProfession.TOOLSMITH,
+                    VillagerProfession.FLETCHER
             );
 
         }

@@ -1,4 +1,4 @@
-package net.firemuffin303.civilizedmobs.common.entity;
+package net.firemuffin303.civilizedmobs.common.entity.piglin.worker;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
@@ -24,11 +24,14 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.DebugInfoSender;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.village.VillagerProfession;
+import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 
 import java.util.List;
@@ -231,6 +234,8 @@ public class CivilPiglinBrain {
 
         }
     }
+
+
 
     static {
         SENSORS = List.of(

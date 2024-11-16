@@ -1,4 +1,4 @@
-package net.firemuffin303.civilizedmobs.common.entity.piglin;
+package net.firemuffin303.civilizedmobs.common.entity.piglin.quest;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;

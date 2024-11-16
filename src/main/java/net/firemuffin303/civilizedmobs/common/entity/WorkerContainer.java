@@ -29,7 +29,7 @@ public interface WorkerContainer {
 
     void fillTrade();
 
-    default void fillRecipesFromPool(LivingEntity livingEntity, TradeOfferList recipeList, List<TradeOffer> list, int count) {
+    default void fillRecipesFromPool(LivingEntity livingEntity, TradeOfferList recipeList, List<TradeOffers.Factory> list, int count) {
         Set<Integer> set = Sets.newHashSet();
         if (list.size() > count) {
             while(set.size() < count) {
@@ -42,7 +42,7 @@ public interface WorkerContainer {
         }
 
         for (Integer integer : set) {
-            TradeOffer tradeOffer = list.get(integer);
+            TradeOffer tradeOffer = list.get(integer).create(livingEntity,livingEntity.getRandom());
             if (tradeOffer != null) {
                 recipeList.add(tradeOffer);
             }

@@ -2,8 +2,8 @@ package net.firemuffin303.civilizedmobs.registry;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
-import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinQuestEntity;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;

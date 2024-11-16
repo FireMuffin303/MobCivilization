@@ -1,13 +1,13 @@
-package net.firemuffin303.civilizedmobs.common.entity.piglin;
+package net.firemuffin303.civilizedmobs.common.entity.piglin.quest;
 
 import com.mojang.serialization.Dynamic;
-import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.CivilPiglinBrain;
-import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -21,11 +21,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.DebugInfoSender;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.Merchant;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
@@ -33,6 +37,8 @@ import net.minecraft.village.VillagerData;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.poi.PointOfInterestStorage;
+import net.minecraft.world.poi.PointOfInterestType;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -43,13 +49,16 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity, Merchant, QuestContainer {
     private long lastRestockTime;
     protected QuestData questData;
     private int levelUpTimer;
     private boolean levelingUp;
+    private final long restockTime = 1800L;
     @Nullable private PlayerEntity lastCustomer;
     @Nullable private PlayerEntity customer;
     //-- Geo ---
@@ -58,6 +67,8 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     public PiglinQuestEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
         super(entityType, world);
         this.questData = new QuestData(this);
+        this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
+        this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }
 
     //--- Attribute & Spawn ---
@@ -145,6 +156,13 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         trustful.setLevel(trustful.getLevel()+1);
         this.questData.fillTrade(trustful.getTradeOffers(),this.lastCustomer,2);
     }
+
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        this.releaseTicketFor(MemoryModuleType.MEETING_POINT);
+        super.onDeath(damageSource);
+    }
+
     //Brain
 
 
@@ -176,6 +194,25 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         super.readCustomDataFromNbt(nbt);
         this.lastRestockTime = nbt.getLong("LastRestock");
         this.questData.readData(nbt);
+    }
+
+    public void releaseTicketFor( MemoryModuleType<GlobalPos> pos) {
+        if (this.getWorld() instanceof ServerWorld) {
+            MinecraftServer minecraftServer = ((ServerWorld)this.getWorld()).getServer();
+            this.getBrain().getOptionalRegisteredMemory(pos).ifPresent((posx) -> {
+                ServerWorld serverWorld = minecraftServer.getWorld(posx.getDimension());
+                if (serverWorld != null) {
+                    PointOfInterestStorage pointOfInterestStorage = serverWorld.getPointOfInterestStorage();
+                    Optional<RegistryEntry<PointOfInterestType>> optional = pointOfInterestStorage.getType(posx.getPos());
+                    BiPredicate<PiglinQuestEntity, RegistryEntry<PointOfInterestType>> biPredicate = PiglinQuestBrain.POINTS_OF_INTEREST.get(pos);
+                    if (optional.isPresent() && biPredicate.test(this,optional.get())) {
+                        pointOfInterestStorage.releaseTicket(posx.getPos());
+                        DebugInfoSender.sendPointOfInterest(serverWorld, posx.getPos());
+                    }
+
+                }
+            });
+        }
     }
 
     //--- Sound ---
@@ -274,17 +311,22 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
 
     public boolean shouldRestock() {
 
-        return this.getWorld().getTime() > this.lastRestockTime + (30L * 20L);
+        return this.getWorld().getTime() > this.lastRestockTime + (this.restockTime * 20L);
     }
 
     public void restock(){
+
         List<UUID> uuids = this.questData.getEntityTrust().keySet().stream().toList();
         for(UUID uuid1 : uuids){
-            TradeOfferList tradeOfferList = this.questData.getTrust(uuid1).getTradeOffers();
-            for(TradeOffer tradeOffer : tradeOfferList){
-                tradeOffer.resetUses();
+            PlayerEntity player = this.getWorld().getPlayerByUuid(uuid1);
+            if(player != null){
+                QuestData.Trustful trustful = this.questData.getTrust(uuid1);
+                trustful.setTradeList(new TradeOfferList());
+                this.questData.fillTrade(trustful.getTradeOffers(),player,trustful.getLevel() * 2);
+
+                this.lastRestockTime = this.getWorld().getTime();
             }
-            this.lastRestockTime = this.getWorld().getTime();
+
 
         }
 

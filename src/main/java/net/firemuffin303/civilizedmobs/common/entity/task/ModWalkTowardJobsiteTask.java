@@ -1,7 +1,6 @@
 package net.firemuffin303.civilizedmobs.common.entity.task;
 
 import com.google.common.collect.ImmutableMap;
-import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.MemoryModuleState;

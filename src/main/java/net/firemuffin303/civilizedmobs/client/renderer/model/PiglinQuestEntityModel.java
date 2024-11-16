@@ -1,8 +1,7 @@
 package net.firemuffin303.civilizedmobs.client.renderer.model;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.WorkerPiglinEntity;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinQuestEntity;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib.constant.DataTickets;
