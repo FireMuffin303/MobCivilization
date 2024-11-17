@@ -1,10 +1,15 @@
 package net.firemuffin303.civilizedmobs.datagen;
 
+import com.eliotlash.mclib.math.functions.classic.Mod;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.fabricmc.loader.api.FabricLoader;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.integration.muffinsQuest.ModQuests;
+import net.firemuffin303.civilizedmobs.datagen.integration.QuestDataGen;
+import net.firemuffin303.muffinsquestlib.common.registry.ModRegistries;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKey;
@@ -45,6 +50,9 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(ModTagDataGen.StructureTagDataProvider::new);
 
         pack.addProvider(LoottableDataProvider.ChestDataProvider::new);
+        //Quest Lib
+        pack.addProvider(QuestDataGen.QuestDynamicProvider::new);
+        pack.addProvider(QuestDataGen.QuestTagProvider::new);
     }
 
     @Override
@@ -54,6 +62,10 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE_SET,StructureData::structureSetBootstrap);
         registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE,StructureData::configuredFeatureBootstrap);
         registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE,StructureData::placedFeatureBootstrap);
+
+        //Quest Lib
+        registryBuilder.addRegistry(ModRegistries.QUEST_KEY, ModQuests::bootstrap);
+
 
     }
 }

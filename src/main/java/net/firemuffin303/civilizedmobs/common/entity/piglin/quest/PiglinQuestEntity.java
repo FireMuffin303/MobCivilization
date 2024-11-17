@@ -1,6 +1,7 @@
 package net.firemuffin303.civilizedmobs.common.entity.piglin.quest;
 
 import com.mojang.serialization.Dynamic;
+import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
@@ -58,7 +59,6 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     protected QuestData questData;
     private int levelUpTimer;
     private boolean levelingUp;
-    private final long restockTime = 1800L;
     @Nullable private PlayerEntity lastCustomer;
     @Nullable private PlayerEntity customer;
     //-- Geo ---
@@ -310,8 +310,7 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     }
 
     public boolean shouldRestock() {
-
-        return this.getWorld().getTime() > this.lastRestockTime + (this.restockTime * 20L);
+        return this.getWorld().getTime() > this.lastRestockTime + (this.getWorld().getGameRules().getInt(CivilizedMobs.QUEST_RESTOCK_TIME) * 20L);
     }
 
     public void restock(){

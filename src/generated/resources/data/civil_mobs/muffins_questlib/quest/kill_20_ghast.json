@@ -1,0 +1,28 @@
+{
+  "definition": {
+    "experience": 50,
+    "reward_item": [
+      {
+        "Count": 10,
+        "id": "minecraft:gunpowder"
+      },
+      {
+        "Count": 2,
+        "id": "minecraft:ghast_tear"
+      }
+    ]
+  },
+  "description": "Kill 20 Ghasts",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:ghast",
+          "amount": 20
+        }
+      }
+    ]
+  },
+  "rarity": "COMMON"
+}

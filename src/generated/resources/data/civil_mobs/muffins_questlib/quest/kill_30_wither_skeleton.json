@@ -1,0 +1,32 @@
+{
+  "definition": {
+    "experience": 80,
+    "reward_item": [
+      {
+        "Count": 15,
+        "id": "minecraft:bone"
+      },
+      {
+        "Count": 5,
+        "id": "minecraft:coal"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:wither_skeleton_skull"
+      }
+    ]
+  },
+  "description": "Kill 30 Wither Skeletons",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:wither_skeleton",
+          "amount": 30
+        }
+      }
+    ]
+  },
+  "rarity": "COMMON"
+}

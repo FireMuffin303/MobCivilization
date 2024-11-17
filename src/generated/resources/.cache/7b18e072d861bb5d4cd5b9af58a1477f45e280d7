@@ -1,4 +1,4 @@
-// 1.20.1	2024-11-16T22:41:11.543822	Civilized Mobs/minecraft:chest Loot Table
+// 1.20.1	2024-11-17T17:30:57.2080863	Civilized Mobs/minecraft:chest Loot Table
 a9cd2edeb00fd14479e9014468d6789ba3db5248 data\civil_mobs\loot_tables\chests\village\piglin\generic_house.json
 a263fc2d6d0a08728d85b29f0f80c24f9a6f21b6 data\civil_mobs\loot_tables\chests\village\piglin\village_cartographer.json
 207661cfa9d4a2e30ae34f66030ca6730fa43df5 data\civil_mobs\loot_tables\chests\village\piglin\village_butcher.json
@@ -6,6 +6,6 @@ a263fc2d6d0a08728d85b29f0f80c24f9a6f21b6 data\civil_mobs\loot_tables\chests\vill
 281328d0e4d6ce04fa75fedf0f23779b9498e9f1 data\civil_mobs\loot_tables\chests\village\piglin\village_weaponsmith.json
 2ebb68206db97cfe9dbbfd2e4c6c0c8e3febf4e2 data\civil_mobs\loot_tables\chests\village\piglin\village_armorer.json
 1a3976f95387ed8cdf42afaf260cd02417a70e33 data\civil_mobs\loot_tables\chests\village\piglin\village_cleric.json
-24207326a6174b58251daf941ebfe2eb4ccdcd3b data\civil_mobs\loot_tables\chests\village\piglin\village_tannery.json
 c6151fc48d1810e74b585f39998e8f0ad65353f6 data\civil_mobs\loot_tables\chests\village\piglin\village_fletcher.json
+24207326a6174b58251daf941ebfe2eb4ccdcd3b data\civil_mobs\loot_tables\chests\village\piglin\village_tannery.json
 14f12ea7ab34d58ea56d556e4f372f4d15aab2f9 data\civil_mobs\loot_tables\chests\village\piglin\tent_01.json

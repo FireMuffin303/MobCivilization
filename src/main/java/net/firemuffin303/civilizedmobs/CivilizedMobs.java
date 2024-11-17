@@ -4,6 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
+import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
@@ -24,6 +26,7 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.raid.Raid;
+import net.minecraft.world.GameRules;
 import org.slf4j.Logger;
 
 public class CivilizedMobs implements ModInitializer {
@@ -32,6 +35,7 @@ public class CivilizedMobs implements ModInitializer {
     public static Logger LOGGER = LogUtils.getLogger();
 
 
+    public static final GameRules.Key<GameRules.IntRule> QUEST_RESTOCK_TIME = GameRuleRegistry.register("civil_mobs-quest_restock_time", GameRules.Category.MOBS, GameRuleFactory.createIntRule(1800));
     public static final RegistryKey<Registry<QuestPool>> QUEST_POOL = RegistryKey.ofRegistry(new Identifier(MOD_ID,"quest_pool"));
     //public static final Registry<QuestPool> QUEST_POOL_REGISTRY = FabricRegistryBuilder.createSimple(QUEST_POOL).attribute(RegistryAttribute.MODDED).buildAndRegister();
 
@@ -44,14 +48,11 @@ public class CivilizedMobs implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        DynamicRegistries.register(QUEST_POOL,QuestPool.CODEC);
-
         Registry.register(Registries.ITEM_GROUP, Identifier.of(MOD_ID,"main"),ITEM_GROUP);
 
         ModBrains.init();
         ModEntityType.init();
         ModItems.init();
-        QuestPoolTypes.init();
 
 
         TrackedDataHandlerRegistry.register(ModEntityType.WORKER_DATA);

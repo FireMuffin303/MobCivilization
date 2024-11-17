@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "civil_mobs:kill_10_hoglins",
+    "civil_mobs:kill_20_hoglins",
+    "civil_mobs:kill_30_hoglins",
+    "civil_mobs:kill_10_wither_skeleton",
+    "civil_mobs:kill_20_wither_skeleton",
+    "civil_mobs:kill_30_wither_skeleton",
+    "civil_mobs:kill_10_magma_cream",
+    "civil_mobs:kill_20_magma_cream",
+    "civil_mobs:kill_30_magma_cream",
+    "civil_mobs:kill_10_ghast",
+    "civil_mobs:kill_20_ghast",
+    "civil_mobs:kill_30_ghast",
+    "civil_mobs:kill_10_blaze",
+    "civil_mobs:kill_20_blaze",
+    "civil_mobs:kill_30_blaze"
+  ]
+}

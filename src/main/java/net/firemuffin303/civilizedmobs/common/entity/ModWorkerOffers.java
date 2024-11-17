@@ -3,9 +3,12 @@ package net.firemuffin303.civilizedmobs.common.entity;
 import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
+import net.firemuffin303.civilizedmobs.common.integration.muffinsQuest.ModQuests;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.firemuffin303.muffinsquestlib.MuffinsQuestLib;
+import net.firemuffin303.muffinsquestlib.common.item.QuestPaperItem;
 import net.firemuffin303.muffinsquestlib.common.quest.Quest;
+import net.firemuffin303.muffinsquestlib.common.registry.ModItems;
 import net.firemuffin303.muffinsquestlib.common.registry.ModRegistries;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -39,10 +42,7 @@ import net.minecraft.world.gen.structure.Structure;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 public class ModWorkerOffers {
     public static float tradeMultiplier = 0.05f;
@@ -346,11 +346,11 @@ public class ModWorkerOffers {
     ));
 
     public static final Map<Integer,List<TradeOffers.Factory>> PIGLIN_QUEST_OFFER = Util.make(Maps.newHashMap(), questMap ->{
-        questMap.put(1,List.of(new MuffinsQuestLib.QuestTradeOffer(16,1,5,1)));
-        questMap.put(2,List.of(new MuffinsQuestLib.QuestTradeOffer(16,1,10,1)));
-        questMap.put(3,List.of(new MuffinsQuestLib.QuestTradeOffer(16,1,20,1)));
-        questMap.put(4,List.of(new MuffinsQuestLib.QuestTradeOffer(24,1,30,1)));
-        questMap.put(5,List.of(new MuffinsQuestLib.QuestTradeOffer(32,1,40,1)));
+        questMap.put(1,List.of(new PiglinQuestOfferFactory(16,5)));
+        questMap.put(2,List.of(new PiglinQuestOfferFactory(16,10)));
+        questMap.put(3,List.of(new PiglinQuestOfferFactory(16,20)));
+        questMap.put(4,List.of(new PiglinQuestOfferFactory(24,30)));
+        questMap.put(5,List.of(new PiglinQuestOfferFactory(32,40)));
     });
 
     public static class PiglinItemForGold implements TradeOffers.Factory {
@@ -642,12 +642,20 @@ public class ModWorkerOffers {
     }
 
     public static class PiglinQuestOfferFactory implements TradeOffers.Factory{
+        final int price;
+        final int experience;
 
+        public PiglinQuestOfferFactory(int price,int experience){
+            this.price = price;
+            this.experience = experience;
+        }
 
         @Override
         public @Nullable TradeOffer create(Entity entity, Random random) {
-            Optional<RegistryEntry.Reference<Quest>> quest = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).getRandom(random);
-            return null;
+            List<RegistryEntry.Reference<Quest>> quests = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).streamEntries().filter(questReference -> questReference.isIn(ModQuests.PIGLIN_QUEST)).toList();
+
+            RegistryEntry.Reference<Quest> questReference = quests.get(random.nextInt(quests.size()-1));
+            return new TradeOffer(new ItemStack(Items.GOLD_INGOT,this.price), QuestPaperItem.getQuestPaper(questReference.registryKey().getValue()),1,this.experience,0.05f);
         }
     }
 }
