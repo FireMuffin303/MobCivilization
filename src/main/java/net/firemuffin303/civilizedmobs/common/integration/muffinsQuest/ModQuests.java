@@ -44,39 +44,39 @@ public class ModQuests {
     public static final RegistryKey<Quest> KILL_30_BLAZE = RegistryKey.of(ModRegistries.QUEST_KEY,new Identifier(CivilizedMobs.MOD_ID,"kill_30_blaze"));
 
     public static void bootstrap(Registerable<Quest> questRegisterable){
-        questRegisterable.register(KILL_10_HOGLINS,new Quest(new Quest.Definition(List.of(new ItemStack(Items.LEATHER,5)),20),"Kill 10 Hoglins")
+        questRegisterable.register(KILL_10_HOGLINS,new Quest(new Quest.Definition(List.of(new ItemStack(Items.LEATHER,5)),20),"Kill 10 Hoglins").setRarity(Quest.QuestRarity.COMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.HOGLIN,10))));
-        questRegisterable.register(KILL_20_HOGLINS,new Quest(new Quest.Definition(List.of(new ItemStack(Items.LEATHER,15),new ItemStack(Items.PORKCHOP,5)),50),"Kill 20 Hoglins")
+        questRegisterable.register(KILL_20_HOGLINS,new Quest(new Quest.Definition(List.of(new ItemStack(Items.LEATHER,15),new ItemStack(Items.PORKCHOP,5)),50),"Kill 20 Hoglins").setRarity(Quest.QuestRarity.COMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.HOGLIN,20))));
-        questRegisterable.register(KILL_30_HOGLINS,new Quest(new Quest.Definition(List.of(new ItemStack(Items.LEATHER,32),new ItemStack(Items.COOKED_PORKCHOP,15)),80),"Kill 30 Hoglins")
+        questRegisterable.register(KILL_30_HOGLINS,new Quest(new Quest.Definition(List.of(new ItemStack(Items.LEATHER,32),new ItemStack(Items.COOKED_PORKCHOP,15)),80),"Kill 30 Hoglins").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.HOGLIN,30))));
 
-        questRegisterable.register(KILL_10_WITHER_SKELETON,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BONE,5)),20),"Kill 10 Wither Skeletons")
+        questRegisterable.register(KILL_10_WITHER_SKELETON,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BONE,5)),20),"Kill 10 Wither Skeletons").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.WITHER_SKELETON,30))));
-        questRegisterable.register(KILL_20_WITHER_SKELETON,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BONE,15),new ItemStack(Items.COAL,5)),50),"Kill 20 Wither Skeletons")
+        questRegisterable.register(KILL_20_WITHER_SKELETON,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BONE,15),new ItemStack(Items.COAL,5)),50),"Kill 20 Wither Skeletons").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.WITHER_SKELETON,30))));
-        questRegisterable.register(KILL_30_WITHER_SKELETON,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BONE,15),new ItemStack(Items.COAL,5),new ItemStack(Items.WITHER_SKELETON_SKULL)),80),"Kill 30 Wither Skeletons")
+        questRegisterable.register(KILL_30_WITHER_SKELETON,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BONE,15),new ItemStack(Items.COAL,5),new ItemStack(Items.WITHER_SKELETON_SKULL)),80),"Kill 30 Wither Skeletons").setRarity(Quest.QuestRarity.RARE)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.WITHER_SKELETON,30))));
 
-        questRegisterable.register(KILL_10_MAGMA_CREAM,new Quest(new Quest.Definition(List.of(new ItemStack(Items.MAGMA_CREAM,5)),20),"Kill 10 Magma Cream")
+        questRegisterable.register(KILL_10_MAGMA_CREAM,new Quest(new Quest.Definition(List.of(new ItemStack(Items.MAGMA_CREAM,5)),20),"Kill 10 Magma Cream").setRarity(Quest.QuestRarity.COMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.MAGMA_CUBE,10))));
-        questRegisterable.register(KILL_20_MAGMA_CREAM,new Quest(new Quest.Definition(List.of(new ItemStack(Items.MAGMA_CREAM,15)),50),"Kill 20 Magma Cream")
+        questRegisterable.register(KILL_20_MAGMA_CREAM,new Quest(new Quest.Definition(List.of(new ItemStack(Items.MAGMA_CREAM,15)),50),"Kill 20 Magma Cream").setRarity(Quest.QuestRarity.COMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.MAGMA_CUBE,20))));
-        questRegisterable.register(KILL_30_MAGMA_CREAM,new Quest(new Quest.Definition(List.of(new ItemStack(Items.MAGMA_CREAM,24), PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.FIRE_RESISTANCE)),80),"Kill 30 Magma Cream")
+        questRegisterable.register(KILL_30_MAGMA_CREAM,new Quest(new Quest.Definition(List.of(new ItemStack(Items.MAGMA_CREAM,24), PotionUtil.setPotion(new ItemStack(Items.POTION), Potions.FIRE_RESISTANCE)),80),"Kill 30 Magma Cream").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.MAGMA_CUBE,30))));
 
-        questRegisterable.register(KILL_10_GHAST,new Quest(new Quest.Definition(List.of(new ItemStack(Items.GUNPOWDER,5),new ItemStack(Items.GHAST_TEAR)),20),"Kill 10 Ghasts")
+        questRegisterable.register(KILL_10_GHAST,new Quest(new Quest.Definition(List.of(new ItemStack(Items.GUNPOWDER,5),new ItemStack(Items.GHAST_TEAR)),20),"Kill 10 Ghasts").setRarity(Quest.QuestRarity.COMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.GHAST,10))));
-        questRegisterable.register(KILL_20_GHAST,new Quest(new Quest.Definition(List.of(new ItemStack(Items.GUNPOWDER,10),new ItemStack(Items.GHAST_TEAR,2)),50),"Kill 20 Ghasts")
+        questRegisterable.register(KILL_20_GHAST,new Quest(new Quest.Definition(List.of(new ItemStack(Items.GUNPOWDER,10),new ItemStack(Items.GHAST_TEAR,2)),50),"Kill 20 Ghasts").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.GHAST,20))));
-        questRegisterable.register(KILL_30_GHAST,new Quest(new Quest.Definition(List.of(new ItemStack(Items.GUNPOWDER,16),new ItemStack(Items.GHAST_TEAR,5)),80),"Kill 30 Ghaasts")
+        questRegisterable.register(KILL_30_GHAST,new Quest(new Quest.Definition(List.of(new ItemStack(Items.GUNPOWDER,16),new ItemStack(Items.GHAST_TEAR,5)),80),"Kill 30 Ghaasts").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.GHAST,30))));
 
-        questRegisterable.register(KILL_10_BLAZE,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BLAZE_POWDER,2)),20),"Kill 10 Blazes")
+        questRegisterable.register(KILL_10_BLAZE,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BLAZE_POWDER,2)),20),"Kill 10 Blazes").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.BLAZE,10))));
-        questRegisterable.register(KILL_20_BLAZE,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BLAZE_POWDER,5),new ItemStack(Items.NETHER_WART)),50),"Kill 20 Blazes")
+        questRegisterable.register(KILL_20_BLAZE,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BLAZE_POWDER,5),new ItemStack(Items.NETHER_WART)),50),"Kill 20 Blazes").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.BLAZE,20))));
-        questRegisterable.register(KILL_30_BLAZE,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BLAZE_POWDER,10),new ItemStack(Items.NETHER_WART,15)),80),"Kill 30 Blazes")
+        questRegisterable.register(KILL_30_BLAZE,new Quest(new Quest.Definition(List.of(new ItemStack(Items.BLAZE_POWDER,10),new ItemStack(Items.NETHER_WART,15)),80),"Kill 30 Blazes").setRarity(Quest.QuestRarity.UNCOMMON)
                 .addQuest(ModQuestTypes.KILL_ENTITY_DATA,new KillEntityQuestData(new KillEntityQuestData.EntityRequirementEntry(EntityType.BLAZE,30))));
     }
 

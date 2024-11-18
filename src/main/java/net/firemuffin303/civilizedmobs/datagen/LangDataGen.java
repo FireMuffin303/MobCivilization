@@ -17,6 +17,8 @@ public class LangDataGen extends FabricLanguageProvider {
         translationBuilder.add(ModItems.PIGLIN_LEADER_SPAWN_EGG,"Piglin Leader Spawn Egg");
         translationBuilder.add(ModEntityType.PIGLIN_LEADER_ENTITY,"Piglin Leader");
         translationBuilder.add(ModEntityType.PIGLIN_WORKER,"Piglin Worker");
+        translationBuilder.add("filled_map.fortress","Nether Fortress Map");
+        translationBuilder.add("filled_map.bastion","Bastion Remnant Map");
         translationBuilder.add("quest.level.0","Level 1");
         translationBuilder.add("quest.level.1","Level 2");
         translationBuilder.add("quest.level.2","Level 3");
@@ -35,8 +37,11 @@ public class LangDataGen extends FabricLanguageProvider {
             translationBuilder.add("civil_mobs.item_group","Civilized Mobs");
             translationBuilder.add(ModItems.PIGLIN_WORKER_SPAWN_EGG,"ไข่เกิดพิกลินงาน");
             translationBuilder.add(ModItems.PIGLIN_LEADER_SPAWN_EGG,"ไข่เกิดหัวหน้าพิกลิน");
+
             translationBuilder.add(ModEntityType.PIGLIN_WORKER,"พิกลินงาน");
             translationBuilder.add(ModEntityType.PIGLIN_LEADER_ENTITY,"หัวหน้าพิกลิน");
+            translationBuilder.add("filled_map.fortress","Nether Fortress Map");
+            translationBuilder.add("filled_map.bastion","Bastion Remnant Map");
 
         }
     }

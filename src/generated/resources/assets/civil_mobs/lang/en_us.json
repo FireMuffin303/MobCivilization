@@ -2,6 +2,8 @@
   "civil_mobs.item_group": "Civilized Mobs",
   "entity.civil_mobs.piglin_quest_entity": "Piglin Leader",
   "entity.civil_mobs.worker_piglin": "Piglin Worker",
+  "filled_map.bastion": "Bastion Remnant Map",
+  "filled_map.fortress": "Nether Fortress Map",
   "item.civil_mobs.piglin_leader_spawn_egg": "Piglin Leader Spawn Egg",
   "item.civil_mobs.piglin_worker_spawn_egg": "Piglin Worker Spawn Egg",
   "quest.level.0": "Level 1",

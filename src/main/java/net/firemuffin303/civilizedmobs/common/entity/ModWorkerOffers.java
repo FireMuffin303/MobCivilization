@@ -346,11 +346,11 @@ public class ModWorkerOffers {
     ));
 
     public static final Map<Integer,List<TradeOffers.Factory>> PIGLIN_QUEST_OFFER = Util.make(Maps.newHashMap(), questMap ->{
-        questMap.put(1,List.of(new PiglinQuestOfferFactory(16,5)));
-        questMap.put(2,List.of(new PiglinQuestOfferFactory(16,10)));
-        questMap.put(3,List.of(new PiglinQuestOfferFactory(16,20)));
-        questMap.put(4,List.of(new PiglinQuestOfferFactory(24,30)));
-        questMap.put(5,List.of(new PiglinQuestOfferFactory(32,40)));
+        questMap.put(1,List.of(new PiglinQuestOfferFactory(5)));
+        questMap.put(2,List.of(new PiglinQuestOfferFactory(10)));
+        questMap.put(3,List.of(new PiglinQuestOfferFactory(20)));
+        questMap.put(4,List.of(new PiglinQuestOfferFactory(30)));
+        questMap.put(5,List.of(new PiglinQuestOfferFactory(40)));
     });
 
     public static class PiglinItemForGold implements TradeOffers.Factory {
@@ -642,11 +642,9 @@ public class ModWorkerOffers {
     }
 
     public static class PiglinQuestOfferFactory implements TradeOffers.Factory{
-        final int price;
         final int experience;
 
-        public PiglinQuestOfferFactory(int price,int experience){
-            this.price = price;
+        public PiglinQuestOfferFactory(int experience){
             this.experience = experience;
         }
 
@@ -655,7 +653,17 @@ public class ModWorkerOffers {
             List<RegistryEntry.Reference<Quest>> quests = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).streamEntries().filter(questReference -> questReference.isIn(ModQuests.PIGLIN_QUEST)).toList();
 
             RegistryEntry.Reference<Quest> questReference = quests.get(random.nextInt(quests.size()-1));
-            return new TradeOffer(new ItemStack(Items.GOLD_INGOT,this.price), QuestPaperItem.getQuestPaper(questReference.registryKey().getValue()),1,this.experience,0.05f);
+
+            Quest quest = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).get(questReference.registryKey().getValue());
+            int price;
+            switch (quest.questRarity){
+                case UNCOMMON -> price = 24;
+                case RARE -> price = 32;
+                default -> price = 16;
+            }
+            price = price + random.nextBetween(2,6);
+
+            return new TradeOffer(new ItemStack(Items.GOLD_INGOT,price), QuestPaperItem.getQuestPaper(questReference.registryKey().getValue(),24000),1,this.experience,0.05f);
         }
     }
 }
