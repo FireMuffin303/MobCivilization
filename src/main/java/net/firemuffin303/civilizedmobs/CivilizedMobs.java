@@ -3,14 +3,11 @@ package net.firemuffin303.civilizedmobs;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
-import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
-import net.firemuffin303.civilizedmobs.common.quest.QuestPool;
-import net.firemuffin303.civilizedmobs.common.quest.QuestPoolTypes;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.event.ModServerEntityEvents;
 import net.firemuffin303.civilizedmobs.registry.ModBrains;
@@ -22,7 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.raid.Raid;
@@ -34,10 +30,7 @@ public class CivilizedMobs implements ModInitializer {
     public static String MOD_ID = "civil_mobs";
     public static Logger LOGGER = LogUtils.getLogger();
 
-
     public static final GameRules.Key<GameRules.IntRule> QUEST_RESTOCK_TIME = GameRuleRegistry.register("civil_mobs-quest_restock_time", GameRules.Category.MOBS, GameRuleFactory.createIntRule(1800));
-    public static final RegistryKey<Registry<QuestPool>> QUEST_POOL = RegistryKey.ofRegistry(new Identifier(MOD_ID,"quest_pool"));
-    //public static final Registry<QuestPool> QUEST_POOL_REGISTRY = FabricRegistryBuilder.createSimple(QUEST_POOL).attribute(RegistryAttribute.MODDED).buildAndRegister();
 
     private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
             .displayName(Text.of(MOD_ID+".item_group"))
@@ -56,8 +49,8 @@ public class CivilizedMobs implements ModInitializer {
 
 
         TrackedDataHandlerRegistry.register(ModEntityType.WORKER_DATA);
-        FabricDefaultAttributeRegistry.register(ModEntityType.CIVIL_PIGLIN, WorkerPiglinEntity.createAttribute());
-        FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_QUEST_ENTITY, PiglinQuestEntity.createAttribute());
+        FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_WORKER, WorkerPiglinEntity.createAttribute());
+        FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntity.createAttribute());
 
         ServerEntityEvents.ENTITY_LOAD.register(ModServerEntityEvents::IllagerLoaded);
     }

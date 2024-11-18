@@ -68,8 +68,8 @@ public class PiglinQuestBrain {
                         Pair.of(StrollTask.create(0.6f),2),
                         com.mojang.datafixers.util.Pair.of(FindEntityTask.create(EntityType.PIGLIN, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
                         com.mojang.datafixers.util.Pair.of(FindEntityTask.create(EntityType.PIGLIN_BRUTE, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
-                        com.mojang.datafixers.util.Pair.of(FindEntityTask.create(ModEntityType.CIVIL_PIGLIN, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
-                        Pair.of(FindEntityTask.create(ModEntityType.PIGLIN_QUEST_ENTITY,8, MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
+                        com.mojang.datafixers.util.Pair.of(FindEntityTask.create(ModEntityType.PIGLIN_WORKER, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(FindEntityTask.create(ModEntityType.PIGLIN_LEADER_ENTITY,8, MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
                         Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.MEETING_POINT,0.6f,2,100),2),
                         Pair.of(GoToIfNearbyTask.create(MemoryModuleType.MEETING_POINT,0.6f,5),2),
                         com.mojang.datafixers.util.Pair.of(new WaitTask(30,60),1)

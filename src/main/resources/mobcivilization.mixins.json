@@ -4,14 +4,6 @@
   "package": "net.firemuffin303.civilizedmobs.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "ActiveTargetGoalAccessor",
-    "BannerItemMixin",
-    "FleeEntityGoalAccessor",
-    "IronGolemEntityMixin",
-    "MobAccessor",
-    "RavagerEntityMixin",
-    "VillagerEntityMixin",
-    "VillagerHostileSensorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,7 +1,9 @@
 {
-  "command.civil_mobs.quest.clear.success": "Removed Quest from {}",
-  "entity.civil_mobs.piglin_quest_entity": "Quest Entity",
+  "civil_mobs.item_group": "Civilized Mobs",
+  "entity.civil_mobs.piglin_quest_entity": "Piglin Leader",
   "entity.civil_mobs.worker_piglin": "Piglin Worker",
+  "item.civil_mobs.piglin_leader_spawn_egg": "Piglin Leader Spawn Egg",
+  "item.civil_mobs.piglin_worker_spawn_egg": "Piglin Worker Spawn Egg",
   "quest.level.0": "Level 1",
   "quest.level.1": "Level 2",
   "quest.level.2": "Level 3",

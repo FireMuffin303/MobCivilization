@@ -111,17 +111,17 @@ public class StructureData {
 
         registerable.register(PIGLIN_VILLAGE_HOUSES,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/armorer_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/butcher_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/cartographer_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/cleric_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/cleric_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/fletcher_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/library_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/library_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tannery_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tent_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/armorer_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/butcher_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/cartographer_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/cleric_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/cleric_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/fletcher_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/library_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/library_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tannery_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/tent_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/generic_house_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/piglin/houses/generic_house_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2)
                         ), StructurePool.Projection.RIGID));

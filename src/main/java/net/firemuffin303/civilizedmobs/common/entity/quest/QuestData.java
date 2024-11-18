@@ -1,35 +1,19 @@
 package net.firemuffin303.civilizedmobs.common.entity.quest;
 
 import com.google.common.collect.Maps;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.DynamicOps;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
-import net.firemuffin303.civilizedmobs.common.quest.QuestList;
-import net.firemuffin303.civilizedmobs.common.quest.QuestPool;
-import net.firemuffin303.civilizedmobs.common.quest.QuestPoolTypes;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Uuids;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Stream;
-
-import static net.firemuffin303.civilizedmobs.CivilizedMobs.LOGGER;
 
 public class QuestData {
     protected LivingEntity livingEntity;

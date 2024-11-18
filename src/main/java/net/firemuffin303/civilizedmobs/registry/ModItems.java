@@ -12,8 +12,8 @@ import java.util.List;
 
 public class ModItems {
     public static List<Item> ITEMS = new ArrayList<>();
-    public static Item CIVIL_PIGLIN_SPAWN_EGG = register("civil_piglin_spawn_egg",true,new SpawnEggItem(ModEntityType.CIVIL_PIGLIN,6156165,65156,new Item.Settings()));
-    public static Item QUEST_SPAWN_EGG = register("quest_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_QUEST_ENTITY,68458648,65156,new Item.Settings()));
+    public static Item PIGLIN_WORKER_SPAWN_EGG = register("piglin_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_WORKER,10051392,0xddd39f,new Item.Settings()));
+    public static Item PIGLIN_LEADER_SPAWN_EGG = register("piglin_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_LEADER_ENTITY,10051392,0xfdf79b,new Item.Settings()));
 
 
     public static Item register(String id,boolean addToGroup,Item item){

@@ -10,8 +10,8 @@ public class CivilizedMobsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        EntityRendererRegistry.register(ModEntityType.CIVIL_PIGLIN, PiglinWorkerRenderer::new);
-        EntityRendererRegistry.register(ModEntityType.PIGLIN_QUEST_ENTITY, PiglinQuestEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.PIGLIN_WORKER, PiglinWorkerRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntityRenderer::new);
 
 
         ModS2CHandler.init();

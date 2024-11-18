@@ -42,6 +42,7 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(ModelDataGen::new);
         pack.addProvider(DynamicDataGen::new);
         pack.addProvider(LangDataGen::new);
+        pack.addProvider(LangDataGen.ThaiLangDataGen::new);
 
         pack.addProvider(ModTagDataGen.ProfessionTagDataGen::new);
         pack.addProvider(ModTagDataGen.AcquirablePOIDataGen::new);

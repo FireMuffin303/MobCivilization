@@ -1,0 +1,7 @@
+{
+  "civil_mobs.item_group": "Civilized Mobs",
+  "entity.civil_mobs.piglin_quest_entity": "หัวหน้าพิกลิน",
+  "entity.civil_mobs.worker_piglin": "พิกลินงาน",
+  "item.civil_mobs.piglin_leader_spawn_egg": "ไข่เกิดหัวหน้าพิกลิน",
+  "item.civil_mobs.piglin_worker_spawn_egg": "ไข่เกิดพิกลินงาน"
+}

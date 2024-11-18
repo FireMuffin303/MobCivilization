@@ -24,14 +24,10 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.DebugInfoSender;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.TimeHelper;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.intprovider.UniformIntProvider;
 import net.minecraft.village.VillagerProfession;
-import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 
 import java.util.List;
@@ -100,8 +96,8 @@ public class CivilPiglinBrain {
                         Pair.of(StrollTask.create(0.6F), 2),
                         Pair.of(FindEntityTask.create(EntityType.PIGLIN, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
                         Pair.of(FindEntityTask.create(EntityType.PIGLIN_BRUTE, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
-                        Pair.of(FindEntityTask.create(ModEntityType.CIVIL_PIGLIN, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
-                        Pair.of(FindEntityTask.create(ModEntityType.PIGLIN_QUEST_ENTITY, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(FindEntityTask.create(ModEntityType.PIGLIN_WORKER, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(FindEntityTask.create(ModEntityType.PIGLIN_LEADER_ENTITY, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
                         Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE, 0.6F, 2, 100), 2),
                         Pair.of(GoToIfNearbyTask.create(MemoryModuleType.JOB_SITE, 0.6F, 5), 2),
                         Pair.of(new WaitTask(30, 60), 1))),

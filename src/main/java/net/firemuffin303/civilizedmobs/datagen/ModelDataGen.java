@@ -21,8 +21,8 @@ public class ModelDataGen extends FabricModelProvider {
 
     @Override
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
-        itemModelGenerator.register(ModItems.CIVIL_PIGLIN_SPAWN_EGG,SPAWN_EGG);
-        itemModelGenerator.register(ModItems.QUEST_SPAWN_EGG,SPAWN_EGG);
+        itemModelGenerator.register(ModItems.PIGLIN_WORKER_SPAWN_EGG,SPAWN_EGG);
+        itemModelGenerator.register(ModItems.PIGLIN_LEADER_SPAWN_EGG,SPAWN_EGG);
     }
 
     private static Model createMincraftItem(String string, TextureKey... textureSlots) {
