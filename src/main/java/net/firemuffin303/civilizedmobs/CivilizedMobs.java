@@ -3,6 +3,7 @@ package net.firemuffin303.civilizedmobs;
 import com.mojang.logging.LogUtils;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
@@ -10,6 +11,8 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.event.ModServerEntityEvents;
+import net.firemuffin303.civilizedmobs.datagen.structure.PillagerStructureData;
+import net.firemuffin303.civilizedmobs.mixin.structures.StructureSetAccessor;
 import net.firemuffin303.civilizedmobs.registry.ModBrains;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModItems;
@@ -17,13 +20,23 @@ import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
+import net.minecraft.registry.*;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.structure.StructureSet;
+import net.minecraft.structure.StructureSetKeys;
+import net.minecraft.structure.StructureSets;
+import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.raid.Raid;
 import net.minecraft.world.GameRules;
+import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.structure.Structure;
 import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CivilizedMobs implements ModInitializer {
 
@@ -53,8 +66,24 @@ public class CivilizedMobs implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntity.createAttribute());
 
         ServerEntityEvents.ENTITY_LOAD.register(ModServerEntityEvents::IllagerLoaded);
+        ServerLifecycleEvents.SERVER_STARTING.register(CivilizedMobs::onServerStarting);
     }
 
+    private static void onServerStarting(MinecraftServer minecraftServer) {
+        RegistryWrapper<StructureSet> structureSetWrapper = minecraftServer.getRegistryManager().getWrapperOrThrow(RegistryKeys.STRUCTURE_SET);
+        RegistryWrapper<Structure> structureWrapper = minecraftServer.getRegistryManager().getWrapperOrThrow(RegistryKeys.STRUCTURE);
+
+        RegistryEntry<StructureSet> pillagerOutpost = structureSetWrapper.getOrThrow(StructureSetKeys.PILLAGER_OUTPOSTS);
+
+        if (pillagerOutpost != null) {
+            RegistryEntry<Structure> pillageVillage = structureWrapper.getOrThrow(PillagerStructureData.PILLAGE_VILLAGE);
+            StructureSet structureSet = pillagerOutpost.value();
+            List<StructureSet.WeightedEntry> weightedEntries = new ArrayList<>(structureSet.structures());
+            weightedEntries.add(StructureSet.createEntry(pillageVillage));
+            ((StructureSetAccessor)(Object) structureSet).setStructures(weightedEntries);
+            LOGGER.info(structureSet.structures().toString());
+        }
+    }
 
 
     public static boolean isHoldingOminousBanner(ItemStack itemStack){

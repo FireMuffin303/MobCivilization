@@ -42,9 +42,23 @@ repositories {
 
     }
 
+    maven{
+        name ="Jitpack"
+        url="https://jitpack.io"
+    }
+
     maven {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
+    }
+
+    maven {
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
+    }
+    maven {
+        name = "Ladysnake Libs"
+        url = 'https://maven.ladysnake.org/releases'
     }
 
 }
@@ -61,6 +75,8 @@ dependencies {
     modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
     modImplementation("net.firemuffin303:muffins_questlib:${quest_lib}")
     modRuntimeOnly("net.firemuffin303:muffinsdebugtools:${debugtools}")
+    //modRuntimeOnly("maven.modrinth:axiom:${project.axiom_version}")
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
     implementation("com.eliotlash.mclib:mclib:20")
 }
 

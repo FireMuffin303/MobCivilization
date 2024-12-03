@@ -1,11 +1,17 @@
 package net.firemuffin303.civilizedmobs.datagen;
 
+import dev.emi.trinkets.TrinketsMain;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.registry.tag.ItemTags;
+import net.minecraft.registry.tag.TagKey;
+import net.minecraft.util.Identifier;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeKeys;
@@ -13,10 +19,25 @@ import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureKeys;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class ModTagDataGen {
+    public static class ModItemTagDataProvider extends FabricTagProvider.ItemTagProvider {
+        public static final TagKey<Item> TRINKET_HAT = TagKey.of(RegistryKeys.ITEM,new Identifier(TrinketsMain.MOD_ID,"head/hat"));
+
+        public ModItemTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
+            super(output, completableFuture, null);
+        }
+
+        @Override
+        protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
+            this.getOrCreateTagBuilder(TRINKET_HAT).forceAddTag(ItemTags.BANNERS);
+        }
+    }
+
+
     public static class StructureTagDataProvider extends FabricTagProvider<Structure>{
 
         public StructureTagDataProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {

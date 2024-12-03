@@ -1,10 +1,11 @@
-package net.firemuffin303.civilizedmobs.datagen;
+package net.firemuffin303.civilizedmobs.datagen.structure;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricDynamicRegistryProvider;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.datagen.ModDataGen;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;

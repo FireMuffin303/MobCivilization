@@ -14,10 +14,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.AbstractPiglinEntity;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.PiglinActivity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -107,7 +104,7 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         if(this.isAlive()){
-            if(!this.getWorld().isClient && this.getCustomer() == null){
+            if(!this.getWorld().isClient && this.getCustomer() == null && PiglinBrain.wearsGoldArmor(player)){
                 this.prepareOffersFor(player);
                 this.setCustomer(player);
                 this.sendOffers(player,this.getDisplayName(),this.questData.getTrust(this.getCustomer().getUuid()).getLevel());

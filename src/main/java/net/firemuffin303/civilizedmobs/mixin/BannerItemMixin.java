@@ -8,11 +8,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(BannerItem.class)
-public class BannerItemMixin extends Item implements Equipment {
-
-    public BannerItemMixin(Settings settings) {
-        super(settings);
-    }
+public class BannerItemMixin implements Equipment {
 
     @Override
     public EquipmentSlot getSlotType() {
