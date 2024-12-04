@@ -29,6 +29,15 @@
     },
     {
       "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "civil_mobs:village/pillager_outpost/decor/cage01",
+        "processors": "minecraft:empty",
+        "projection": "rigid"
+      },
+      "weight": 2
+    },
+    {
+      "element": {
         "element_type": "minecraft:feature_pool_element",
         "feature": "minecraft:pile_hay",
         "projection": "rigid"

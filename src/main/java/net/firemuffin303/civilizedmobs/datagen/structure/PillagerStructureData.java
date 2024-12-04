@@ -33,6 +33,7 @@ public class PillagerStructureData {
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_INDOOR_DECOR = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/indoor_decor"));
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_DECOR = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/decor"));
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_STREETS = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/streets"));
+    public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_TERMINATORS = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/terminators"));
 
     public static void structureBootstrap(Registerable<Structure> registerable){
         registerable.register(PILLAGE_VILLAGE,new JigsawStructure(
@@ -67,8 +68,13 @@ public class PillagerStructureData {
         registerable.register(PILLAGE_VILLAGE_HOUSES,new StructurePool(
                 structurePoolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/armorer_02",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/butcher_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/cleric_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_20_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/flecther",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/armorer",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/shepherd_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/tool_smith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/general_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
                 ),StructurePool.Projection.RIGID));
 
@@ -85,11 +91,12 @@ public class PillagerStructureData {
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/decor/lamp_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/decor/wall_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/decor/tall_wall_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),3),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/decor/cage01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),2),
                         Pair.of(StructurePoolElement.ofFeature(placedFeatureLookup.getOrThrow(VillagePlacedFeatures.PILE_HAY)),2),
                         Pair.of(StructurePoolElement.ofFeature(placedFeatureLookup.getOrThrow(VillagePlacedFeatures.PILE_PUMPKIN)),2)
                 ), StructurePool.Projection.RIGID));
 
-        registerable.register(PILLAGE_VILLAGE_STREETS,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
+        registerable.register(PILLAGE_VILLAGE_STREETS,new StructurePool(structurePoolLookup.getOrThrow(PILLAGE_VILLAGE_TERMINATORS),
                 ImmutableList.of(
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/corner_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/corner_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
@@ -102,6 +109,12 @@ public class PillagerStructureData {
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/town_centers/central_tower_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/town_centers/central_tower_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
                 ),StructurePool.Projection.TERRAIN_MATCHING));
+
+        registerable.register(PILLAGE_VILLAGE_TERMINATORS,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
+                ImmutableList.of(
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/terminators/terminator_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/terminators/terminator_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
+                ), StructurePool.Projection.TERRAIN_MATCHING));
     }
 
     public static void dataGen(RegistryWrapper.WrapperLookup wrapperLookup, FabricDynamicRegistryProvider.Entries entries){
@@ -113,6 +126,7 @@ public class PillagerStructureData {
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_DECOR);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_HOUSES);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_INDOOR_DECOR);
+        entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_TERMINATORS);
     }
 
 }

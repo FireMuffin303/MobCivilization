@@ -37,5 +37,5 @@
       "weight": 1
     }
   ],
-  "fallback": "minecraft:empty"
+  "fallback": "civil_mobs:village/pillager_outpost/terminators"
 }
