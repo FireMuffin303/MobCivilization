@@ -1,10 +1,9 @@
 package net.firemuffin303.civilizedmobs.registry;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.brain.PiglinDetectGoldArmorPlayer;
-import net.firemuffin303.civilizedmobs.common.entity.brain.PiglinNemesisSensor;
-import net.firemuffin303.civilizedmobs.common.entity.brain.PiglinRepellentSensor;
-import net.firemuffin303.civilizedmobs.common.entity.brain.PiglinZombifiedSensor;
+import net.firemuffin303.civilizedmobs.common.entity.brain.*;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -15,6 +14,9 @@ public class ModBrains {
     public static final SensorType<PiglinNemesisSensor> PIGLIN_NEMESIS = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"piglin_nemesis"),new SensorType<>(PiglinNemesisSensor::new));
     public static final SensorType<PiglinDetectGoldArmorPlayer> PIGLIN_DETECT_GOLD_ARMOR_PLAYER = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"piglin_detect_gold_armor_player"),new SensorType<>(PiglinDetectGoldArmorPlayer::new));
     public static final SensorType<PiglinZombifiedSensor> PIGLIN_ZOMBIFIED = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"piglin_zombified"),new SensorType<>(PiglinZombifiedSensor::new));
+
+    public static final SensorType<IllagerHostileSensor> ILLAGER_HOSTILE = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"illager_hostile"),new SensorType<>(IllagerHostileSensor::new));
+
 
     public static void init(){}
 }

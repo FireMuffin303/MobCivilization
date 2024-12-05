@@ -1,9 +1,11 @@
 package net.firemuffin303.civilizedmobs.registry;
 
+import net.fabricmc.fabric.impl.object.builder.FabricEntityType;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -39,6 +41,12 @@ public class ModEntityType {
                     .maxTrackingRange(8)
                     .build("quest_entity")
             );
+
+    public static EntityType<PillagerWorkerEntity> PILLAGER_WORKER = register("pillager_worker",
+            EntityType.Builder.create(PillagerWorkerEntity::new,SpawnGroup.MISC)
+                    .setDimensions(0.6f,1.95f)
+                    .maxTrackingRange(8).build("pillager_worker")
+    );
 
     public static <T extends Entity> EntityType<T> register(String id, EntityType<T> entityType){
         return Registry.register(Registries.ENTITY_TYPE, Identifier.of(CivilizedMobs.MOD_ID,id),entityType);

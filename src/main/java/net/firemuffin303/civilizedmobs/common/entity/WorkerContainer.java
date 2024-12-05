@@ -2,6 +2,7 @@ package net.firemuffin303.civilizedmobs.common.entity;
 
 import com.google.common.collect.Sets;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
@@ -49,4 +50,6 @@ public interface WorkerContainer {
         }
 
     }
+
+    void reinitializeBrain(ServerWorld world);
 }

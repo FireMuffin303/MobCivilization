@@ -37,9 +37,7 @@ public class WorkerGoToWorkTask {
                                 }).findFirst();
                             }).ifPresent((profession) -> {
                                 workerContainer.setWorkerData(workerContainer.getWorkerData().withProfession(profession));
-                                if(entity instanceof WorkerPiglinEntity workerPiglinEntity){
-                                    workerPiglinEntity.reinitializeBrain(world);
-                                }
+                                workerContainer.reinitializeBrain(world);
                             });
                             return true;
                         }

@@ -15,7 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Optional;
 import java.util.Set;
 
-public class PiglinRepellentSensor extends Sensor<LivingEntity> {
+public class  PiglinRepellentSensor extends Sensor<LivingEntity> {
     public PiglinRepellentSensor(){}
 
     @Override

@@ -1,6 +1,7 @@
 package net.firemuffin303.civilizedmobs;
 
 import com.mojang.logging.LogUtils;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -8,8 +9,10 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleFactory;
 import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.loader.api.FabricLoader;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
 import net.firemuffin303.civilizedmobs.common.event.ModServerEntityEvents;
 import net.firemuffin303.civilizedmobs.datagen.structure.PillagerStructureData;
 import net.firemuffin303.civilizedmobs.mixin.structures.StructureSetAccessor;
@@ -43,6 +46,8 @@ public class CivilizedMobs implements ModInitializer {
     public static String MOD_ID = "civil_mobs";
     public static Logger LOGGER = LogUtils.getLogger();
 
+    public static boolean isTrinketsInstall = false;
+
     public static final GameRules.Key<GameRules.IntRule> QUEST_RESTOCK_TIME = GameRuleRegistry.register("civil_mobs-quest_restock_time", GameRules.Category.MOBS, GameRuleFactory.createIntRule(1800));
 
     private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
@@ -60,13 +65,18 @@ public class CivilizedMobs implements ModInitializer {
         ModEntityType.init();
         ModItems.init();
 
-
         TrackedDataHandlerRegistry.register(ModEntityType.WORKER_DATA);
         FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_WORKER, WorkerPiglinEntity.createAttribute());
         FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntity.createAttribute());
+        FabricDefaultAttributeRegistry.register(ModEntityType.PILLAGER_WORKER, PillagerWorkerEntity.createPillagerAttributes());
 
         ServerEntityEvents.ENTITY_LOAD.register(ModServerEntityEvents::IllagerLoaded);
         ServerLifecycleEvents.SERVER_STARTING.register(CivilizedMobs::onServerStarting);
+
+        if(FabricLoader.getInstance().isModLoaded("trinkets")){
+            isTrinketsInstall = true;
+
+        }
     }
 
     private static void onServerStarting(MinecraftServer minecraftServer) {

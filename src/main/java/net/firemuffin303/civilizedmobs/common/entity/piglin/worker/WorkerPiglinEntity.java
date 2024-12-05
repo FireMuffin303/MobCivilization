@@ -378,11 +378,9 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     }
 
     private void clearSpecialPrices() {
-
         for (TradeOffer tradeOffer : this.getOffers()) {
             tradeOffer.clearSpecialPrice();
         }
-
     }
 
     @Override

@@ -353,6 +353,12 @@ public class ModWorkerOffers {
         questMap.put(5,List.of(new PiglinQuestOfferFactory(40)));
     });
 
+    public static final Map<VillagerProfession,Map<Integer,List<TradeOffers.Factory>>> PILLAGER_TRADES = Util.make(Maps.newHashMap(),villagerProfessionMapHashMap -> {
+       villagerProfessionMapHashMap.put(VillagerProfession.ARMORER,Util.make(Maps.newHashMap(),integerListHashMap -> {
+           integerListHashMap.put(1,List.of());
+       })) ;
+    });
+
     public static class PiglinItemForGold implements TradeOffers.Factory {
         private final Item buy;
         private final int amount;
