@@ -21,6 +21,7 @@ public class ModTags {
     public static final TagKey<EntityType<?>> PIGLIN_SCARED_ZOMBIFIED = register(RegistryKeys.ENTITY_TYPE,"piglin_scared_zombified");
 
     public static TagKey<PointOfInterestType> PIGLIN_ACQUIRABLE_JOB_SITE = register(RegistryKeys.POINT_OF_INTEREST_TYPE,"piglin_acquirable_job_site");
+    public static TagKey<PointOfInterestType> ILLAGER_ACQUIRABLE_JOB_SITE = register(RegistryKeys.POINT_OF_INTEREST_TYPE,"illager_acquirable_job_site");
 
     public static TagKey<Structure> ON_NETHER_FORTRESS_EXPLORER_MAP = register(RegistryKeys.STRUCTURE,"on_fortress_explorer_map");
     public static TagKey<Structure> ON_BASTION_EXPLORER_MAP = register(RegistryKeys.STRUCTURE,"on_bastion_explorer_map");

@@ -1,12 +1,15 @@
 package net.firemuffin303.civilizedmobs.common.entity.pillager;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
+import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.ModPanicTask;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.entity.*;
@@ -102,6 +105,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         return HostileEntity.createHostileAttributes().add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3499999940395355).add(EntityAttributes.GENERIC_MAX_HEALTH, 24.0).add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5.0).add(EntityAttributes.GENERIC_FOLLOW_RANGE, 32.0);
     }
 
+    //InitGoals is here because we need to replace Goal AI with Brain Instead.
     @Override
     protected void initGoals() {
     }
@@ -111,7 +115,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         if(this.isAlive()){
             boolean bl = this.getOffers().isEmpty();
             // If TraderOffer is Empty, Player cannot trade.
-            if(bl || player.isCreative() ? false : !CivilizedMobs.isHoldingOminousBanner(player.getEquippedStack(EquipmentSlot.HEAD))){
+            if(bl || player.isCreative() ? false : !IllagerHostileSensor.isHoldingOminousBanner(player)){
                 if(!this.getWorld().isClient){
                     this.playSound(SoundEvents.ENTITY_PIGLIN_ANGRY,this.getSoundVolume(),this.getSoundPitch());
                 }
@@ -173,6 +177,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         ServerWorld serverWorld = (ServerWorld) this.getWorld();
         serverWorld.getProfiler().push("workerBrain");
         this.getBrain().tick(serverWorld, this);
+
         this.getWorld().getProfiler().pop();
         // Level up when no Customer and timer is up.
         if (this.customer == null  && this.levelUpTimer > 0) {
@@ -193,7 +198,8 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
             this.lastCustomer = null;
         }
 
-        PillagerWorkerBrain.tickActivities(this);
+        //We don't need tickActivities for Schedule AI
+        //PillagerWorkerBrain.tickActivities(this);
         super.mobTick();
     }
 
@@ -266,6 +272,18 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
             this.reinitializeBrain((ServerWorld)this.getWorld());
         }
     }
+
+    //Disable Despawn
+    @Override
+    public boolean canImmediatelyDespawn(double distanceSquared) {
+        return false;
+    }
+
+    @Override
+    public boolean cannotDespawn() {
+        return true;
+    }
+
     //--- Brain ---
     @Override
     protected Brain.Profile<PillagerWorkerEntity> createBrainProfile() {
@@ -286,6 +304,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     public void onDeath(DamageSource damageSource) {
         this.releaseTicketFor(this,MemoryModuleType.JOB_SITE);
         this.releaseTicketFor(this,MemoryModuleType.POTENTIAL_JOB_SITE);
+        this.releaseTicketFor(this,MemoryModuleType.HOME);
 
         this.setCustomer(null);
         for (TradeOffer tradeOffer : this.getOffers()) {
@@ -375,6 +394,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
             isLongerThanTenMin |= p > o;
         }
 
+        this.dailyRestockTime = worldTime;
         if(isLongerThanTenMin){
             this.lastRestockTime = worldTime;
             this.restockToday = 0;

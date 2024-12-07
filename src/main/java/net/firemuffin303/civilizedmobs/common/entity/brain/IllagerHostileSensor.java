@@ -3,6 +3,7 @@ package net.firemuffin303.civilizedmobs.common.entity.brain;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
+import com.mojang.logging.LogUtils;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.minecraft.entity.EntityType;
@@ -22,12 +23,12 @@ public class IllagerHostileSensor extends NearestVisibleLivingEntitySensor {
 
     @Override
     protected boolean matches(LivingEntity entity, LivingEntity target) {
-        return isHostile(target) && entity.squaredDistanceTo(target) <= 12.0f;
+        return isHostile(target) && entity.squaredDistanceTo(target) <= (12.0f * 12.0f);
     }
 
     public static boolean isHostile(LivingEntity livingEntity){
         if(livingEntity instanceof PlayerEntity player){
-            return !IllagerHostileSensor.isHoldingOminousBanner(player);
+            return !IllagerHostileSensor.isHoldingOminousBanner(player) && !player.getAbilities().creativeMode;
         }
         return livingEntity instanceof IronGolemEntity;
     }
@@ -37,9 +38,11 @@ public class IllagerHostileSensor extends NearestVisibleLivingEntitySensor {
         boolean isWearingOminousBanner = !itemStack.isEmpty() && itemStack.getNbt() != null && itemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
         if(CivilizedMobs.isTrinketsInstall){
             if(TrinketsApi.getTrinketComponent(player).isPresent()){
-                isWearingOminousBanner |= !TrinketsApi.getTrinketComponent(player).get().getEquipped(itemStack1 -> {
-                   return  itemStack.getNbt() != null && itemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
-                }).isEmpty();
+                if(TrinketsApi.getTrinketComponent(player).get().isEquipped(trinketItemStack -> {
+                    return !trinketItemStack.isEmpty() && trinketItemStack.getNbt() != null && trinketItemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
+                })){
+                    isWearingOminousBanner = true;
+                }
             }
         }
 

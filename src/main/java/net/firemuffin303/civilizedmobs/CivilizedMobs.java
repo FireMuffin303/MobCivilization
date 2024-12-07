@@ -91,12 +91,6 @@ public class CivilizedMobs implements ModInitializer {
             List<StructureSet.WeightedEntry> weightedEntries = new ArrayList<>(structureSet.structures());
             weightedEntries.add(StructureSet.createEntry(pillageVillage));
             ((StructureSetAccessor)(Object) structureSet).setStructures(weightedEntries);
-            LOGGER.info(structureSet.structures().toString());
         }
-    }
-
-
-    public static boolean isHoldingOminousBanner(ItemStack itemStack){
-        return !itemStack.isEmpty() && itemStack.hasNbt() && itemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
     }
 }

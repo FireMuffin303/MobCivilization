@@ -1,5 +1,6 @@
-package net.firemuffin303.civilizedmobs.mixin;
+package net.firemuffin303.civilizedmobs.mixin.ominousBannerInteraction;
 
+import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
@@ -23,9 +24,7 @@ public class IronGolemEntityMixin extends GolemEntity {
     @Inject(method = "initGoals",at = @At("TAIL"))
     public void civil$initGoals(CallbackInfo ci){
         this.targetSelector.add(3,new ActiveTargetGoal<>(this,PlayerEntity.class,10,true,false, livingEntity -> {
-            ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.HEAD);
-            return itemStack != null && itemStack.getNbt() != null && itemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
-
+            return IllagerHostileSensor.isHoldingOminousBanner((PlayerEntity) livingEntity);
         }));
     }
 

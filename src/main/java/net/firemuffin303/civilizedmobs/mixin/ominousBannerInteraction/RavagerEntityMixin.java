@@ -1,6 +1,6 @@
-package net.firemuffin303.civilizedmobs.mixin;
+package net.firemuffin303.civilizedmobs.mixin.ominousBannerInteraction;
 
-import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.RavagerEntity;
@@ -22,7 +22,7 @@ public abstract class RavagerEntityMixin extends RaiderEntity {
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack itemStack = player.getEquippedStack(EquipmentSlot.HEAD);
 
-        if(CivilizedMobs.isHoldingOminousBanner(itemStack) && !this.hasPassengers() && this.getTarget() != player){
+        if(IllagerHostileSensor.isHoldingOminousBanner(player) && !this.hasPassengers() && this.getTarget() != player){
             if(!this.getWorld().isClient){
                 player.startRiding(this);
             }

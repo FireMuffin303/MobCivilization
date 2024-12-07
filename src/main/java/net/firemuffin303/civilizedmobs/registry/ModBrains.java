@@ -3,7 +3,10 @@ package net.firemuffin303.civilizedmobs.registry;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.brain.*;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.brain.Activity;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
+import net.minecraft.entity.ai.brain.Schedule;
+import net.minecraft.entity.ai.brain.ScheduleBuilder;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -17,6 +20,8 @@ public class ModBrains {
 
     public static final SensorType<IllagerHostileSensor> ILLAGER_HOSTILE = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"illager_hostile"),new SensorType<>(IllagerHostileSensor::new));
 
+    public static final Schedule PILLAGER_WORKER_DEFAULT = Registry.register(Registries.SCHEDULE,new Identifier(CivilizedMobs.MOD_ID,"pillager_worker_default"),new ScheduleBuilder(new Schedule())
+            .withActivity(10, Activity.IDLE).withActivity(2000,Activity.WORK).withActivity(12000,Activity.REST).build());
 
     public static void init(){}
 }

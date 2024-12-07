@@ -1,5 +1,6 @@
 package net.firemuffin303.civilizedmobs.common.event;
 
+import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
 import net.firemuffin303.civilizedmobs.mixin.ActiveTargetGoalAccessor;
 import net.firemuffin303.civilizedmobs.mixin.FleeEntityGoalAccessor;
 import net.firemuffin303.civilizedmobs.mixin.MobAccessor;
@@ -32,11 +33,8 @@ public class ModServerEntityEvents {
             });
 
             goalSelector.add(priority.get(),new FleeEntityGoal<>(evokerEntity,PlayerEntity.class,8.0f,0.6,1.0,livingEntity -> {
-                ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.HEAD);
-                if(itemStack != null && itemStack.getNbt() != null){
-                    return !itemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
-                }
-                return true;
+                PlayerEntity player = (PlayerEntity) livingEntity;
+                return !IllagerHostileSensor.isHoldingOminousBanner(player);
             }));
         }
 
@@ -64,11 +62,8 @@ public class ModServerEntityEvents {
 
         if(priority.get() != 0){
             goalSelector.add(priority.get(),new ActiveTargetGoal<>(pathAwareEntity, PlayerEntity.class,true,livingEntity -> {
-                ItemStack itemStack = livingEntity.getEquippedStack(EquipmentSlot.HEAD);
-                if(itemStack != null && itemStack.getNbt() != null){
-                    return !itemStack.getNbt().equals(Raid.getOminousBanner().getNbt());
-                }
-                return true;
+                PlayerEntity player = (PlayerEntity) livingEntity;
+                return !IllagerHostileSensor.isHoldingOminousBanner(player);
             }).setMaxTimeWithoutVisibility(300));
         }
     }
