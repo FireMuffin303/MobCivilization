@@ -5,10 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ActiveTargetGoalAccessor",
-    "ominousBannerInteraction.BannerItemMixin",
     "FleeEntityGoalAccessor",
-    "ominousBannerInteraction.IronGolemEntityMixin",
     "MobAccessor",
+    "bedInteraction.BedBlockMixin",
+    "ominousBannerInteraction.BannerItemMixin",
+    "ominousBannerInteraction.IronGolemEntityMixin",
     "ominousBannerInteraction.VillagerEntityMixin",
     "ominousBannerInteraction.VillagerHostileSensorMixin",
     "structures.StructureSetAccessor"

@@ -20,6 +20,8 @@ public class ModBrains {
 
     public static final SensorType<IllagerHostileSensor> ILLAGER_HOSTILE = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"illager_hostile"),new SensorType<>(IllagerHostileSensor::new));
 
+    public static final SensorType<WitherSkeletonPlayerFriendlySensor> WITHER_SKELETON_PLAYER_FRIENDLY = Registry.register(Registries.SENSOR_TYPE,new Identifier(CivilizedMobs.MOD_ID,"wither_skeleton_player_friendly"),new SensorType<>(WitherSkeletonPlayerFriendlySensor::new));
+
     public static final Schedule PILLAGER_WORKER_DEFAULT = Registry.register(Registries.SCHEDULE,new Identifier(CivilizedMobs.MOD_ID,"pillager_worker_default"),new ScheduleBuilder(new Schedule())
             .withActivity(10, Activity.IDLE).withActivity(2000,Activity.WORK).withActivity(12000,Activity.REST).build());
 

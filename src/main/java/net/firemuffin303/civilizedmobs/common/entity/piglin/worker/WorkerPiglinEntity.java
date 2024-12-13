@@ -108,7 +108,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
             }else{
                 // If TraderOffer is present, prepare Offers, set Customer and Show Trade UI.
                 if(!this.getWorld().isClient && this.getCustomer() == null  && this.offers != null && !this.offers.isEmpty()){
-                    this.prepareOffersFor(player);
+                    this.prepareOffersFor(player,StatusEffects.HERO_OF_THE_VILLAGE);
                     this.setCustomer(player);
                     this.sendOffers(player,this.getDisplayName(),this.getWorkerData().getLevel());
                 }
@@ -503,6 +503,11 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         });
     }
 
+    @Override
+    public TradeOfferList getMerchantOffers() {
+        return this.getOffers();
+    }
+
     private void decayGossip() {
         long l = this.getWorld().getTime();
         if (this.lastGossipDecayTime == 0L) {
@@ -513,26 +518,6 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         }
     }
 
-    private void prepareOffersFor(PlayerEntity player) {
-        int i = this.getReputation(player);
-        if (i != 0) {
-            for (TradeOffer tradeOffer : this.getOffers()) {
-                tradeOffer.increaseSpecialPrice(-MathHelper.floor((float) i * tradeOffer.getPriceMultiplier()));
-            }
-        }
-
-        if (player.hasStatusEffect(StatusEffects.HERO_OF_THE_VILLAGE)) {
-            StatusEffectInstance statusEffectInstance = player.getStatusEffect(StatusEffects.HERO_OF_THE_VILLAGE);
-            int j = statusEffectInstance.getAmplifier();
-
-            for (TradeOffer tradeOffer2 : this.getOffers()) {
-                double d = 0.3 + 0.0625 * (double) j;
-                int k = (int) Math.floor(d * (double) tradeOffer2.getOriginalFirstBuyItem().getCount());
-                tradeOffer2.increaseSpecialPrice(-Math.max(k, 1));
-            }
-        }
-
-    }
     // ------ Interaction Observer ------
 
     @Override

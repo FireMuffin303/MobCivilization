@@ -1,6 +1,6 @@
-// 1.20.1	2024-12-06T21:35:44.828412	Civilized Mobs/civil_mobs
-e9bc29b3970fa954ff6c43b2dbc7eaae91d8e312 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\indoor_decor.json
+// 1.20.1	2024-12-13T20:45:21.823881	Civilized Mobs/civil_mobs
 4e999b4eb4eef3f8ec2a88ef4f944704b4e31a8c data\civil_mobs\worldgen\template_pool\village\piglin\terminators.json
+e9bc29b3970fa954ff6c43b2dbc7eaae91d8e312 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\indoor_decor.json
 97892c8e8f6c004f9f672595960fa717c5e798b5 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\bell_towers.json
 0514cd42a51a308b8e9d316410545d95321e0dff data\civil_mobs\worldgen\template_pool\village\piglin\streets.json
 fa9690c108b60b5ce474394c62226d626c274d12 data\civil_mobs\worldgen\template_pool\village\piglin\entity\unemployed.json
@@ -9,9 +9,9 @@ fa9690c108b60b5ce474394c62226d626c274d12 data\civil_mobs\worldgen\template_pool\
 573c268a7d5e97717f67039f05adad9062153787 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\streets.json
 96c90a6fbb527d66d3ea82618dc780fe75bb790e data\civil_mobs\worldgen\configured_feature\pile_nether_wart_block.json
 9c6503ca779cbd4dd63618b49a672077b7a65347 data\civil_mobs\worldgen\structure\pillage_village.json
+a3ec1c5d2a513bdf624b186f9f13b24f13cbee2f data\civil_mobs\worldgen\template_pool\village\pillager_outpost\terminators.json
 85b8a44c43dfba3f0eb18f79430e6744fe017714 data\civil_mobs\worldgen\template_pool\village\piglin\entity\animals.json
 cb2c8f63361bed408a68fe0ffa17c693ea4b23d5 data\civil_mobs\worldgen\template_pool\village\piglin\decor.json
-a3ec1c5d2a513bdf624b186f9f13b24f13cbee2f data\civil_mobs\worldgen\template_pool\village\pillager_outpost\terminators.json
 3589be9dc795003b48ea87de7d03e1bb85c8f913 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\base_plate.json
 a13c549df0724e7aff6d2cd54f95aff73e0e9881 data\civil_mobs\worldgen\placed_feature\pile_warped_wart_block.json
 4211a8c1256720bb8ad4bc6561f0983c36880571 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\decor.json

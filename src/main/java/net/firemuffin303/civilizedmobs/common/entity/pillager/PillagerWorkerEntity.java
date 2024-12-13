@@ -97,6 +97,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         super(entityType, world);
         this.gossip = new VillagerGossips();
         ((MobNavigation)this.getNavigation()).setCanPathThroughDoors(true);
+        this.getNavigation().setCanSwim(true);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }
@@ -123,7 +124,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
             }else{
                 // If TraderOffer is present, prepare Offers, set Customer and Show Trade UI.
                 if(!this.getWorld().isClient && this.getCustomer() == null  && this.offers != null && !this.offers.isEmpty()){
-                    this.prepareOffersFor(player);
+                    this.prepareOffersFor(player,StatusEffects.BAD_OMEN);
                     this.setCustomer(player);
                     this.sendOffers(player,this.getDisplayName(),this.getWorkerData().getLevel());
                 }
@@ -134,25 +135,11 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         return super.interactMob(player,hand);
     }
 
-    private void prepareOffersFor(PlayerEntity player) {
-        int i = this.getReputation(player);
-        if (i != 0) {
-            for (TradeOffer tradeOffer : this.getOffers()) {
-                tradeOffer.increaseSpecialPrice(-MathHelper.floor((float) i * tradeOffer.getPriceMultiplier()));
-            }
-        }
 
-        if (player.hasStatusEffect(StatusEffects.BAD_OMEN)) {
-            StatusEffectInstance statusEffectInstance = player.getStatusEffect(StatusEffects.BAD_OMEN);
-            int j = statusEffectInstance.getAmplifier();
-
-            for (TradeOffer tradeOffer2 : this.getOffers()) {
-                double d = 0.3 + 0.0625 * (double) j;
-                int k = (int) Math.floor(d * (double) tradeOffer2.getOriginalFirstBuyItem().getCount());
-                tradeOffer2.increaseSpecialPrice(-Math.max(k, 1));
-            }
-        }
-
+    @Override
+    public void wakeUp() {
+        super.wakeUp();
+        this.brain.remember(MemoryModuleType.LAST_WOKEN,this.getWorld().getTime());
     }
 
     @Override
@@ -163,6 +150,11 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
 
     public int getReputation(PlayerEntity player) {
         return this.gossip.getReputationFor(player.getUuid(), (gossipType) -> true);
+    }
+
+    @Override
+    public TradeOfferList getMerchantOffers() {
+        return this.getOffers();
     }
 
     @Override

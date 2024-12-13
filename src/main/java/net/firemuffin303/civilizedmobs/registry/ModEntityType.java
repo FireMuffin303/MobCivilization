@@ -6,6 +6,8 @@ import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.worker.WitherSkeletonWorkerEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -46,6 +48,14 @@ public class ModEntityType {
             EntityType.Builder.create(PillagerWorkerEntity::new,SpawnGroup.MISC)
                     .setDimensions(0.6f,1.95f)
                     .maxTrackingRange(8).build("pillager_worker")
+    );
+
+    public static EntityType<WitherSkeletonWorkerEntity> WITHER_SKELETON_WORKER = register("wither_skeleton_worker",
+            EntityType.Builder.create(WitherSkeletonWorkerEntity::new,SpawnGroup.MISC)
+                    .makeFireImmune()
+                    .allowSpawningInside(Blocks.WITHER_ROSE)
+                    .setDimensions(0.7F, 2.4F)
+                    .maxTrackingRange(8).build("wither_skeleton_worker")
     );
 
     public static <T extends Entity> EntityType<T> register(String id, EntityType<T> entityType){

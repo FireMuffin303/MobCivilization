@@ -1,12 +1,16 @@
 package net.firemuffin303.civilizedmobs.client;
 
+import com.eliotlash.mclib.math.functions.classic.Mod;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.client.renderer.PiglinQuestEntityRenderer;
 import net.firemuffin303.civilizedmobs.client.renderer.PiglinWorkerRenderer;
 import net.firemuffin303.civilizedmobs.client.renderer.PillagerWorkerRenderer;
+import net.firemuffin303.civilizedmobs.client.renderer.WitherSkeletonWorkerRenderer;
+import net.firemuffin303.civilizedmobs.client.renderer.model.WitherSkeletonWorkerEntityModel;
 import net.firemuffin303.civilizedmobs.client.renderer.trinkets.TrinketItemHeadRenderer;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.item.Items;
@@ -15,9 +19,13 @@ public class CivilizedMobsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        EntityModelLayerRegistry.registerModelLayer(WitherSkeletonWorkerEntityModel.WITHER_SKELETON_WORKER,WitherSkeletonWorkerEntityModel::getTexturedModelData);
+
         EntityRendererRegistry.register(ModEntityType.PIGLIN_WORKER, PiglinWorkerRenderer::new);
         EntityRendererRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntityRenderer::new);
         EntityRendererRegistry.register(ModEntityType.PILLAGER_WORKER, PillagerWorkerRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_WORKER, WitherSkeletonWorkerRenderer::new);
+
         ModS2CHandler.init();
 
         if(CivilizedMobs.isTrinketsInstall){

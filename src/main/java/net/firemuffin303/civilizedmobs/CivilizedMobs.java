@@ -20,6 +20,7 @@ import net.firemuffin303.civilizedmobs.registry.ModBrains;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModItems;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -69,6 +70,7 @@ public class CivilizedMobs implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_WORKER, WorkerPiglinEntity.createAttribute());
         FabricDefaultAttributeRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntity.createAttribute());
         FabricDefaultAttributeRegistry.register(ModEntityType.PILLAGER_WORKER, PillagerWorkerEntity.createPillagerAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntityType.WITHER_SKELETON_WORKER, WitherSkeletonEntity.createAbstractSkeletonAttributes());
 
         ServerEntityEvents.ENTITY_LOAD.register(ModServerEntityEvents::IllagerLoaded);
         ServerLifecycleEvents.SERVER_STARTING.register(CivilizedMobs::onServerStarting);
