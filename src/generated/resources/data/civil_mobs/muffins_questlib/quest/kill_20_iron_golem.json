@@ -1,0 +1,79 @@
+{
+  "definition": {
+    "experience": 80,
+    "reward_item": [
+      {
+        "Count": 64,
+        "id": "minecraft:emerald"
+      },
+      {
+        "Count": 32,
+        "id": "minecraft:emerald"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:white_banner",
+        "tag": {
+          "BlockEntityTag": {
+            "Patterns": [
+              {
+                "Color": 9,
+                "Pattern": "mr"
+              },
+              {
+                "Color": 8,
+                "Pattern": "bs"
+              },
+              {
+                "Color": 7,
+                "Pattern": "cs"
+              },
+              {
+                "Color": 8,
+                "Pattern": "bo"
+              },
+              {
+                "Color": 15,
+                "Pattern": "ms"
+              },
+              {
+                "Color": 8,
+                "Pattern": "hh"
+              },
+              {
+                "Color": 8,
+                "Pattern": "mc"
+              },
+              {
+                "Color": 15,
+                "Pattern": "bo"
+              }
+            ],
+            "id": "minecraft:banner"
+          },
+          "HideFlags": 32,
+          "display": {
+            "Name": "{\"color\":\"gold\",\"translate\":\"block.minecraft.ominous_banner\"}"
+          }
+        }
+      },
+      {
+        "Count": 12,
+        "id": "minecraft:diamond"
+      }
+    ]
+  },
+  "description": "Kill 20 Iron Golems",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:iron_golem",
+          "amount": 20
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

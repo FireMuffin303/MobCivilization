@@ -1,0 +1,7 @@
+// 1.20.1	2024-12-15T22:00:22.6578456	Civilized Mobs/minecraft:entity Loot Table
+a92951f641270cfc53824ace95c855dfe0126c5d data\civil_mobs\loot_tables\entities\wither_skeleton_worker.json
+ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data\civil_mobs\loot_tables\entities\piglin_leader.json
+ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data\civil_mobs\loot_tables\entities\pillager_leader.json
+a92951f641270cfc53824ace95c855dfe0126c5d data\civil_mobs\loot_tables\entities\wither_skeleton_leader.json
+ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data\civil_mobs\loot_tables\entities\pillager_worker.json
+ef017fe8afbc1e704a7cfb4818ece7ba018f9c91 data\civil_mobs\loot_tables\entities\piglin_worker.json

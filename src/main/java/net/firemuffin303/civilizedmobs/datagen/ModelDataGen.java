@@ -23,8 +23,10 @@ public class ModelDataGen extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerator itemModelGenerator) {
         itemModelGenerator.register(ModItems.PIGLIN_WORKER_SPAWN_EGG,SPAWN_EGG);
         itemModelGenerator.register(ModItems.PIGLIN_LEADER_SPAWN_EGG,SPAWN_EGG);
-        itemModelGenerator.register(ModItems.PILLAGER_WORKER_LEADER_SPAWN_EGG,SPAWN_EGG);
+        itemModelGenerator.register(ModItems.PILLAGER_WORKER_SPAWN_EGG,SPAWN_EGG);
+        itemModelGenerator.register(ModItems.PILLAGER_LEADER_SPAWN_EGG,SPAWN_EGG);
         itemModelGenerator.register(ModItems.WITHTER_SKELETON_WORKER_SPAWN_EGG,SPAWN_EGG);
+        itemModelGenerator.register(ModItems.WITHTER_SKELETON_LEADER_SPAWN_EGG,SPAWN_EGG);
     }
 
     private static Model createMincraftItem(String string, TextureKey... textureSlots) {

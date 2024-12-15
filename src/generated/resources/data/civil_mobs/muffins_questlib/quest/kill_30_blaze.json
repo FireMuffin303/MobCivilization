@@ -9,6 +9,10 @@
       {
         "Count": 15,
         "id": "minecraft:nether_wart"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:music_disc_pigstep"
       }
     ]
   },

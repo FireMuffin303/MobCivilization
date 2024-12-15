@@ -7,7 +7,7 @@ import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
-import net.firemuffin303.civilizedmobs.common.entity.brain.WitherSkeletonPlayerFriendlySensor;
+import net.firemuffin303.civilizedmobs.common.entity.brain.WitherSkeletonNemesisSensor;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.entity.*;
@@ -43,6 +43,7 @@ import org.slf4j.Logger;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 
 public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements InteractionObserver, Merchant, WorkerContainer {
@@ -90,7 +91,7 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
         if(this.isAlive()){
             boolean bl = this.getOffers().isEmpty();
             // If TraderOffer is Empty, Player cannot trade.
-            if(bl || player.isCreative() ? false : !WitherSkeletonPlayerFriendlySensor.isWearingSkeletonHead(player)){
+            if(bl || player.isCreative() ? false : !WitherSkeletonNemesisSensor.isWearingSkeletonHead(player)){
                 if(!this.getWorld().isClient){
                     this.playSound(SoundEvents.ENTITY_WITHER_SKELETON_HURT,this.getSoundVolume(),this.getSoundPitch());
                 }
@@ -133,6 +134,12 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
             }
         }
 
+        WitherSkeletonWorkerBrain.tickActivities(this);
+        Optional<LivingEntity> attackTarget = this.getBrain().getOptionalMemory(MemoryModuleType.ATTACK_TARGET);
+        if(attackTarget != null){
+            this.setAttacking(attackTarget.isPresent());
+        }
+
         super.mobTick();
     }
 
@@ -155,6 +162,16 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
             this.gossip.decay();
             this.lastGossipDecayTime = l;
         }
+    }
+
+    @Override
+    public boolean canImmediatelyDespawn(double distanceSquared) {
+        return this.dataTracker.get(WORKER_DATA).getProfession() == VillagerProfession.NONE && super.canImmediatelyDespawn(distanceSquared);
+    }
+
+    @Override
+    public boolean cannotDespawn() {
+        return this.dataTracker.get(WORKER_DATA).getProfession() != VillagerProfession.NONE || super.cannotDespawn();
     }
 
     @Override
@@ -220,13 +237,13 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
 
     //Brains
     @Override
-    protected Brain.Profile<?> createBrainProfile() {
+    protected Brain.Profile<WitherSkeletonWorkerEntity> createBrainProfile() {
         return Brain.createProfile(WitherSkeletonWorkerBrain.MEMORY_MODULES,WitherSkeletonWorkerBrain.SENSORS);
     }
 
     @Override
     protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
-        return super.deserializeBrain(dynamic);
+        return WitherSkeletonWorkerBrain.create(this,this.createBrainProfile().deserialize(dynamic));
     }
 
     @Override
@@ -244,6 +261,10 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
     //WorkerData
     @Override
     public void setWorkerData(WorkerData workerData) {
+        WorkerData workerData1 = this.getWorkerData();
+        if(workerData1.getProfession() != workerData.getProfession()){
+            this.offers = null;
+        }
         this.dataTracker.set(WORKER_DATA,workerData);
     }
 

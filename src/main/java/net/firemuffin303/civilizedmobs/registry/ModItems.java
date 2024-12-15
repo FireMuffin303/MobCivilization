@@ -12,10 +12,14 @@ import java.util.List;
 
 public class ModItems {
     public static List<Item> ITEMS = new ArrayList<>();
-    public static Item PIGLIN_WORKER_SPAWN_EGG = register("piglin_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_WORKER,10051392,0xddd39f,new Item.Settings()));
-    public static Item PIGLIN_LEADER_SPAWN_EGG = register("piglin_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_LEADER_ENTITY,10051392,0xfdf79b,new Item.Settings()));
-    public static Item PILLAGER_WORKER_LEADER_SPAWN_EGG = register("pillager_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.PILLAGER_WORKER,10051392,0xfdf79b,new Item.Settings()));
-    public static Item WITHTER_SKELETON_WORKER_SPAWN_EGG = register("wither_skeleton_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.WITHER_SKELETON_WORKER,10051392,0xfdf79b,new Item.Settings()));
+    public static Item PIGLIN_WORKER_SPAWN_EGG = register("piglin_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_WORKER,10051392,0xec9035,new Item.Settings()));
+    public static Item PIGLIN_LEADER_SPAWN_EGG = register("piglin_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.PIGLIN_LEADER_ENTITY,10051392,0xfff793,new Item.Settings()));
+
+    public static Item PILLAGER_WORKER_SPAWN_EGG = register("pillager_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.PILLAGER_WORKER,0x532F36,0xec9035,new Item.Settings()));
+    public static Item PILLAGER_LEADER_SPAWN_EGG = register("pillager_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.PILLAGER_LEADER,0x532F36,0xfff793,new Item.Settings()));
+
+    public static Item WITHTER_SKELETON_WORKER_SPAWN_EGG = register("wither_skeleton_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.WITHER_SKELETON_WORKER,0x141414,0xec9035,new Item.Settings()));
+    public static Item WITHTER_SKELETON_LEADER_SPAWN_EGG = register("wither_skeleton_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.WITHER_SKELETON_QUEST,0x141414,0xfff793,new Item.Settings()));
 
 
     public static Item register(String id,boolean addToGroup,Item item){

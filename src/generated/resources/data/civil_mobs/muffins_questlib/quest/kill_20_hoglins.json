@@ -3,11 +3,11 @@
     "experience": 50,
     "reward_item": [
       {
-        "Count": 15,
+        "Count": 32,
         "id": "minecraft:leather"
       },
       {
-        "Count": 5,
+        "Count": 32,
         "id": "minecraft:porkchop"
       }
     ]

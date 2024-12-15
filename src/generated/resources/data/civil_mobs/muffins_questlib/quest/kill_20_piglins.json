@@ -1,0 +1,28 @@
+{
+  "definition": {
+    "experience": 60,
+    "reward_item": [
+      {
+        "Count": 20,
+        "id": "minecraft:gold_block"
+      },
+      {
+        "Count": 8,
+        "id": "minecraft:wither_rose"
+      }
+    ]
+  },
+  "description": "Kill 20 Piglins",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:piglin",
+          "amount": 20
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

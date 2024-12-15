@@ -78,6 +78,14 @@ dependencies {
     //modRuntimeOnly("maven.modrinth:axiom:${project.axiom_version}")
     modImplementation "dev.emi:trinkets:${trinkets_version}"
     implementation("com.eliotlash.mclib:mclib:20")
+
+    if(project.enable_better_fortresses){
+        implementation include("org.reflections:reflections:0.10.2")
+        modRuntimeOnly("maven.modrinth:yungs-api:zPT7QfIk")
+        modRuntimeOnly("maven.modrinth:yungs-better-nether-fortresses:FL88RLRu")
+        modRuntimeOnly("maven.modrinth:cloth-config:J3FLptsi")
+    }
+
 }
 
 processResources {

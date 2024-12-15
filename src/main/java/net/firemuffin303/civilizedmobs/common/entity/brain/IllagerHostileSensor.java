@@ -6,6 +6,7 @@ import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -30,7 +31,7 @@ public class IllagerHostileSensor extends NearestVisibleLivingEntitySensor {
         if(livingEntity instanceof PlayerEntity player){
             return !IllagerHostileSensor.isHoldingOminousBanner(player) && !player.getAbilities().creativeMode;
         }
-        return livingEntity instanceof IronGolemEntity;
+        return livingEntity.getType().isIn(ModTags.ILLAGER_NEMESIS);
     }
 
     public static boolean isHoldingOminousBanner(PlayerEntity player){

@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "minecraft:wither",
-    "minecraft:wither_skeleton"
+    "minecraft:wither_skeleton",
+    "civil_mobs:wither_skeleton_worker",
+    "civil_mobs:wither_skeleton_leader"
   ]
 }

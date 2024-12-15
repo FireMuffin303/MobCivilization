@@ -6,6 +6,8 @@ import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.worker.WitherSkeletonWorkerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
@@ -31,17 +33,17 @@ public class ModEntityType {
         }
     };
 
-    public static EntityType<WorkerPiglinEntity> PIGLIN_WORKER = register("worker_piglin",
+    public static EntityType<WorkerPiglinEntity> PIGLIN_WORKER = register("piglin_worker",
             EntityType.Builder.create(WorkerPiglinEntity::new, SpawnGroup.MISC)
                     .setDimensions(0.6f,1.95f)
                     .maxTrackingRange(8)
-                    .build("worker_piglin"));
+                    .build("piglin_worker"));
 
-    public static EntityType<PiglinQuestEntity> PIGLIN_LEADER_ENTITY = register("piglin_quest_entity",
+    public static EntityType<PiglinQuestEntity> PIGLIN_LEADER_ENTITY = register("piglin_leader",
             EntityType.Builder.create(PiglinQuestEntity::new,SpawnGroup.MISC)
                     .setDimensions(1.5f,2.55f)
                     .maxTrackingRange(8)
-                    .build("quest_entity")
+                    .build("piglin_leader")
             );
 
     public static EntityType<PillagerWorkerEntity> PILLAGER_WORKER = register("pillager_worker",
@@ -50,12 +52,26 @@ public class ModEntityType {
                     .maxTrackingRange(8).build("pillager_worker")
     );
 
+    public static EntityType<PillagerQuestEntity> PILLAGER_LEADER = register("pillager_leader",
+            EntityType.Builder.create(PillagerQuestEntity::new,SpawnGroup.MISC)
+                    .setDimensions(0.6f,1.95f)
+                    .maxTrackingRange(8).build("pillager_leader")
+    );
+
     public static EntityType<WitherSkeletonWorkerEntity> WITHER_SKELETON_WORKER = register("wither_skeleton_worker",
-            EntityType.Builder.create(WitherSkeletonWorkerEntity::new,SpawnGroup.MISC)
+            EntityType.Builder.create(WitherSkeletonWorkerEntity::new,SpawnGroup.MONSTER)
                     .makeFireImmune()
                     .allowSpawningInside(Blocks.WITHER_ROSE)
                     .setDimensions(0.7F, 2.4F)
                     .maxTrackingRange(8).build("wither_skeleton_worker")
+    );
+
+    public static EntityType<WitherSkeletonQuestEntity> WITHER_SKELETON_QUEST = register("wither_skeleton_leader",
+            EntityType.Builder.create(WitherSkeletonQuestEntity::new,SpawnGroup.MONSTER)
+                    .makeFireImmune()
+                    .allowSpawningInside(Blocks.WITHER_ROSE)
+                    .setDimensions(0.7F, 2.4F)
+                    .maxTrackingRange(8).build("wither_skeleton_leader")
     );
 
     public static <T extends Entity> EntityType<T> register(String id, EntityType<T> entityType){

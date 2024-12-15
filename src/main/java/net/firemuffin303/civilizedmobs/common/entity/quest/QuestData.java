@@ -18,10 +18,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class QuestData {
     protected LivingEntity livingEntity;
     Map<UUID,Trustful> entityTrust = Maps.newHashMap();
+    Map<Integer,List<TradeOffers.Factory>> questOffers;
 
-
-    public QuestData(LivingEntity livingEntity){
+    public QuestData(LivingEntity livingEntity,Map<Integer,List<TradeOffers.Factory>> questOffers){
         this.livingEntity = livingEntity;
+        this.questOffers = questOffers;
     }
 
     //--- Quest List ---
@@ -44,7 +45,7 @@ public class QuestData {
     public void fillTrade(TradeOfferList tradeOffers, Entity player, int amount){
         World world = player.getWorld();
         int level = getTrust(player.getUuid()).level;
-        List<TradeOffers.Factory> tradeOfferList = ModWorkerOffers.PIGLIN_QUEST_OFFER.get(level);
+        List<TradeOffers.Factory> tradeOfferList = this.questOffers.get(level);
 
 
         for(int i = 0;i < amount; ++i){

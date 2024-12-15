@@ -12,7 +12,11 @@
     "ominousBannerInteraction.IronGolemEntityMixin",
     "ominousBannerInteraction.VillagerEntityMixin",
     "ominousBannerInteraction.VillagerHostileSensorMixin",
-    "structures.StructureSetAccessor"
+    "structures.StructureAccessor",
+    "structures.StructureConfigAccessor",
+    "structures.StructurePoolAccessor",
+    "structures.StructureSetAccessor",
+    "structures.StructureSpawnsAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

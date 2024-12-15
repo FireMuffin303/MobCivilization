@@ -3,12 +3,16 @@
     "experience": 80,
     "reward_item": [
       {
-        "Count": 32,
+        "Count": 64,
         "id": "minecraft:leather"
       },
       {
-        "Count": 15,
+        "Count": 48,
         "id": "minecraft:cooked_porkchop"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:piglin_banner_pattern"
       }
     ]
   },

@@ -6,10 +6,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.client.renderer.PiglinQuestEntityRenderer;
-import net.firemuffin303.civilizedmobs.client.renderer.PiglinWorkerRenderer;
-import net.firemuffin303.civilizedmobs.client.renderer.PillagerWorkerRenderer;
-import net.firemuffin303.civilizedmobs.client.renderer.WitherSkeletonWorkerRenderer;
+import net.firemuffin303.civilizedmobs.client.renderer.*;
 import net.firemuffin303.civilizedmobs.client.renderer.model.WitherSkeletonWorkerEntityModel;
 import net.firemuffin303.civilizedmobs.client.renderer.trinkets.TrinketItemHeadRenderer;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
@@ -25,8 +22,8 @@ public class CivilizedMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntityRenderer::new);
         EntityRendererRegistry.register(ModEntityType.PILLAGER_WORKER, PillagerWorkerRenderer::new);
         EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_WORKER, WitherSkeletonWorkerRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_QUEST, WitherSkeletonQuestRenderer::new);
 
-        ModS2CHandler.init();
 
         if(CivilizedMobs.isTrinketsInstall){
             TrinketRendererRegistry.registerRenderer(Items.WHITE_BANNER,new TrinketItemHeadRenderer());

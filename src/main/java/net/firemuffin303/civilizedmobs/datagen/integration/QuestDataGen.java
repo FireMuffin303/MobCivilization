@@ -37,6 +37,31 @@ public class QuestDataGen {
                     .add(ModQuests.KILL_10_BLAZE)
                     .add(ModQuests.KILL_20_BLAZE)
                     .add(ModQuests.KILL_30_BLAZE);
+
+            this.getOrCreateTagBuilder(ModQuests.PILLAGER_QUEST)
+                    .add(ModQuests.KILL_10_VILLAGER)
+                    .add(ModQuests.KILL_20_VILLAGER)
+                    .add(ModQuests.KILL_30_VILLAGER)
+                    .add(ModQuests.KILL_10_IRON_GOLEM)
+                    .add(ModQuests.KILL_20_IRON_GOLEM)
+                    .add(ModQuests.KILL_30_IRON_GOLEM);
+
+            this.getOrCreateTagBuilder(ModQuests.WITHER_QUEST)
+                    .add(ModQuests.KILL_10_HOGLINS)
+                    .add(ModQuests.KILL_20_HOGLINS)
+                    .add(ModQuests.KILL_30_HOGLINS)
+                    .add(ModQuests.KILL_10_PIGLIN)
+                    .add(ModQuests.KILL_20_PIGLIN)
+                    .add(ModQuests.KILL_30_PIGLIN)
+                    .add(ModQuests.KILL_10_MAGMA_CREAM)
+                    .add(ModQuests.KILL_20_MAGMA_CREAM)
+                    .add(ModQuests.KILL_30_MAGMA_CREAM)
+                    .add(ModQuests.KILL_10_GHAST)
+                    .add(ModQuests.KILL_20_GHAST)
+                    .add(ModQuests.KILL_30_GHAST)
+                    .add(ModQuests.KILL_10_BLAZE)
+                    .add(ModQuests.KILL_20_BLAZE)
+                    .add(ModQuests.KILL_30_BLAZE);
         }
     }
 

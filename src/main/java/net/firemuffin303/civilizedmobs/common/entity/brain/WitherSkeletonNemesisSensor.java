@@ -1,5 +1,6 @@
 package net.firemuffin303.civilizedmobs.common.entity.brain;
 
+import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
@@ -8,13 +9,13 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 
-public class WitherSkeletonPlayerFriendlySensor extends NearestVisibleLivingEntitySensor {
+public class WitherSkeletonNemesisSensor extends NearestVisibleLivingEntitySensor {
     @Override
     protected boolean matches(LivingEntity entity, LivingEntity target) {
         if(target instanceof PlayerEntity player){
-            return isWearingSkeletonHead(player);
+            return !isWearingSkeletonHead(player) && !player.getAbilities().creativeMode;
         }
-        return false;
+        return target.getType().isIn(ModTags.WITHER_SKELTON_NEMESIS);
     }
 
     @Override

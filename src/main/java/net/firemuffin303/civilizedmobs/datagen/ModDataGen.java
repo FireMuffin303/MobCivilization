@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.integration.muffinsQuest.ModQuests;
 import net.firemuffin303.civilizedmobs.datagen.integration.QuestDataGen;
+import net.firemuffin303.civilizedmobs.datagen.structure.FortressStructureData;
 import net.firemuffin303.civilizedmobs.datagen.structure.PillagerStructureData;
 import net.firemuffin303.civilizedmobs.datagen.structure.StructureData;
 import net.firemuffin303.muffinsquestlib.common.registry.ModRegistries;
@@ -33,6 +34,7 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         pack.addProvider(ModTagDataGen.ModItemTagDataProvider::new);
 
         pack.addProvider(LoottableDataProvider.ChestDataProvider::new);
+        pack.addProvider(LoottableDataProvider.EntityLootDataProvider::new);
         //Quest Lib
         pack.addProvider(QuestDataGen.QuestDynamicProvider::new);
         pack.addProvider(QuestDataGen.QuestTagProvider::new);
@@ -43,6 +45,7 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.TEMPLATE_POOL,registerable -> {
             StructureData.bootstrap(registerable);
             PillagerStructureData.templatePoolBootstrap(registerable);
+            FortressStructureData.templatePoolBootstrap(registerable);
         } );
         registryBuilder.addRegistry(RegistryKeys.STRUCTURE,registerable -> {
             StructureData.structureBootstrap(registerable);

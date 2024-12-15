@@ -3,6 +3,7 @@ package net.firemuffin303.civilizedmobs.datagen;
 import dev.emi.trinkets.TrinketsMain;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
+import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
@@ -61,11 +62,26 @@ public class ModTagDataGen {
         protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
             this.getOrCreateTagBuilder(ModTags.PIGLIN_NEMESIS)
                     .add(EntityType.WITHER)
-                    .add(EntityType.WITHER_SKELETON);
+                    .add(EntityType.WITHER_SKELETON)
+                    .add(ModEntityType.WITHER_SKELETON_WORKER)
+                    .add(ModEntityType.WITHER_SKELETON_QUEST);
 
             this.getOrCreateTagBuilder(ModTags.PIGLIN_SCARED_ZOMBIFIED)
                     .add(EntityType.ZOMBIFIED_PIGLIN)
                     .add(EntityType.ZOGLIN);
+
+            this.getOrCreateTagBuilder(ModTags.ILLAGER_NEMESIS)
+                    .add(EntityType.VILLAGER)
+                    .add(EntityType.IRON_GOLEM);
+
+            this.getOrCreateTagBuilder(ModTags.WITHER_SKELTON_NEMESIS)
+                    .add(EntityType.PIGLIN)
+                    .add(EntityType.PIGLIN_BRUTE)
+                    .add(ModEntityType.PIGLIN_WORKER)
+                    .add(ModEntityType.PIGLIN_LEADER_ENTITY)
+                    .add(EntityType.IRON_GOLEM)
+                    .add(EntityType.TURTLE);
+
         }
     }
 
@@ -111,6 +127,13 @@ public class ModTagDataGen {
                     PointOfInterestTypes.FLETCHER,
                     PointOfInterestTypes.SHEPHERD
             );
+
+            this.getOrCreateTagBuilder(ModTags.WITHER_SKELETON_ACQUIRABLE_JOB_SITE).add(
+                    PointOfInterestTypes.ARMORER,
+                    PointOfInterestTypes.WEAPONSMITH,
+                    PointOfInterestTypes.TOOLSMITH,
+                    PointOfInterestTypes.BUTCHER
+            );
         }
     }
 
@@ -133,7 +156,7 @@ public class ModTagDataGen {
                     VillagerProfession.FLETCHER
             );
 
-            getOrCreateTagBuilder(ModTags.PIGLIN_PROFESSION).add(
+            getOrCreateTagBuilder(ModTags.ILLAGER_PROFESSION).add(
                     VillagerProfession.ARMORER,
                     VillagerProfession.BUTCHER,
                     VillagerProfession.CLERIC,
@@ -145,6 +168,14 @@ public class ModTagDataGen {
                     VillagerProfession.FLETCHER,
                     VillagerProfession.SHEPHERD
             );
+
+            getOrCreateTagBuilder(ModTags.WITHER_PROFESSION).add(
+                    VillagerProfession.ARMORER,
+                    VillagerProfession.BUTCHER,
+                    VillagerProfession.WEAPONSMITH,
+                    VillagerProfession.TOOLSMITH
+            );
+
 
         }
     }

@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "civil_mobs:kill_10_villager",
+    "civil_mobs:kill_20_villager",
+    "civil_mobs:kill_30_villager",
+    "civil_mobs:kill_10_iron_golem",
+    "civil_mobs:kill_20_iron_golem",
+    "civil_mobs:kill_30_iron_golem"
+  ]
+}

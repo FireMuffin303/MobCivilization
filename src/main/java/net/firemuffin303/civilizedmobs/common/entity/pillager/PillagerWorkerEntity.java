@@ -363,6 +363,10 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
 
     @Override
     public void setWorkerData(WorkerData workerData) {
+        WorkerData workerData1 = this.getWorkerData();
+        if(workerData1.getProfession() != workerData.getProfession()){
+            this.offers = null;
+        }
         this.dataTracker.set(WORKER_DATA,workerData);
     }
 

@@ -54,6 +54,7 @@ public class PiglinQuestBrain {
                         new LookAroundTask(45,90),
                         new WanderAroundTask(),
                         OpenDoorsTask.create(),
+                        ForgetCompletedPointOfInterestTask.create(registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING),MemoryModuleType.MEETING_POINT),
                         FindPointOfInterestTask.create(registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING),MemoryModuleType.MEETING_POINT,true, Optional.empty()),
                         MemoryTransferTask.create(PiglinQuestBrain::getNearestZombifiedPiglin,MemoryModuleType.NEAREST_VISIBLE_ZOMBIFIED,MemoryModuleType.AVOID_TARGET,GO_TO_ZOMBIFIED_MEMORY_DURATION),
                         ForgetAttackTargetTask.create()

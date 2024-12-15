@@ -1,6 +1,7 @@
 package net.firemuffin303.civilizedmobs.common.entity.pillager.quest;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
 import net.minecraft.entity.CrossbowUser;
@@ -40,9 +41,9 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     @Nullable private PlayerEntity lastCustomer;
     @Nullable private PlayerEntity customer;
 
-    protected PillagerQuestEntity(EntityType<? extends IllagerEntity> entityType, World world) {
+    public PillagerQuestEntity(EntityType<? extends IllagerEntity> entityType, World world) {
         super(entityType, world);
-        this.questData = new QuestData(this);
+        this.questData = new QuestData(this,ModWorkerOffers.PILLAGER_QUSET_OFFER);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }

@@ -3,16 +3,15 @@ package net.firemuffin303.civilizedmobs.client.renderer.model;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.worker.WitherSkeletonWorkerEntity;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.entity.SkeletonEntityRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.render.entity.model.SkeletonEntityModel;
-import net.minecraft.entity.mob.WitherSkeletonEntity;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class WitherSkeletonWorkerEntityModel extends SkeletonEntityModel<WitherSkeletonEntity> {
+public class WitherSkeletonWorkerEntityModel extends SkeletonEntityModel<WitherSkeletonWorkerEntity> {
     public static final EntityModelLayer WITHER_SKELETON_WORKER = new EntityModelLayer(new Identifier(CivilizedMobs.MOD_ID,"wither_skeleton_worker"),"main");
 
     public WitherSkeletonWorkerEntityModel(ModelPart modelPart) {

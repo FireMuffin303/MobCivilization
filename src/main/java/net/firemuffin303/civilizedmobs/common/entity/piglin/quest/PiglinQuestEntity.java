@@ -2,6 +2,7 @@ package net.firemuffin303.civilizedmobs.common.entity.piglin.quest;
 
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
+import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
@@ -63,7 +64,7 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
 
     public PiglinQuestEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
         super(entityType, world);
-        this.questData = new QuestData(this);
+        this.questData = new QuestData(this,ModWorkerOffers.PIGLIN_QUEST_OFFER);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }
@@ -104,7 +105,7 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
         if(this.isAlive()){
-            if(!this.getWorld().isClient && this.getCustomer() == null && PiglinBrain.wearsGoldArmor(player)){
+            if(!this.getWorld().isClient && this.getCustomer() == null && (PiglinBrain.wearsGoldArmor(player) || player.getAbilities().creativeMode)){
                 this.prepareOffersFor(player);
                 this.setCustomer(player);
                 this.sendOffers(player,this.getDisplayName(),this.questData.getTrust(this.getCustomer().getUuid()).getLevel());
@@ -115,10 +116,6 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
         }
 
         return ActionResult.success(this.getWorld().isClient);
-    }
-
-    private void prepareOffersFor(PlayerEntity player) {
-        this.questData.getQuestList(player);
     }
 
     protected void mobTick() {

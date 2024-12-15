@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:piglin",
+    "minecraft:piglin_brute",
+    "civil_mobs:piglin_worker",
+    "civil_mobs:piglin_leader",
+    "minecraft:iron_golem",
+    "minecraft:turtle"
+  ]
+}
