@@ -75,7 +75,6 @@ public class CivilPiglinBrain {
                         ModLoseOnSiteLossTask.create(),
                         ForgetAngryAtTargetTask.create(),
                         MemoryTransferTask.create(CivilPiglinBrain::getNearestZombifiedPiglin,MemoryModuleType.NEAREST_VISIBLE_ZOMBIFIED,MemoryModuleType.AVOID_TARGET,GO_TO_ZOMBIFIED_MEMORY_DURATION),
-                        //MemoryTransferTask.create(workerPiglinEntity1 -> !workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD) && getNemesis(workerPiglinEntity1),MemoryModuleType.NEAREST_VISIBLE_NEMESIS,MemoryModuleType.AVOID_TARGET,GO_TO_NEMESIS_MEMORY_DURATION),
                         ForgetAttackTargetTask.create()
                 ));
     }
@@ -144,14 +143,17 @@ public class CivilPiglinBrain {
     private static void addFightActivity(WorkerPiglinEntity workerPiglinEntity,Brain<WorkerPiglinEntity> workerPiglinEntityBrain){
         workerPiglinEntityBrain.setTaskList(Activity.FIGHT,10,ImmutableList.of(
                 ForgetAttackTargetTask.create(target -> !isPreferredTarget(workerPiglinEntity,target)),
-                AttackTask.create(5,0.75f),
+                TaskTriggerer.runIf((world, entity, time) ->  entity.isHolding(Items.CROSSBOW),AttackTask.create(5,0.75f)),
                 RangedApproachTask.create(1.0f),
                 MeleeAttackTask.create(20),
+                new CrossbowAttackTask<>(),
                 ForgetTask.create(CivilPiglinBrain::getNearestZombifiedPiglin,MemoryModuleType.ATTACK_TARGET)
         ),MemoryModuleType.ATTACK_TARGET);
     }
 
     protected static void tickActivities(WorkerPiglinEntity piglin) {
+        Brain<WorkerPiglinEntity> brain = piglin.getBrain();
+        piglin.setAttacking(brain.hasMemoryModule(MemoryModuleType.ATTACK_TARGET));
         piglin.getBrain().resetPossibleActivities(ImmutableList.of(Activity.FIGHT,Activity.AVOID,Activity.WORK,Activity.IDLE));
     }
 
@@ -163,11 +165,11 @@ public class CivilPiglinBrain {
     }
 
     private static Task<WorkerPiglinEntity> createAvoidNonPlayerGoldArmor(){
-        return MemoryTransferTask.create( workerPiglinEntity1 -> getPlayerNotWearingGold(workerPiglinEntity1) && !workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD) ,MemoryModuleType.NEAREST_TARGETABLE_PLAYER_NOT_WEARING_GOLD,MemoryModuleType.AVOID_TARGET,GO_TO_NON_GOLD_ARMOR_PLAYER_MEMORY_DURATION);
+        return MemoryTransferTask.create( workerPiglinEntity1 -> getPlayerNotWearingGold(workerPiglinEntity1) && !(workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD) || workerPiglinEntity1.isHolding(Items.CROSSBOW)) ,MemoryModuleType.NEAREST_TARGETABLE_PLAYER_NOT_WEARING_GOLD,MemoryModuleType.AVOID_TARGET,GO_TO_NON_GOLD_ARMOR_PLAYER_MEMORY_DURATION);
     }
 
     private static Task<WorkerPiglinEntity> createUpdateAttackTarget(){
-        return UpdateAttackTargetTask.create(workerPiglinEntity1 -> workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD) && getPreferredTarget(workerPiglinEntity1).isPresent(),CivilPiglinBrain::getPreferredTarget);
+        return UpdateAttackTargetTask.create(workerPiglinEntity1 -> (workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD) || workerPiglinEntity1.isHolding(Items.CROSSBOW)) && getPreferredTarget(workerPiglinEntity1).isPresent(),CivilPiglinBrain::getPreferredTarget);
     }
 
     private static Task<WorkerPiglinEntity> createAvoidNemesisTask(){
@@ -175,7 +177,7 @@ public class CivilPiglinBrain {
             Brain<WorkerPiglinEntity> brain1 =  workerPiglinEntity1.getBrain();
             if(brain1.hasMemoryModule(MemoryModuleType.NEAREST_VISIBLE_NEMESIS)){
                 LivingEntity livingEntity = brain1.getOptionalRegisteredMemory(MemoryModuleType.NEAREST_VISIBLE_NEMESIS).get();
-                return workerPiglinEntity1.isInRange(livingEntity,6.0) && !workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD);
+                return workerPiglinEntity1.isInRange(livingEntity,6.0) && !(workerPiglinEntity1.isHolding(Items.GOLDEN_SWORD) || workerPiglinEntity1.isHolding(Items.CROSSBOW));
             }
             return false;
         }  ,MemoryModuleType.NEAREST_VISIBLE_NEMESIS,MemoryModuleType.AVOID_TARGET,GO_TO_NEMESIS_MEMORY_DURATION);

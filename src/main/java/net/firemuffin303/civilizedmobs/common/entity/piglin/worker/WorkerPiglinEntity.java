@@ -7,6 +7,7 @@ import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.block.Blocks;
@@ -20,12 +21,15 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -66,7 +70,7 @@ import java.util.Optional;
 import java.util.function.BiPredicate;
 
 //TODO : Turn Worker Logic to Interface for easier entity Setup;
-public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant, WorkerContainer {
+public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant, WorkerContainer,CrossbowUser {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WorkerPiglinEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST;
     private static final TrackedData<WorkerData> PIGLIN_DATA;
     private long lastRestockTime;
@@ -85,6 +89,8 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     @Nullable
     protected TradeOfferList offers;
 
+    private static final TrackedData<Boolean> CHARGING = DataTracker.registerData(WorkerPiglinEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public WorkerPiglinEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
@@ -94,6 +100,8 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }
+
+
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
@@ -141,6 +149,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(PIGLIN_DATA,new WorkerData(VillagerProfession.NONE,1));
+        this.dataTracker.startTracking(CHARGING,false);
     }
 
     protected void mobTick() {
@@ -306,7 +315,11 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     @Override
     public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
         if(world.getRandom().nextFloat() < 0.5f){
-            this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.GOLDEN_SWORD));
+            if(random.nextFloat() > 0.5f){
+                this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
+            }else {
+                this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.GOLDEN_SWORD));
+            }
         }
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
@@ -358,7 +371,14 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
 
     @Override
     public PiglinActivity getActivity() {
-        return null;
+        if(this.dataTracker.get(CHARGING)){
+            return PiglinActivity.CROSSBOW_CHARGE;
+        }else if(this.isAttacking() && this.isHolding(Items.CROSSBOW)){
+            return PiglinActivity.CROSSBOW_HOLD;
+        }else if(this.isAttacking() && this.isHoldingTool()){
+            return PiglinActivity.ATTACKING_WITH_MELEE_WEAPON;
+        }
+        return PiglinActivity.DEFAULT;
     }
 
     @Override
@@ -532,6 +552,34 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
         } else if (interaction == ModEntityInteraction.WORKER_PIGLIN_KILLED) {
             this.gossip.startGossip(entity.getUuid(), VillageGossipType.MAJOR_NEGATIVE, 25);
         }
+    }
+
+    //Crossbow
+
+
+    @Override
+    public boolean canUseRangedWeapon(RangedWeaponItem weapon) {
+        return weapon == Items.CROSSBOW;
+    }
+
+    @Override
+    public void setCharging(boolean charging) {
+        this.dataTracker.set(CHARGING,charging);
+    }
+
+    @Override
+    public void shoot(LivingEntity target, ItemStack crossbow, ProjectileEntity projectile, float multiShotSpray) {
+        this.shoot(this, target, projectile, multiShotSpray, 1.6F);
+    }
+
+    @Override
+    public void postShoot() {
+
+    }
+
+    @Override
+    public void attack(LivingEntity target, float pullProgress) {
+        this.shoot(this,1.6f);
     }
 
     //------- Gecko Lib-------
