@@ -1,16 +1,25 @@
 package net.firemuffin303.civilizedmobs.common.entity.pillager.quest;
 
+import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
+import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
+import net.firemuffin303.civilizedmobs.common.entity.brain.WitherSkeletonNemesisSensor;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
-import net.minecraft.entity.CrossbowUser;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ExperienceOrbEntity;
-import net.minecraft.entity.LivingEntity;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestBrain;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
+import net.minecraft.entity.*;
+import net.minecraft.entity.ai.brain.Brain;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.pathing.PathNodeType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
@@ -18,20 +27,37 @@ import net.minecraft.entity.mob.IllagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.network.DebugInfoSender;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.Merchant;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.VillagerData;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.poi.PointOfInterestStorage;
+import net.minecraft.world.poi.PointOfInterestType;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Merchant, QuestContainer, CrossbowUser {
     protected QuestData questData;
@@ -41,11 +67,25 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     @Nullable private PlayerEntity lastCustomer;
     @Nullable private PlayerEntity customer;
 
+    private static final TrackedData<Boolean> CHARGING = DataTracker.registerData(PillagerQuestEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
+
     public PillagerQuestEntity(EntityType<? extends IllagerEntity> entityType, World world) {
         super(entityType, world);
         this.questData = new QuestData(this,ModWorkerOffers.PILLAGER_QUSET_OFFER);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
+    }
+
+    //Cancel Goals
+    @Override
+    protected void initGoals() {}
+
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+        this.dataTracker.startTracking(CHARGING,false);
     }
 
     public static DefaultAttributeContainer.Builder createAttribute(){
@@ -55,8 +95,36 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     }
 
     @Override
-    protected void mobTick() {
+    public boolean canImmediatelyDespawn(double distanceSquared) {
+        return false;
+    }
 
+    @Override
+    public boolean cannotDespawn() {
+        return true;
+    }
+
+    @Override
+    protected ActionResult interactMob(PlayerEntity player, Hand hand) {
+        if(this.isAlive()){
+            if(!this.getWorld().isClient && this.getCustomer() == null && (IllagerHostileSensor.isHoldingOminousBanner(player) || player.getAbilities().creativeMode)){
+                this.prepareOffersFor(player);
+                this.setCustomer(player);
+                this.sendOffers(player,this.getDisplayName(),this.questData.getTrust(this.getCustomer().getUuid()).getLevel());
+            }else if(this.getWorld().isClient){
+                this.playSound(SoundEvents.ENTITY_WITHER_SKELETON_HURT,this.getSoundVolume(),this.getSoundPitch());
+                return ActionResult.success(this.getWorld().isClient);
+            }
+        }
+
+        return ActionResult.success(this.getWorld().isClient);
+    }
+
+    @Override
+    protected void mobTick() {
+        this.getWorld().getProfiler().push("pillagerQuestBrain");
+        this.getBrain().tick((ServerWorld)this.getWorld(), this);
+        this.getWorld().getProfiler().pop();
         // Level up when no Customer and timer is up.
         if (this.customer == null  && this.levelUpTimer > 0) {
             --this.levelUpTimer;
@@ -74,8 +142,41 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
             this.restock();
         }
 
-
+        PillagerQuestBrain.tickActivities(this);
         super.mobTick();
+    }
+
+    @Override
+    public boolean canUseRangedWeapon(RangedWeaponItem weapon) {
+        return weapon == Items.CROSSBOW;
+    }
+
+    //--- Brain ---
+    @Override
+    protected Brain.Profile<PillagerQuestEntity> createBrainProfile() {
+        return Brain.createProfile(PillagerQuestBrain.MEMORY_MODULES,PillagerQuestBrain.SENSORS);
+    }
+
+    @Override
+    protected Brain<?> deserializeBrain(Dynamic<?> dynamic) {
+        return PillagerQuestBrain.create(this,this.createBrainProfile().deserialize(dynamic));
+    }
+
+    @Override
+    public Brain<PillagerQuestEntity> getBrain() {
+        return (Brain<PillagerQuestEntity>) super.getBrain();
+    }
+
+    @Override
+    protected void sendAiDebugData() {
+        super.sendAiDebugData();
+        DebugInfoSender.sendBrainDebugData(this);
+    }
+
+    @Override
+    public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
     //-- Data --
@@ -93,6 +194,47 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
         this.questData.readData(nbt);
     }
 
+    @Override
+    public void onDeath(DamageSource damageSource) {
+        this.releaseTicketFor(MemoryModuleType.MEETING_POINT);
+        super.onDeath(damageSource);
+    }
+
+    public void releaseTicketFor( MemoryModuleType<GlobalPos> pos) {
+        if (this.getWorld() instanceof ServerWorld) {
+            MinecraftServer minecraftServer = ((ServerWorld)this.getWorld()).getServer();
+            this.getBrain().getOptionalRegisteredMemory(pos).ifPresent((posx) -> {
+                ServerWorld serverWorld = minecraftServer.getWorld(posx.getDimension());
+                if (serverWorld != null) {
+                    PointOfInterestStorage pointOfInterestStorage = serverWorld.getPointOfInterestStorage();
+                    Optional<RegistryEntry<PointOfInterestType>> optional = pointOfInterestStorage.getType(posx.getPos());
+                    BiPredicate<PillagerQuestEntity, RegistryEntry<PointOfInterestType>> biPredicate = PillagerQuestBrain.POINTS_OF_INTEREST.get(pos);
+                    if (optional.isPresent() && biPredicate.test(this,optional.get())) {
+                        pointOfInterestStorage.releaseTicket(posx.getPos());
+                        DebugInfoSender.sendPointOfInterest(serverWorld, posx.getPos());
+                    }
+                }
+            });
+        }
+    }
+
+    //----- Sound -------
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return SoundEvents.ENTITY_PILLAGER_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_PILLAGER_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_PILLAGER_HURT;
+    }
+    //----------
+
     private void levelUp() {
         QuestData.Trustful trustful = this.questData.getTrust(this.lastCustomer.getUuid());
         trustful.setLevel(trustful.getLevel()+1);
@@ -106,9 +248,11 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
 
     @Override
     public SoundEvent getCelebratingSound() {
-        return null;
+        return SoundEvents.ENTITY_EVOKER_CELEBRATE;
     }
 
+
+    // ----QuestData----
     @Override
     public void setQuestData(QuestData questData) {
         this.questData = questData;
@@ -119,6 +263,7 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
         return this.questData;
     }
 
+    //Merchant
     @Override
     public void setCustomer(@Nullable PlayerEntity customer) {
         boolean bl = this.getCustomer() != null && customer == null;
@@ -190,13 +335,15 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
 
     @Override
     public SoundEvent getYesSound() {
-        return null;
+        return SoundEvents.ENTITY_PILLAGER_CELEBRATE;
     }
 
     @Override
     public boolean isClient() {
         return this.getWorld().isClient;
     }
+
+    //--------------
 
     public boolean shouldRestock() {
         return this.getWorld().getTime() > this.lastRestockTime + (this.getWorld().getGameRules().getInt(CivilizedMobs.QUEST_RESTOCK_TIME) * 20L);
@@ -216,25 +363,15 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
         }
     }
 
-    @Override
-    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
-
-    }
-
-    @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache() {
-        return null;
-    }
-
     //Crossbow
     @Override
     public void setCharging(boolean charging) {
-
+        this.dataTracker.set(CHARGING,charging);
     }
 
     @Override
     public void shoot(LivingEntity target, ItemStack crossbow, ProjectileEntity projectile, float multiShotSpray) {
-
+        this.shoot(this, target, projectile, multiShotSpray, 1.6F);
     }
 
     @Override
@@ -243,7 +380,26 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     }
 
     @Override
+    public @Nullable LivingEntity getTarget() {
+        return this.brain.getOptionalRegisteredMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
+    }
+
+    @Override
     public void attack(LivingEntity target, float pullProgress) {
+        this.shoot(this,1.6f);
+    }
+
+    //GeckoLib
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
 
     }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
+    }
+
+
 }

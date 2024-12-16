@@ -1,7 +1,7 @@
 package net.firemuffin303.civilizedmobs.client.renderer.model;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import software.bernie.geckolib.constant.DataTickets;
@@ -10,24 +10,24 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
-public class PillagerWorkerEntityModel extends GeoModel<PillagerWorkerEntity> {
+public class PillagerLeaderEntityModel extends GeoModel<PillagerQuestEntity> {
     @Override
-    public Identifier getModelResource(PillagerWorkerEntity pillagerWorkerEntity) {
-        return new Identifier(CivilizedMobs.MOD_ID,"geo/pillager_worker.geo.json");
+    public Identifier getModelResource(PillagerQuestEntity pillagerQuestEntity) {
+        return new Identifier(CivilizedMobs.MOD_ID,"geo/pillager_leader_prototype.geo.json");
     }
 
     @Override
-    public Identifier getTextureResource(PillagerWorkerEntity pillagerWorkerEntity) {
+    public Identifier getTextureResource(PillagerQuestEntity pillagerQuestEntity) {
         return new Identifier(CivilizedMobs.MOD_ID,"textures/entity/pillager_worker/pillager_worker.png");
     }
 
     @Override
-    public Identifier getAnimationResource(PillagerWorkerEntity pillagerWorkerEntity) {
+    public Identifier getAnimationResource(PillagerQuestEntity pillagerQuestEntity) {
         return null;
     }
 
     @Override
-    public void setCustomAnimations(PillagerWorkerEntity animatable, long instanceId, AnimationState<PillagerWorkerEntity> animationState) {
+    public void setCustomAnimations(PillagerQuestEntity animatable, long instanceId, AnimationState<PillagerQuestEntity> animationState) {
         CoreGeoBone head = getAnimationProcessor().getBone("head");
         EntityModelData entityModelData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
         if(head != null){

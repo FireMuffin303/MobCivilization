@@ -1,4 +1,4 @@
-package net.firemuffin303.civilizedmobs.common.entity.piglin.worker;
+package net.firemuffin303.civilizedmobs.common.entity.task;
 
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.entity.LivingEntity;

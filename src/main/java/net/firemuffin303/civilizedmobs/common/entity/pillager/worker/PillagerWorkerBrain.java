@@ -1,19 +1,20 @@
-package net.firemuffin303.civilizedmobs.common.entity.pillager;
+package net.firemuffin303.civilizedmobs.common.entity.pillager.worker;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.ModPanicTask;
 import net.firemuffin303.civilizedmobs.common.entity.task.*;
 import net.firemuffin303.civilizedmobs.registry.ModBrains;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.brain.*;
 import net.minecraft.entity.ai.brain.sensor.Sensor;
 import net.minecraft.entity.ai.brain.sensor.SensorType;
 import net.minecraft.entity.ai.brain.task.*;
+import net.minecraft.item.Items;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.world.poi.PointOfInterestTypes;
 
@@ -29,6 +30,7 @@ public class PillagerWorkerBrain {
         addIdleActivities(pillagerWorkerEntity,brain);
         addWorkActivities(pillagerWorkerEntity,brain);
         addPanicActivities(pillagerWorkerEntity,brain);
+        addFightActivities(pillagerWorkerEntity,brain);
         addRestActivities(pillagerWorkerEntity,brain);
 
         brain.setSchedule(ModBrains.PILLAGER_WORKER_DEFAULT);
@@ -45,7 +47,7 @@ public class PillagerWorkerBrain {
         brain.setTaskList(Activity.CORE,0, ImmutableList.of(
                 new StayAboveWaterTask(0.8f),
                 new LookAroundTask(45,90),
-                new ModPanicTask(),
+                new PillagerWorkerPanic(),
                 new WanderAroundTask(),
                 WakeUpTask.create(),
                 OpenDoorsTask.create(),
@@ -75,6 +77,7 @@ public class PillagerWorkerBrain {
                         Pair.of(new WaitTask(30,60),1)
                 )),
                 FindInteractionTargetTask.create(EntityType.PLAYER,4),
+                new PillagerAttackTask(),
                 ScheduleActivityTask.create()
         ));
     }
@@ -88,8 +91,18 @@ public class PillagerWorkerBrain {
                                 Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE,0.8f,1,32),5)
                         ))),
                         Pair.of(10,FindInteractionTargetTask.create(EntityType.PLAYER,4)),
+                        Pair.of(10,new PillagerAttackTask()),
                         Pair.of(99,ScheduleActivityTask.create())
                 ),ImmutableSet.of(Pair.of(MemoryModuleType.JOB_SITE, MemoryModuleState.VALUE_PRESENT)));
+    }
+
+    private static void addFightActivities(PillagerWorkerEntity pillagerWorkerEntity, Brain<PillagerWorkerEntity> brain){
+        brain.setTaskList(Activity.FIGHT,10,ImmutableList.of(
+                ForgetAttackTargetTask.create(target -> !isPreferredTarget(pillagerWorkerEntity,target)),
+                StopFighting(),
+                TaskTriggerer.runIf((world, entity, time) -> entity.isHolding(Items.CROSSBOW),AttackTask.create(5,0.75f)),
+                new CrossbowAttackTask<>()
+        ));
     }
 
     private static void addPanicActivities(PillagerWorkerEntity pillagerWorkerEntity,Brain<PillagerWorkerEntity> brain){
@@ -119,6 +132,49 @@ public class PillagerWorkerBrain {
 
     protected static void tickActivities(PillagerWorkerEntity pillagerWorkerEntity){
         pillagerWorkerEntity.getBrain().resetPossibleActivities(ImmutableList.of(Activity.REST,Activity.WORK,Activity.IDLE));
+    }
+
+    private static Task<PillagerWorkerEntity> StopFighting(){
+        return TaskTriggerer.task(taskContext -> {
+            return taskContext.group(taskContext.queryMemoryOptional(MemoryModuleType.ATTACK_TARGET)).apply(taskContext,(attakTarget) ->{
+                return  (world, entity, time) -> {
+                    if(!taskContext.getOptionalValue(attakTarget).isPresent()){
+                        entity.getBrain().refreshActivities(world.getTimeOfDay(),world.getTime());
+                    }
+                    return true;
+                };
+            });
+        });
+    }
+
+    private static Task<PillagerWorkerEntity> createUpdateAttackTarget(){
+        return UpdateAttackTargetTask.create(entity -> getPreferredTarget(entity).isPresent(), PillagerWorkerBrain::getPreferredTarget);
+    }
+
+    private static Optional<? extends LivingEntity> getPreferredTarget(PillagerWorkerEntity pillagerWorkerEntity){
+        Brain<PillagerWorkerEntity> brain = pillagerWorkerEntity.getBrain();
+        Optional<LivingEntity> optionalLivingEntity = LookTargetUtil.getEntity(pillagerWorkerEntity,MemoryModuleType.ANGRY_AT);
+        if(optionalLivingEntity.isPresent() && Sensor.testAttackableTargetPredicateIgnoreVisibility(pillagerWorkerEntity, optionalLivingEntity.get())){
+            return optionalLivingEntity;
+        }
+        Optional<LivingEntity> optionalHurtBy = brain.getOptionalRegisteredMemory(MemoryModuleType.HURT_BY_ENTITY);
+        if(optionalHurtBy.isPresent() && Sensor.testAttackableTargetPredicateIgnoreVisibility(pillagerWorkerEntity, optionalHurtBy.get())){
+            return optionalHurtBy;
+        }
+
+        Optional<LivingEntity> optionalHostile = brain.getOptionalRegisteredMemory(MemoryModuleType.NEAREST_HOSTILE);
+
+        if(optionalHostile.isPresent() && Sensor.testAttackableTargetPredicateIgnoreVisibility(pillagerWorkerEntity, optionalHostile.get())){
+            return optionalHostile;
+        }
+
+        return Optional.empty();
+    }
+
+    private static boolean isPreferredTarget(PillagerWorkerEntity witherSkeletonWorkerEntity,LivingEntity target){
+        return getPreferredTarget(witherSkeletonWorkerEntity).filter(preferredTarget -> {
+            return  preferredTarget == target;
+        }).isPresent();
     }
 
     static {
@@ -151,7 +207,11 @@ public class PillagerWorkerBrain {
                 MemoryModuleType.LOOK_TARGET,
                 MemoryModuleType.WALK_TARGET,
                 MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
-                MemoryModuleType.PATH
+                MemoryModuleType.PATH,
+
+                //Attack Stuff
+                MemoryModuleType.ANGRY_AT,
+                MemoryModuleType.ATTACK_TARGET
         );
     }
 }

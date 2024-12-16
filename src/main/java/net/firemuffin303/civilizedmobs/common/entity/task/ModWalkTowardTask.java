@@ -1,13 +1,11 @@
 package net.firemuffin303.civilizedmobs.common.entity.task;
 
-import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
-import net.minecraft.entity.LivingEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.brain.WalkTarget;
 import net.minecraft.entity.ai.brain.task.SingleTickTask;
 import net.minecraft.entity.ai.brain.task.TaskTriggerer;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.Vec3d;

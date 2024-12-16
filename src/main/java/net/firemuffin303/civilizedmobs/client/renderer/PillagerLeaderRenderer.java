@@ -1,8 +1,7 @@
 package net.firemuffin303.civilizedmobs.client.renderer;
 
-import net.firemuffin303.civilizedmobs.client.renderer.model.PillagerWorkerEntityModel;
+import net.firemuffin303.civilizedmobs.client.renderer.model.PillagerLeaderEntityModel;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
@@ -14,12 +13,12 @@ import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
-public class PillagerWorkerRenderer extends GeoEntityRenderer<PillagerWorkerEntity> {
-    public PillagerWorkerRenderer(EntityRendererFactory.Context renderManager) {
-        super(renderManager, new PillagerWorkerEntityModel());
+public class PillagerLeaderRenderer extends GeoEntityRenderer<PillagerQuestEntity> {
+    public PillagerLeaderRenderer(EntityRendererFactory.Context renderManager) {
+        super(renderManager, new PillagerLeaderEntityModel());
         this.addRenderLayer(new BlockAndItemGeoLayer<>(this){
             @Override
-            protected ItemStack getStackForBone(GeoBone bone, PillagerWorkerEntity animatable) {
+            protected ItemStack getStackForBone(GeoBone bone, PillagerQuestEntity animatable) {
                 switch (bone.getName()){
                     case "left_arm_item" -> {
                         return animatable.isLeftHanded() ? animatable.getMainHandStack() : animatable.getOffHandStack();
@@ -32,7 +31,7 @@ public class PillagerWorkerRenderer extends GeoEntityRenderer<PillagerWorkerEnti
             }
 
             @Override
-            protected ModelTransformationMode getTransformTypeForStack(GeoBone bone, ItemStack stack, PillagerWorkerEntity animatable) {
+            protected ModelTransformationMode getTransformTypeForStack(GeoBone bone, ItemStack stack, PillagerQuestEntity animatable) {
                 return switch (bone.getName()) {
                     case "left_arm_item", "right_arm_item" -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
                     default -> super.getTransformTypeForStack(bone, stack, animatable);
@@ -40,7 +39,7 @@ public class PillagerWorkerRenderer extends GeoEntityRenderer<PillagerWorkerEnti
             }
 
             @Override
-            protected void renderStackForBone(MatrixStack poseStack, GeoBone bone, ItemStack stack, PillagerWorkerEntity animatable, VertexConsumerProvider bufferSource, float partialTick, int packedLight, int packedOverlay) {
+            protected void renderStackForBone(MatrixStack poseStack, GeoBone bone, ItemStack stack, PillagerQuestEntity animatable, VertexConsumerProvider bufferSource, float partialTick, int packedLight, int packedOverlay) {
                 if(stack == animatable.getMainHandStack()){
                     poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90.0F));
                     if (stack.getItem() instanceof ShieldItem) {

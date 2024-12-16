@@ -1,6 +1,5 @@
 package net.firemuffin303.civilizedmobs.client;
 
-import com.eliotlash.mclib.math.functions.classic.Mod;
 import dev.emi.trinkets.api.client.TrinketRendererRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
@@ -21,6 +20,7 @@ public class CivilizedMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityType.PIGLIN_WORKER, PiglinWorkerRenderer::new);
         EntityRendererRegistry.register(ModEntityType.PIGLIN_LEADER_ENTITY, PiglinQuestEntityRenderer::new);
         EntityRendererRegistry.register(ModEntityType.PILLAGER_WORKER, PillagerWorkerRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.PILLAGER_LEADER, PillagerLeaderRenderer::new);
         EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_WORKER, WitherSkeletonWorkerRenderer::new);
         EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_QUEST, WitherSkeletonQuestRenderer::new);
 

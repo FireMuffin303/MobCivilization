@@ -1,11 +1,10 @@
 package net.firemuffin303.civilizedmobs.registry;
 
-import net.fabricmc.fabric.impl.object.builder.FabricEntityType;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.worker.WitherSkeletonWorkerEntity;

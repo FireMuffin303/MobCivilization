@@ -2,7 +2,7 @@ package net.firemuffin303.civilizedmobs.mixin.bedInteraction;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
 import net.minecraft.block.BedBlock;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.math.BlockPos;

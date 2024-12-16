@@ -90,6 +90,12 @@ public class WitherSkeletonQuestBrain {
         if(optionalLivingEntity.isPresent() && Sensor.testAttackableTargetPredicateIgnoreVisibility(witherSkeletonWorkerEntity, optionalLivingEntity.get())){
             return optionalLivingEntity;
         }
+
+        Optional<LivingEntity> optionalHurtBy = brain.getOptionalRegisteredMemory(MemoryModuleType.HURT_BY_ENTITY);
+        if(optionalHurtBy.isPresent()){
+            return optionalHurtBy;
+        }
+
         Optional<LivingEntity> optionalHostile = brain.getOptionalRegisteredMemory(MemoryModuleType.NEAREST_HOSTILE);
 
         if(optionalHostile.isPresent()){
@@ -127,17 +133,13 @@ public class WitherSkeletonQuestBrain {
                 MemoryModuleType.NEAREST_PLAYERS,
                 MemoryModuleType.NEAREST_VISIBLE_PLAYER,
                 MemoryModuleType.NEAREST_VISIBLE_WANTED_ITEM,
+                MemoryModuleType.HURT_BY,
+                MemoryModuleType.HURT_BY_ENTITY,
                 //Navigation
                 MemoryModuleType.LOOK_TARGET,
                 MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,
                 MemoryModuleType.WALK_TARGET,
                 MemoryModuleType.PATH,
-                //Piglin
-                MemoryModuleType.AVOID_TARGET,
-                MemoryModuleType.NEAREST_VISIBLE_ZOMBIFIED,
-                MemoryModuleType.NEAREST_TARGETABLE_PLAYER_NOT_WEARING_GOLD,
-                MemoryModuleType.NEAREST_REPELLENT,
-                MemoryModuleType.NEAREST_VISIBLE_NEMESIS,
 
                 MemoryModuleType.DOORS_TO_CLOSE,
                 MemoryModuleType.ANGRY_AT,

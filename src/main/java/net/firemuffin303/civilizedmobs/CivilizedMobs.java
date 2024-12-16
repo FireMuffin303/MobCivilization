@@ -1,9 +1,7 @@
 package net.firemuffin303.civilizedmobs;
 
-import com.eliotlash.mclib.math.functions.classic.Mod;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -14,7 +12,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.fabricmc.loader.api.FabricLoader;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
 import net.firemuffin303.civilizedmobs.common.event.ModServerEntityEvents;
@@ -34,21 +32,16 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.structure.StructureSet;
 import net.minecraft.structure.StructureSetKeys;
-import net.minecraft.structure.StructureSets;
-import net.minecraft.structure.pool.SinglePoolElement;
 import net.minecraft.structure.pool.StructurePool;
 import net.minecraft.structure.pool.StructurePoolElement;
-import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.Pool;
-import net.minecraft.village.raid.Raid;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.StructureSpawns;
 import net.minecraft.world.biome.SpawnSettings;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureKeys;
-import net.minecraft.world.gen.structure.Structures;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;

@@ -130,6 +130,11 @@ public class PiglinQuestBrain {
                 return optionalLivingEntity;
             }
 
+            Optional<LivingEntity> optionalHurtBy = brain.getOptionalRegisteredMemory(MemoryModuleType.HURT_BY_ENTITY);
+            if(optionalHurtBy.isPresent()){
+                return optionalHurtBy;
+            }
+
             Optional<MobEntity> nemesis = brain.getOptionalRegisteredMemory(MemoryModuleType.NEAREST_VISIBLE_NEMESIS);
             if(nemesis.isPresent()){
                 return nemesis;
@@ -164,6 +169,8 @@ public class PiglinQuestBrain {
                 MemoryModuleType.NEAREST_PLAYERS,
                 MemoryModuleType.NEAREST_VISIBLE_PLAYER,
                 MemoryModuleType.NEAREST_VISIBLE_WANTED_ITEM,
+                MemoryModuleType.HURT_BY,
+                MemoryModuleType.HURT_BY_ENTITY,
                 //Navigation
                 MemoryModuleType.LOOK_TARGET,
                 MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE,

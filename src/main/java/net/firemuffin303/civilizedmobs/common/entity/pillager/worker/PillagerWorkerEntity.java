@@ -1,4 +1,4 @@
-package net.firemuffin303.civilizedmobs.common.entity.pillager;
+package net.firemuffin303.civilizedmobs.common.entity.pillager.worker;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.logging.LogUtils;
@@ -9,7 +9,6 @@ import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.ModPanicTask;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.entity.*;
@@ -27,10 +26,11 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.IllagerEntity;
-import net.minecraft.entity.mob.PiglinBrain;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.RangedWeaponItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
@@ -44,8 +44,9 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.*;
+import net.minecraft.world.LocalDifficulty;
+import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
@@ -265,6 +266,14 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         }
     }
 
+    @Override
+    public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
+        if(random.nextFloat() > 0.5f){
+            this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
+        }
+        return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    }
+
     //Disable Despawn
     @Override
     public boolean canImmediatelyDespawn(double distanceSquared) {
@@ -326,9 +335,20 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     }
 
     //Crossbow User
+
     @Override
     public void setCharging(boolean charging) {
+        LogUtils.getLogger().info(charging + "");
         this.dataTracker.set(CHARGING,charging);
+    }
+    @Override
+    public boolean canUseRangedWeapon(RangedWeaponItem weapon) {
+        return weapon == Items.CROSSBOW;
+    }
+
+    @Override
+    public @Nullable LivingEntity getTarget() {
+        return this.brain.getOptionalRegisteredMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
     }
 
     @Override

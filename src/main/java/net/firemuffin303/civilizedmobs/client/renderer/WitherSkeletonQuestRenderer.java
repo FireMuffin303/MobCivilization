@@ -1,7 +1,6 @@
 package net.firemuffin303.civilizedmobs.client.renderer;
 
 import net.firemuffin303.civilizedmobs.client.renderer.model.WitherSkeletonQuestEntityModel;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -10,9 +9,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
 import net.minecraft.util.math.RotationAxis;
-import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.model.GeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import software.bernie.geckolib.renderer.layer.BlockAndItemGeoLayer;
 
