@@ -5,7 +5,7 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "civil_mobs:village/pillager_outpost/town_centers/central_tower_01",
         "processors": "minecraft:empty",
-        "projection": "terrain_matching"
+        "projection": "rigid"
       },
       "weight": 1
     },
@@ -14,7 +14,7 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "civil_mobs:village/pillager_outpost/town_centers/central_tower_02",
         "processors": "minecraft:empty",
-        "projection": "terrain_matching"
+        "projection": "rigid"
       },
       "weight": 1
     }

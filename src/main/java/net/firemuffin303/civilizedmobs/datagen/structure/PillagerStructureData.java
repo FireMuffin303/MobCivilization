@@ -35,6 +35,9 @@ public class PillagerStructureData {
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_STREETS = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/streets"));
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_TERMINATORS = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/terminators"));
 
+    public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_LEADER = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/pillager_leader"));
+    public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_WORKER = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/pillager_worker"));
+
     public static void structureBootstrap(Registerable<Structure> registerable){
         registerable.register(PILLAGE_VILLAGE,new JigsawStructure(
                 new Structure.Config(
@@ -100,21 +103,39 @@ public class PillagerStructureData {
                 ImmutableList.of(
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/corner_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/corner_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/corner_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/crossroad_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/crossroad_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/crossroad_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_03",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_04",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_05",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/streets/straight_06",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
                 ),StructurePool.Projection.TERRAIN_MATCHING));
 
         registerable.register(PILLAGE_VILLAGE_TOWER,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/town_centers/central_tower_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/town_centers/central_tower_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
-                ),StructurePool.Projection.TERRAIN_MATCHING));
+                ),StructurePool.Projection.RIGID));
 
         registerable.register(PILLAGE_VILLAGE_TERMINATORS,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
                 ImmutableList.of(
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/terminators/terminator_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/terminators/terminator_02",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
                 ), StructurePool.Projection.TERRAIN_MATCHING));
+
+        registerable.register(PILLAGE_VILLAGE_LEADER,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
+                ImmutableList.of(
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/entity/leader",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
+                ),StructurePool.Projection.RIGID));
+
+        registerable.register(PILLAGE_VILLAGE_WORKER,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
+                ImmutableList.of(
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/entity/worker",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
+                ),StructurePool.Projection.RIGID));
     }
 
     public static void dataGen(RegistryWrapper.WrapperLookup wrapperLookup, FabricDynamicRegistryProvider.Entries entries){
@@ -127,6 +148,8 @@ public class PillagerStructureData {
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_HOUSES);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_INDOOR_DECOR);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_TERMINATORS);
+        entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_LEADER);
+        entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_WORKER);
     }
 
 }
