@@ -10,6 +10,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.structure.StructureSet;
+import net.minecraft.structure.StructureSetKeys;
+import net.minecraft.structure.StructureSets;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.structure.pool.LegacySinglePoolElement;
 import net.minecraft.structure.pool.StructurePool;
@@ -18,19 +20,23 @@ import net.minecraft.structure.pool.StructurePools;
 import net.minecraft.structure.processor.StructureProcessorList;
 import net.minecraft.structure.processor.StructureProcessorLists;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.StructureTerrainAdaptation;
 import net.minecraft.world.gen.YOffset;
 import net.minecraft.world.gen.chunk.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.gen.chunk.placement.SpreadType;
+import net.minecraft.world.gen.chunk.placement.StructurePlacement;
 import net.minecraft.world.gen.feature.*;
 import net.minecraft.world.gen.heightprovider.ConstantHeightProvider;
 import net.minecraft.world.gen.stateprovider.BlockStateProvider;
 import net.minecraft.world.gen.structure.JigsawStructure;
 import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.world.gen.structure.StructureKeys;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 public class StructureData {
@@ -92,7 +98,8 @@ public class StructureData {
 
     public static void structureSetBootstrap(Registerable<StructureSet> registerable){
         RegistryEntryLookup<Structure> structureLookup = registerable.getRegistryLookup(RegistryKeys.STRUCTURE);
-        registerable.register(NETHER_VILLAGE,new StructureSet(structureLookup.getOrThrow(StructureData.PIGLIN_VILLAGE),new RandomSpreadStructurePlacement(34,8, SpreadType.LINEAR,10387312)));
+        RegistryEntryLookup<StructureSet> structureSetLookup = registerable.getRegistryLookup(RegistryKeys.STRUCTURE_SET);
+        registerable.register(NETHER_VILLAGE,new StructureSet(structureLookup.getOrThrow(StructureData.PIGLIN_VILLAGE),new RandomSpreadStructurePlacement(Vec3i.ZERO, StructurePlacement.FrequencyReductionMethod.LEGACY_TYPE_1,0.2f,10387312, Optional.of(new StructurePlacement.ExclusionZone(structureSetLookup.getOrThrow(StructureSetKeys.NETHER_COMPLEXES),10)),34,8, SpreadType.LINEAR)));
     }
 
     public static void bootstrap(Registerable<StructurePool> registerable){

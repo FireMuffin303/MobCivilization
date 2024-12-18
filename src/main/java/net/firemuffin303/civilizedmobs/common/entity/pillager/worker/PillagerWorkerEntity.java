@@ -268,9 +268,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
 
     @Override
     public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
-        if(random.nextFloat() > 0.5f){
-            this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
-        }
+        this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 

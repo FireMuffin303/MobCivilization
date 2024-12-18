@@ -37,6 +37,7 @@ public class PillagerStructureData {
 
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_LEADER = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/pillager_leader"));
     public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_WORKER = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/pillager_worker"));
+    public static final RegistryKey<StructurePool> PILLAGE_VILLAGE_PILLAGER = RegistryKey.of(RegistryKeys.TEMPLATE_POOL,new Identifier(CivilizedMobs.MOD_ID,"village/pillager_outpost/pillagers"));
 
     public static void structureBootstrap(Registerable<Structure> registerable){
         registerable.register(PILLAGE_VILLAGE,new JigsawStructure(
@@ -78,7 +79,10 @@ public class PillagerStructureData {
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/shepherd_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/tool_smith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/general_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/general_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/generic_house_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/generic_house_02",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/generic_house_03",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1)
                 ),StructurePool.Projection.RIGID));
 
         registerable.register(PILLAGE_VILLAGE_INDOOR_DECOR,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
@@ -136,6 +140,12 @@ public class PillagerStructureData {
                 ImmutableList.of(
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/entity/worker",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
                 ),StructurePool.Projection.RIGID));
+
+        registerable.register(PILLAGE_VILLAGE_PILLAGER,new StructurePool(structurePoolLookup.getOrThrow(StructurePools.EMPTY),
+                ImmutableList.of(
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/entity/pillager",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),5),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/entity/vindicator",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1)
+                ),StructurePool.Projection.RIGID));
     }
 
     public static void dataGen(RegistryWrapper.WrapperLookup wrapperLookup, FabricDynamicRegistryProvider.Entries entries){
@@ -150,6 +160,7 @@ public class PillagerStructureData {
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_TERMINATORS);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_LEADER);
         entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_WORKER);
+        entries.add(wrapperLookup.getWrapperOrThrow(RegistryKeys.TEMPLATE_POOL),PILLAGE_VILLAGE_PILLAGER);
     }
 
 }
