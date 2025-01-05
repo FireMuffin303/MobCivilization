@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.gamerule.v1.GameRuleRegistry;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.firemuffin303.civilizedmobs.api.CivilizedMobTraderHelper;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.quest.PiglinQuestEntity;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
@@ -37,6 +38,7 @@ import net.minecraft.structure.pool.StructurePoolElement;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.Pool;
+import net.minecraft.village.TradeOffers;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.StructureSpawns;
 import net.minecraft.world.biome.SpawnSettings;
@@ -86,7 +88,6 @@ public class CivilizedMobs implements ModInitializer {
 
         if(FabricLoader.getInstance().isModLoaded("trinkets")){
             isTrinketsInstall = true;
-
         }
     }
 

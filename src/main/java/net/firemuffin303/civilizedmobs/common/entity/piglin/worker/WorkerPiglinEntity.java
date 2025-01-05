@@ -10,6 +10,7 @@ import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
+import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
@@ -68,6 +69,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 //TODO : Turn Worker Logic to Interface for easier entity Setup;
 public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant, WorkerContainer,CrossbowUser {
@@ -600,8 +602,13 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     }
 
     static {
-        POINTS_OF_INTEREST = ImmutableMap.of(MemoryModuleType.JOB_SITE, (civilizedPiglinEntity, registryEntry) -> {
-            return civilizedPiglinEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
+        POINTS_OF_INTEREST = ImmutableMap.of(
+                MemoryModuleType.JOB_SITE, (civilizedPiglinEntity, registryEntry) -> {
+                    return civilizedPiglinEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
+        },
+                MemoryModuleType.POTENTIAL_JOB_SITE,(workerPiglinEntity, registryEntry) -> {
+                    Predicate<RegistryEntry<PointOfInterestType>> IS_ACQUIRABLE_JOB_SITE = poi -> poi.isIn(ModTags.PIGLIN_ACQUIRABLE_JOB_SITE);
+                    return IS_ACQUIRABLE_JOB_SITE.test(registryEntry);
         });
 
         PIGLIN_DATA = DataTracker.registerData(WorkerPiglinEntity.class, ModEntityType.WORKER_DATA);

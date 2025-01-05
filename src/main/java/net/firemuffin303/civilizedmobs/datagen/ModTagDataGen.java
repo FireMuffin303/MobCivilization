@@ -118,13 +118,11 @@ public class ModTagDataGen {
             this.getOrCreateTagBuilder(ModTags.ILLAGER_ACQUIRABLE_JOB_SITE).add(
                     PointOfInterestTypes.ARMORER,
                     PointOfInterestTypes.BUTCHER,
-                    PointOfInterestTypes.CLERIC,
                     PointOfInterestTypes.CARTOGRAPHER,
                     PointOfInterestTypes.LEATHERWORKER,
                     PointOfInterestTypes.LIBRARIAN,
                     PointOfInterestTypes.WEAPONSMITH,
                     PointOfInterestTypes.TOOLSMITH,
-                    PointOfInterestTypes.FLETCHER,
                     PointOfInterestTypes.SHEPHERD
             );
 
@@ -159,13 +157,11 @@ public class ModTagDataGen {
             getOrCreateTagBuilder(ModTags.ILLAGER_PROFESSION).add(
                     VillagerProfession.ARMORER,
                     VillagerProfession.BUTCHER,
-                    VillagerProfession.CLERIC,
                     VillagerProfession.CARTOGRAPHER,
                     VillagerProfession.LEATHERWORKER,
                     VillagerProfession.LIBRARIAN,
                     VillagerProfession.WEAPONSMITH,
                     VillagerProfession.TOOLSMITH,
-                    VillagerProfession.FLETCHER,
                     VillagerProfession.SHEPHERD
             );
 

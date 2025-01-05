@@ -11,6 +11,7 @@ import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
+import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
@@ -50,6 +51,7 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
+import net.minecraft.world.poi.PointOfInterestTypes;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -62,12 +64,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class PillagerWorkerEntity extends IllagerEntity implements InteractionObserver, Merchant, WorkerContainer, CrossbowUser, GeoEntity {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<PillagerWorkerEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST =
-            ImmutableMap.of(MemoryModuleType.JOB_SITE,(workerEntity,registryEntry) ->{
-                return workerEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
-            });
+            ImmutableMap.of(
+                    MemoryModuleType.JOB_SITE,(workerEntity,registryEntry) ->{
+                        return workerEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
+                    },
+                    MemoryModuleType.HOME,(workerEntity,registryEntry) ->{
+                        return registryEntry.matchesKey(PointOfInterestTypes.HOME);
+                    },
+                    MemoryModuleType.POTENTIAL_JOB_SITE, (workerEntity,registryEntry) -> {
+                        return registryEntry.isIn(ModTags.ILLAGER_ACQUIRABLE_JOB_SITE);
+                    }
+            );
 
 
     private static final TrackedData<Boolean> CHARGING = DataTracker.registerData(PillagerWorkerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);

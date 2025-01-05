@@ -391,6 +391,43 @@ public class ModWorkerOffers {
        })) ;
     });
 
+    public static final Map<VillagerProfession,Map<Integer,List<TradeOffers.Factory>>> WITHER_TRADES = Util.make(Maps.newHashMap(),villagerProfessionMapHashMap -> {
+        villagerProfessionMapHashMap.put(VillagerProfession.ARMORER,Util.make(Maps.newHashMap(),integerListHashMap -> {
+            integerListHashMap.put(1,List.of(
+                    new TradeOffers.BuyForOneEmeraldFactory(Items.COAL,15,16,2),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.IRON_LEGGINGS),7,1,12,1,0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.IRON_BOOTS), 4, 1, 12, 1, 0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.IRON_HELMET), 5, 1, 12, 1, 0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.IRON_CHESTPLATE), 5, 1, 12, 1, 0.2F)
+            ));
+
+            integerListHashMap.put(2,List.of(
+                    new TradeOffers.BuyForOneEmeraldFactory(Items.IRON_INGOT, 4, 12, 10),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.BELL), 36, 1, 12, 5, 0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.CHAINMAIL_BOOTS), 1, 1, 12, 5, 0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.CHAINMAIL_LEGGINGS), 3, 1, 12, 5, 0.2F)
+            ));
+
+            integerListHashMap.put(3,List.of(
+                    new TradeOffers.BuyForOneEmeraldFactory(Items.LAVA_BUCKET, 1, 12, 20),
+                    new TradeOffers.BuyForOneEmeraldFactory(Items.DIAMOND, 1, 12, 20),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.CHAINMAIL_HELMET), 1, 1, 12, 10, 0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.CHAINMAIL_CHESTPLATE), 4, 1, 12, 10, 0.2F),
+                    new TradeOffers.SellItemFactory(new ItemStack(Items.SHIELD), 5, 1, 12, 10, 0.2F)
+            ));
+
+            integerListHashMap.put(4,List.of(
+                    new TradeOffers.SellEnchantedToolFactory(Items.DIAMOND_LEGGINGS, 14, 3, 15, 0.2F),
+                    new TradeOffers.SellEnchantedToolFactory(Items.DIAMOND_BOOTS, 8, 3, 15, 0.2F)
+            ));
+
+            integerListHashMap.put(5,List.of(
+                    new TradeOffers.SellEnchantedToolFactory(Items.DIAMOND_HELMET, 8, 3, 30, 0.2F),
+                    new TradeOffers.SellEnchantedToolFactory(Items.DIAMOND_CHESTPLATE, 16, 3, 30, 0.2F)
+            ));
+        })) ;
+    });
+
     public static final Map<Integer,List<TradeOffers.Factory>> PILLAGER_QUSET_OFFER = Util.make(Maps.newHashMap(), questMap ->{
         questMap.put(1,List.of(new QuestOfferFactory(Items.EMERALD,ModQuests.PILLAGER_QUEST)));
         questMap.put(2,List.of(new QuestOfferFactory(Items.EMERALD,ModQuests.PILLAGER_QUEST)));

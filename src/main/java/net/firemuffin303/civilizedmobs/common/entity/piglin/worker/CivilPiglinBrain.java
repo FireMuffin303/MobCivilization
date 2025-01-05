@@ -275,9 +275,11 @@ public class CivilPiglinBrain {
 
                 MemoryModuleType.LAST_WORKED_AT_POI);
 
-        POINTS_OF_INTEREST = ImmutableMap.of(MemoryModuleType.JOB_SITE,(civilizedPiglinEntity, registryEntry) -> {
+        POINTS_OF_INTEREST = ImmutableMap.of(
+                MemoryModuleType.JOB_SITE,(civilizedPiglinEntity, registryEntry) -> {
             return civilizedPiglinEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntry);
-        },MemoryModuleType.POTENTIAL_JOB_SITE,(workerPiglinEntity, registryEntry) -> {
+        },
+                MemoryModuleType.POTENTIAL_JOB_SITE,(workerPiglinEntity, registryEntry) -> {
             Predicate<RegistryEntry<PointOfInterestType>> IS_ACQUIRABLE_JOB_SITE = poi -> poi.isIn(ModTags.PIGLIN_ACQUIRABLE_JOB_SITE);
             return  IS_ACQUIRABLE_JOB_SITE.test(registryEntry);
         });
