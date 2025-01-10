@@ -75,7 +75,6 @@ public class PillagerStructureData {
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/armorer_02",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/butcher_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/cleric_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_20_PERCENT)),1),
-                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/flecther",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/shepherd_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/tool_smith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),

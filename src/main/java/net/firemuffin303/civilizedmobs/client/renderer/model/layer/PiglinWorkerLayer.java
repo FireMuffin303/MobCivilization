@@ -1,4 +1,4 @@
-package net.firemuffin303.civilizedmobs.client.renderer.model;
+package net.firemuffin303.civilizedmobs.client.renderer.model.layer;
 
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;

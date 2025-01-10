@@ -30,15 +30,6 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "civil_mobs:village/pillager_outpost/houses/flecther",
-        "processors": "minecraft:empty",
-        "projection": "rigid"
-      },
-      "weight": 1
-    },
-    {
-      "element": {
-        "element_type": "minecraft:legacy_single_pool_element",
         "location": "civil_mobs:village/pillager_outpost/houses/shepherd_01",
         "processors": "minecraft:mossify_10_percent",
         "projection": "rigid"

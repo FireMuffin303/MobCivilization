@@ -181,7 +181,6 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         ServerWorld serverWorld = (ServerWorld) this.getWorld();
         serverWorld.getProfiler().push("workerBrain");
         this.getBrain().tick(serverWorld, this);
-
         this.getWorld().getProfiler().pop();
         // Level up when no Customer and timer is up.
         if (this.customer == null  && this.levelUpTimer > 0) {
@@ -201,6 +200,9 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
             this.getWorld().sendEntityStatus(this, (byte)14);
             this.lastCustomer = null;
         }
+
+        Brain<PillagerWorkerEntity> brain = this.getBrain();
+        this.setAttacking(brain.hasMemoryModule(MemoryModuleType.ATTACK_TARGET));
 
         //We don't need tickActivities for Schedule AI
         //PillagerWorkerBrain.tickActivities(this);
@@ -347,7 +349,6 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
 
     @Override
     public void setCharging(boolean charging) {
-        LogUtils.getLogger().info(charging + "");
         this.dataTracker.set(CHARGING,charging);
     }
     @Override
@@ -373,6 +374,10 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     @Override
     public void attack(LivingEntity target, float pullProgress) {
         this.shoot(this,1.6f);
+    }
+
+    public boolean isCharging() {
+        return this.dataTracker.get(CHARGING);
     }
 
     //------
@@ -579,4 +584,6 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.geoCache;
     }
+
+
 }

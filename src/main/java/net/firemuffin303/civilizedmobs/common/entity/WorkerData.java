@@ -2,7 +2,6 @@ package net.firemuffin303.civilizedmobs.common.entity;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.minecraft.registry.Registries;
 import net.minecraft.village.VillagerProfession;
 

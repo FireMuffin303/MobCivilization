@@ -14,8 +14,6 @@ public class DynamicDataGen extends FabricDynamicRegistryProvider {
 
     public DynamicDataGen(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
         super(output, registriesFuture);
-
-
     }
 
     @Override
