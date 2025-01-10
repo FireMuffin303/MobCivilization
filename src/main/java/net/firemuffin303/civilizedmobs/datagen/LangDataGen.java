@@ -27,11 +27,7 @@ public class LangDataGen extends FabricLanguageProvider {
         translationBuilder.add(ModEntityType.WITHER_SKELETON_QUEST,"Wither Skeleton Leader");
         translationBuilder.add("filled_map.fortress","Nether Fortress Map");
         translationBuilder.add("filled_map.bastion","Bastion Remnant Map");
-        translationBuilder.add("quest.level.0","Level 1");
-        translationBuilder.add("quest.level.1","Level 2");
-        translationBuilder.add("quest.level.2","Level 3");
-        translationBuilder.add("quest.level.3","Level 4");
-        translationBuilder.add("quest.level.4","Level 5");
+        translationBuilder.add("filled_map.ancient_city","Ancient City Map");
     }
 
     public static class ThaiLangDataGen extends FabricLanguageProvider{

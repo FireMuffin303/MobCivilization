@@ -1,3 +1,4 @@
-// 1.20.1	2025-01-10T12:54:58.8978741	Civilized Mobs/Tags for minecraft:worldgen/structure
+// 1.20.1	2025-01-10T20:44:01.3964444	Civilized Mobs/Tags for minecraft:worldgen/structure
 3fe670d5faa319ca3f6480b99b665cc166353f65 data\civil_mobs\tags\worldgen\structure\on_bastion_explorer_map.json
 9749763d109cd219e80278cbce4185ddc6f23ce7 data\civil_mobs\tags\worldgen\structure\on_fortress_explorer_map.json
+cbbd9c5bec1b7033f293b4f4ee442da0ea8d7511 data\civil_mobs\tags\worldgen\structure\on_ancient_city_explorer_map.json

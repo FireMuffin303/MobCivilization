@@ -49,6 +49,7 @@ public class ModTagDataGen {
         protected void configure(RegistryWrapper.WrapperLookup wrapperLookup) {
             this.getOrCreateTagBuilder(ModTags.ON_NETHER_FORTRESS_EXPLORER_MAP).add(StructureKeys.FORTRESS);
             this.getOrCreateTagBuilder(ModTags.ON_BASTION_EXPLORER_MAP).add(StructureKeys.BASTION_REMNANT);
+            this.getOrCreateTagBuilder(ModTags.ON_ANCIENT_CITY_EXPLORER_MAP).add(StructureKeys.ANCIENT_CITY);
         }
     }
 

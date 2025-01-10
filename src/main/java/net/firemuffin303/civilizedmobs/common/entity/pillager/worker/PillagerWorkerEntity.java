@@ -9,6 +9,7 @@ import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.IllagerTradeOffers;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
@@ -444,7 +445,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     @Override
     public void fillTrade() {
         WorkerData workerData = this.getWorkerData();
-        Map<Integer, List<TradeOffers.Factory>> integerListMap = ModWorkerOffers.PILLAGER_TRADES.get(workerData.getProfession());
+        Map<Integer, List<TradeOffers.Factory>> integerListMap = IllagerTradeOffers.WORKER_TRADES.get(workerData.getProfession());
         if(integerListMap == null){ return; }
         List<TradeOffers.Factory> factories = integerListMap.get(workerData.getLevel());
         if(!factories.isEmpty()){

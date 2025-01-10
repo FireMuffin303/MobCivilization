@@ -35,10 +35,10 @@ public class CivilizedMobTraderHelper {
     public static void addPillagerWorkerTrade(VillagerProfession profession, int level, Consumer<List<TradeOffers.Factory>> factory){
         List<TradeOffers.Factory> newFactory = new ArrayList<>();
         factory.accept(newFactory);
-        Map<Integer,List<TradeOffers.Factory>> fa = ModWorkerOffers.PILLAGER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>());
+        Map<Integer,List<TradeOffers.Factory>> fa = IllagerTradeOffers.WORKER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>());
         List<TradeOffers.Factory> factories = new ArrayList<>(fa.computeIfAbsent(level, key -> new ArrayList<>()));
         factories.addAll(newFactory);
-        ModWorkerOffers.PILLAGER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>()).put(level,newFactory);
+        IllagerTradeOffers.WORKER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>()).put(level,newFactory);
     }
 
     public static void addPillagerQuestTrade(int level, Consumer<List<TradeOffers.Factory>> factory){

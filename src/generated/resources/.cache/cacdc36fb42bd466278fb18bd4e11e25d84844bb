@@ -1,4 +1,4 @@
-// 1.20.1	2025-01-10T12:54:58.8952111	Civilized Mobs/civil_mobs
+// 1.20.1	2025-01-10T20:44:01.3943732	Civilized Mobs/civil_mobs
 4e999b4eb4eef3f8ec2a88ef4f944704b4e31a8c data\civil_mobs\worldgen\template_pool\village\piglin\terminators.json
 e9bc29b3970fa954ff6c43b2dbc7eaae91d8e312 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\indoor_decor.json
 7da3e5a0f8cf771eaff0e726ae80156bf399f796 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\bell_towers.json
@@ -10,11 +10,11 @@ a23bc220bf74fa6c371ffe4ce45d33b9c80de86e data\civil_mobs\worldgen\template_pool\
 3ad5eaff5a21a1da627a0529d1e5e4fa6ec5e014 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\streets.json
 96c90a6fbb527d66d3ea82618dc780fe75bb790e data\civil_mobs\worldgen\configured_feature\pile_nether_wart_block.json
 9c6503ca779cbd4dd63618b49a672077b7a65347 data\civil_mobs\worldgen\structure\pillage_village.json
-a3ec1c5d2a513bdf624b186f9f13b24f13cbee2f data\civil_mobs\worldgen\template_pool\village\pillager_outpost\terminators.json
 cb2c8f63361bed408a68fe0ffa17c693ea4b23d5 data\civil_mobs\worldgen\template_pool\village\piglin\decor.json
 85b8a44c43dfba3f0eb18f79430e6744fe017714 data\civil_mobs\worldgen\template_pool\village\piglin\entity\animals.json
-dfea005dd43cd914f3103c6c85644bb95704323f data\civil_mobs\worldgen\template_pool\village\pillager_outpost\pillager_worker.json
+a3ec1c5d2a513bdf624b186f9f13b24f13cbee2f data\civil_mobs\worldgen\template_pool\village\pillager_outpost\terminators.json
 3589be9dc795003b48ea87de7d03e1bb85c8f913 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\base_plate.json
+dfea005dd43cd914f3103c6c85644bb95704323f data\civil_mobs\worldgen\template_pool\village\pillager_outpost\pillager_worker.json
 a13c549df0724e7aff6d2cd54f95aff73e0e9881 data\civil_mobs\worldgen\placed_feature\pile_warped_wart_block.json
 4211a8c1256720bb8ad4bc6561f0983c36880571 data\civil_mobs\worldgen\template_pool\village\pillager_outpost\decor.json
 892b0f411b944f5ac0f48984c5d6b7baabaad08f data\civil_mobs\worldgen\structure\piglin_village.json

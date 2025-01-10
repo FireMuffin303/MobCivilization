@@ -28,6 +28,7 @@ public class ModTags {
 
     public static TagKey<Structure> ON_NETHER_FORTRESS_EXPLORER_MAP = register(RegistryKeys.STRUCTURE,"on_fortress_explorer_map");
     public static TagKey<Structure> ON_BASTION_EXPLORER_MAP = register(RegistryKeys.STRUCTURE,"on_bastion_explorer_map");
+    public static TagKey<Structure> ON_ANCIENT_CITY_EXPLORER_MAP = register(RegistryKeys.STRUCTURE,"on_ancient_city_explorer_map");
 
     public static <T> TagKey<T> register(RegistryKey<Registry<T>> registryKey,String id){
         return TagKey.of(registryKey,new Identifier(CivilizedMobs.MOD_ID,id));

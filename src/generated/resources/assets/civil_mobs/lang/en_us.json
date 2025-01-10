@@ -6,6 +6,7 @@
   "entity.civil_mobs.pillager_worker": "Pillager Worker",
   "entity.civil_mobs.wither_skeleton_leader": "Wither Skeleton Leader",
   "entity.civil_mobs.wither_skeleton_worker": "Wither Skeleton Worker",
+  "filled_map.ancient_city": "Ancient City Map",
   "filled_map.bastion": "Bastion Remnant Map",
   "filled_map.fortress": "Nether Fortress Map",
   "item.civil_mobs.piglin_leader_spawn_egg": "Piglin Leader Spawn Egg",
@@ -13,10 +14,5 @@
   "item.civil_mobs.pillager_leader_spawn_egg": "Pillager Leader Spawn Egg",
   "item.civil_mobs.pillager_worker_spawn_egg": "Pillager Worker Spawn Egg",
   "item.civil_mobs.wither_skeleton_leader_spawn_egg": "Wither Skeleton Leader Spawn Egg",
-  "item.civil_mobs.wither_skeleton_worker_spawn_egg": "Wither Skeleton Worker Spawn Egg",
-  "quest.level.0": "Level 1",
-  "quest.level.1": "Level 2",
-  "quest.level.2": "Level 3",
-  "quest.level.3": "Level 4",
-  "quest.level.4": "Level 5"
+  "item.civil_mobs.wither_skeleton_worker_spawn_egg": "Wither Skeleton Worker Spawn Egg"
 }
