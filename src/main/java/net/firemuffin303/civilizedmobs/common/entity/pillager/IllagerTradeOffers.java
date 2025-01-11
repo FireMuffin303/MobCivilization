@@ -150,7 +150,7 @@ public class IllagerTradeOffers {
                     new TradeOffers.BuyForOneEmeraldFactory(Items.CHICKEN,15,16,2),
                     new TradeOffers.BuyForOneEmeraldFactory(Items.PORKCHOP,7,16,2),
                     new TradeOffers.BuyForOneEmeraldFactory(Items.RABBIT,4,16,2),
-                    new TradeOffers.SellItemFactory(Items.RABBIT_STEW,1,16,2)
+                    new TradeOffers.SellItemFactory(Items.RABBIT_STEW,1,1,2)
             ));
 
             integerListHashMap.put(2,List.of(
