@@ -2,6 +2,7 @@ package net.firemuffin303.civilizedmobs.api;
 
 import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.IllagerTradeOffers;
+import net.minecraft.potion.Potion;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
 import org.apache.commons.lang3.ArrayUtils;
@@ -79,6 +80,20 @@ public class CivilizedMobTraderHelper {
         factory.accept(list);
         TradeOffers.Factory[] allEntries = ArrayUtils.addAll(original,list.toArray(new TradeOffers.Factory[0]));
         IllagerTradeOffers.ILLUSIONER_TRADES.put(level,allEntries);
+    }
+
+    public static void addWitchTrader(int level,Consumer<List<TradeOffers.Factory>> factory){
+        List<TradeOffers.Factory> list = new ArrayList<>();
+        TradeOffers.Factory[] original = IllagerTradeOffers.WITCH_TRADES.computeIfAbsent(level,(key) -> new TradeOffers.Factory[0]);
+        factory.accept(list);
+        TradeOffers.Factory[] allEntries = ArrayUtils.addAll(original,list.toArray(new TradeOffers.Factory[0]));
+        IllagerTradeOffers.WITCH_TRADES.put(level,allEntries);
+    }
+
+    public static void addWitchSellPotion(Potion... potion){
+        List<Potion> potions = new ArrayList<>(IllagerTradeOffers.WITCH_POTIONS);
+        potions.addAll(List.of(potion));
+        IllagerTradeOffers.WITCH_POTIONS = potions;
     }
 
 

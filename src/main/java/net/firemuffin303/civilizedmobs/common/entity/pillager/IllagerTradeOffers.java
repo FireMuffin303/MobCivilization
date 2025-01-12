@@ -15,6 +15,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.map.MapIcon;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionUtil;
+import net.minecraft.potion.Potions;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.StructureTags;
 import net.minecraft.util.Util;
@@ -26,10 +29,14 @@ import net.minecraft.village.VillagerProfession;
 import net.minecraft.village.raid.Raid;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class IllagerTradeOffers {
+    public static List<Potion> WITCH_POTIONS = List.of(Potions.WATER_BREATHING,Potions.FIRE_RESISTANCE,Potions.HEALING,Potions.SWIFTNESS,Potions.SLOWNESS,Potions.POISON,Potions.WEAKNESS);
+
     public static final Int2ObjectMap<TradeOffers.Factory[]> EVOKER_TRADES = new Int2ObjectArrayMap<>(
             ImmutableMap.of(
                     1, new TradeOffers.Factory[]{
@@ -58,14 +65,9 @@ public class IllagerTradeOffers {
                             new TradeOffers.SellItemFactory(Items.ARROW,4,10,5,1),
                             new TradeOffers.SellItemFactory(Items.CROSSBOW,10,1,5,1),
                             new TradeOffers.ProcessItemFactory(Items.GRAVEL,1,Items.FLINT,1,16,1),
-                            new TradeOffers.SellItemFactory(Items.IRON_INGOT,8,8,5,1),
-                            new TradeOffers.SellItemFactory(Items.GLOWSTONE_DUST,2,8,10,1),
-                            new TradeOffers.SellItemFactory(Items.NAUTILUS_SHELL,2,1,5,1),
-                            new TradeOffers.SellItemFactory(Items.SCUTE,2,1,5,1),
-                            new TradeOffers.SellItemFactory(Items.CARVED_PUMPKIN,2,1,5,1),
-                            new TradeOffers.SellItemFactory(Items.REDSTONE,1,8,5,1),
-                            new TradeOffers.SellItemFactory(Items.LAPIS_LAZULI,2,4,8,1),
-                            new TradeOffers.SellItemFactory(Items.BLAZE_POWDER,8,2,3,1),
+                            new TradeOffers.BuyForOneEmeraldFactory(Items.FLINT,28,12,1),
+                            new TradeOffers.BuyForOneEmeraldFactory(Items.STICK,32,12,1),
+                            new TradeOffers.SellPotionHoldingItemFactory(Items.ARROW,5,Items.TIPPED_ARROW,5,2,32,12),
                     },
                     2,new TradeOffers.Factory[]{
                             new TradeOffers.SellEnchantedToolFactory(Items.CROSSBOW,16,1,10)
@@ -105,6 +107,23 @@ public class IllagerTradeOffers {
                     },
                     2,new TradeOffers.Factory[]{
                             new TradeOffers.SellEnchantedToolFactory(Items.BOW,16,1,10)
+                    }
+            )
+    );
+
+    public static final Int2ObjectMap<TradeOffers.Factory[]> WITCH_TRADES = new Int2ObjectArrayMap<>(
+            ImmutableMap.of(
+                    1, new TradeOffers.Factory[]{
+                            new TradeOffers.BuyForOneEmeraldFactory(Items.NETHER_WART,32,12,5),
+                            new TradeOffers.BuyForOneEmeraldFactory(Items.GLOWSTONE_DUST,4,12,5),
+                            new TradeOffers.BuyForOneEmeraldFactory(Items.RED_MUSHROOM,8,12,5),
+                            new TradeOffers.BuyForOneEmeraldFactory(Items.BROWN_MUSHROOM,8,12,5),
+                            new TradeOffers.SellItemFactory(Items.LAPIS_LAZULI,2,4,8,1),
+                            new TradeOffers.SellItemFactory(Items.SCUTE,8,2,8,1)
+                    },
+                    2,new TradeOffers.Factory[]{
+                            new WitchPotionFactory(10),
+                            new WitchPotionFactory(10)
                     }
             )
     );
@@ -409,6 +428,22 @@ public class IllagerTradeOffers {
             ));
         }));
     });
+
+    public static class WitchPotionFactory implements TradeOffers.Factory{
+        private final int experience;
+
+        public WitchPotionFactory(int experience){
+            this.experience = experience;
+        }
+
+        @Override
+        public @Nullable TradeOffer create(Entity entity, Random random) {
+            List<Potion> potions = new ArrayList<>(IllagerTradeOffers.WITCH_POTIONS);
+            Collections.shuffle(potions);
+            Potion potion = potions.get(0);
+            return new TradeOffer(new ItemStack(Items.EMERALD,32 ),new ItemStack(Items.NETHER_WART,1),PotionUtil.setPotion(new ItemStack(Items.POTION),potion),12,this.experience,0.2f);
+        }
+    }
 
     public static class ToolEnchantBookFactory implements TradeOffers.Factory{
         private final int experience;
