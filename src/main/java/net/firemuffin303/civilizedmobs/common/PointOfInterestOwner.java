@@ -1,6 +1,5 @@
 package net.firemuffin303.civilizedmobs.common;
 
-import com.mojang.logging.LogUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.poi.PointOfInterest;

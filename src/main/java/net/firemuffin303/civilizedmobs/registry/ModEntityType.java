@@ -1,5 +1,7 @@
 package net.firemuffin303.civilizedmobs.registry;
 
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.fabric.impl.object.builder.FabricEntityType;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
@@ -10,6 +12,7 @@ import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherS
 import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.worker.WitherSkeletonWorkerEntity;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.data.TrackedDataHandler;
@@ -33,44 +36,44 @@ public class ModEntityType {
     };
 
     public static EntityType<WorkerPiglinEntity> PIGLIN_WORKER = register("piglin_worker",
-            EntityType.Builder.create(WorkerPiglinEntity::new, SpawnGroup.MISC)
-                    .setDimensions(0.6f,1.95f)
-                    .maxTrackingRange(8)
-                    .build("piglin_worker"));
+            FabricEntityTypeBuilder.create(SpawnGroup.MISC,WorkerPiglinEntity::new)
+                    .dimensions(new EntityDimensions(0.6f,1.95f,true))
+                    .trackRangeBlocks(8)
+                    .build());
 
     public static EntityType<PiglinQuestEntity> PIGLIN_LEADER_ENTITY = register("piglin_leader",
-            EntityType.Builder.create(PiglinQuestEntity::new,SpawnGroup.MISC)
-                    .setDimensions(1.5f,2.55f)
-                    .maxTrackingRange(8)
-                    .build("piglin_leader")
+            FabricEntityTypeBuilder.create(SpawnGroup.MISC,PiglinQuestEntity::new)
+                    .dimensions(new EntityDimensions(1.5f,2.55f,true))
+                    .trackRangeBlocks(8)
+                    .build()
             );
 
     public static EntityType<PillagerWorkerEntity> PILLAGER_WORKER = register("pillager_worker",
-            EntityType.Builder.create(PillagerWorkerEntity::new,SpawnGroup.MISC)
-                    .setDimensions(0.6f,1.95f)
-                    .maxTrackingRange(8).build("pillager_worker")
+            FabricEntityTypeBuilder.create(SpawnGroup.MISC,PillagerWorkerEntity::new)
+                    .dimensions(new EntityDimensions(0.6f,1.95f,true))
+                    .trackRangeBlocks(8).build()
     );
 
     public static EntityType<PillagerQuestEntity> PILLAGER_LEADER = register("pillager_leader",
-            EntityType.Builder.create(PillagerQuestEntity::new,SpawnGroup.MISC)
-                    .setDimensions(0.6f,1.95f)
-                    .maxTrackingRange(8).build("pillager_leader")
+            FabricEntityTypeBuilder.create(SpawnGroup.MISC,PillagerQuestEntity::new)
+                    .dimensions(new EntityDimensions(0.6f,1.95f,true))
+                    .trackRangeBlocks(8).build()
     );
 
     public static EntityType<WitherSkeletonWorkerEntity> WITHER_SKELETON_WORKER = register("wither_skeleton_worker",
-            EntityType.Builder.create(WitherSkeletonWorkerEntity::new,SpawnGroup.MONSTER)
-                    .makeFireImmune()
-                    .allowSpawningInside(Blocks.WITHER_ROSE)
-                    .setDimensions(0.7F, 2.4F)
-                    .maxTrackingRange(8).build("wither_skeleton_worker")
+            FabricEntityTypeBuilder.create(SpawnGroup.MONSTER,WitherSkeletonWorkerEntity::new)
+                    .fireImmune()
+                    .specificSpawnBlocks(Blocks.WITHER_ROSE)
+                    .dimensions(new EntityDimensions(0.7F, 2.4F,true))
+                    .trackRangeBlocks(8).build()
     );
 
     public static EntityType<WitherSkeletonQuestEntity> WITHER_SKELETON_QUEST = register("wither_skeleton_leader",
-            EntityType.Builder.create(WitherSkeletonQuestEntity::new,SpawnGroup.MONSTER)
-                    .makeFireImmune()
-                    .allowSpawningInside(Blocks.WITHER_ROSE)
-                    .setDimensions(0.7F, 2.4F)
-                    .maxTrackingRange(8).build("wither_skeleton_leader")
+            FabricEntityTypeBuilder.create(SpawnGroup.MONSTER,WitherSkeletonQuestEntity::new)
+                    .fireImmune()
+                    .specificSpawnBlocks(Blocks.WITHER_ROSE)
+                    .dimensions(new EntityDimensions(0.7F, 2.4F,true))
+                    .trackRangeBlocks(8).build()
     );
 
     public static <T extends Entity> EntityType<T> register(String id, EntityType<T> entityType){

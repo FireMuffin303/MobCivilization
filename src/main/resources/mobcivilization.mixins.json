@@ -16,6 +16,7 @@
     "ominousBannerInteraction.VillagerEntityMixin",
     "ominousBannerInteraction.VillagerHostileSensorMixin",
     "ominousBannerInteraction.VindicatorEntityMixin",
+    "poi.BadOmenMixin",
     "poi.FindPointOfInterestTaskMixin",
     "poi.PointOfInterestMixin",
     "poi.RaidManagerMixin",
