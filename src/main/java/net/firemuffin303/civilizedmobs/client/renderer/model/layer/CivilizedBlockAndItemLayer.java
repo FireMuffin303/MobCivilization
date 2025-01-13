@@ -5,6 +5,7 @@ import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
@@ -28,6 +29,9 @@ public class CivilizedBlockAndItemLayer<T extends MobEntity & GeoAnimatable> ext
             case "right_arm_item" -> {
                 return animatable.isLeftHanded() ? animatable.getOffHandStack() : animatable.getMainHandStack();
             }
+            case "head" -> {
+                return animatable.getEquippedStack(EquipmentSlot.HEAD);
+            }
         }
         return super.getStackForBone(bone, animatable);
     }
@@ -37,6 +41,7 @@ public class CivilizedBlockAndItemLayer<T extends MobEntity & GeoAnimatable> ext
         return switch (bone.getName()) {
             case "right_arm_item" -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
             case "left_arm_item" -> ModelTransformationMode.THIRD_PERSON_LEFT_HAND;
+            case "head" -> ModelTransformationMode.HEAD;
             default -> super.getTransformTypeForStack(bone, stack, animatable);
         };
     }
@@ -55,8 +60,10 @@ public class CivilizedBlockAndItemLayer<T extends MobEntity & GeoAnimatable> ext
                 poseStack.translate(0.0, 0.125, 0.25);
                 poseStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
             }
+        } else if (stack == animatable.getEquippedStack(EquipmentSlot.HEAD)) {
+            poseStack.multiply(RotationAxis.POSITIVE_X.rotationDegrees(180.0F));
+            poseStack.scale(0.625F, -0.625F, -0.625F);
         }
-
 
         super.renderStackForBone(poseStack, bone, stack, animatable, bufferSource, partialTick, packedLight, packedOverlay);
     }

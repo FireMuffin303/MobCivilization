@@ -176,6 +176,7 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     @Override
     public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
         this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
+        this.setPatrolLeader(true);
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
@@ -387,6 +388,10 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     @Override
     public void attack(LivingEntity target, float pullProgress) {
         this.shoot(this,1.6f);
+    }
+
+    public boolean isCharging() {
+        return this.dataTracker.get(CHARGING);
     }
 
     //GeckoLib
