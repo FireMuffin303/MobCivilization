@@ -24,7 +24,7 @@ public class LangDataGen extends FabricLanguageProvider {
         translationBuilder.add(ModEntityType.PILLAGER_WORKER,"Pillager Worker");
         translationBuilder.add(ModEntityType.PILLAGER_LEADER,"Pillager Leader");
         translationBuilder.add(ModEntityType.WITHER_SKELETON_WORKER,"Wither Skeleton Worker");
-        translationBuilder.add(ModEntityType.WITHER_SKELETON_QUEST,"Wither Skeleton Leader");
+        translationBuilder.add(ModEntityType.WITHER_SKELETON_LEADER,"Wither Skeleton Leader");
         translationBuilder.add("filled_map.fortress","Nether Fortress Map");
         translationBuilder.add("filled_map.bastion","Bastion Remnant Map");
         translationBuilder.add("filled_map.ancient_city","Ancient City Map");

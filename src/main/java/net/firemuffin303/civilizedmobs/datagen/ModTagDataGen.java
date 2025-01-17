@@ -7,7 +7,6 @@ import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
-import net.minecraft.item.Items;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.tag.ItemTags;
@@ -20,7 +19,6 @@ import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureKeys;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -65,7 +63,7 @@ public class ModTagDataGen {
                     .add(EntityType.WITHER)
                     .add(EntityType.WITHER_SKELETON)
                     .add(ModEntityType.WITHER_SKELETON_WORKER)
-                    .add(ModEntityType.WITHER_SKELETON_QUEST);
+                    .add(ModEntityType.WITHER_SKELETON_LEADER);
 
             this.getOrCreateTagBuilder(ModTags.PIGLIN_SCARED_ZOMBIFIED)
                     .add(EntityType.ZOMBIFIED_PIGLIN)

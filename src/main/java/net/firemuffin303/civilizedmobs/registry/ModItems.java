@@ -19,7 +19,7 @@ public class ModItems {
     public static Item PILLAGER_LEADER_SPAWN_EGG = register("pillager_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.PILLAGER_LEADER,0x532F36,0xfff793,new Item.Settings()));
 
     public static Item WITHTER_SKELETON_WORKER_SPAWN_EGG = register("wither_skeleton_worker_spawn_egg",true,new SpawnEggItem(ModEntityType.WITHER_SKELETON_WORKER,0x141414,0xec9035,new Item.Settings()));
-    public static Item WITHTER_SKELETON_LEADER_SPAWN_EGG = register("wither_skeleton_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.WITHER_SKELETON_QUEST,0x141414,0xfff793,new Item.Settings()));
+    public static Item WITHTER_SKELETON_LEADER_SPAWN_EGG = register("wither_skeleton_leader_spawn_egg",true,new SpawnEggItem(ModEntityType.WITHER_SKELETON_LEADER,0x141414,0xfff793,new Item.Settings()));
 
 
     public static Item register(String id,boolean addToGroup,Item item){

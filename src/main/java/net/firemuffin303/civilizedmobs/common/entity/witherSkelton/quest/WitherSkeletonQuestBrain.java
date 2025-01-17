@@ -112,6 +112,8 @@ public class WitherSkeletonQuestBrain {
     }
 
     protected static void tickActivities(WitherSkeletonQuestEntity witherSkeletonQuestEntity){
+        Brain<WitherSkeletonQuestEntity> brain = witherSkeletonQuestEntity.getBrain();
+        witherSkeletonQuestEntity.setAttacking(brain.hasMemoryModule(MemoryModuleType.ATTACK_TARGET));
         witherSkeletonQuestEntity.getBrain().resetPossibleActivities(ImmutableList.of(Activity.FIGHT,Activity.IDLE));
     }
 

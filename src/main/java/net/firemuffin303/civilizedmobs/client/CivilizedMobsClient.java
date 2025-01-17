@@ -22,7 +22,7 @@ public class CivilizedMobsClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntityType.PILLAGER_WORKER, PillagerWorkerRenderer::new);
         EntityRendererRegistry.register(ModEntityType.PILLAGER_LEADER, PillagerLeaderRenderer::new);
         EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_WORKER, WitherSkeletonWorkerRenderer::new);
-        EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_QUEST, WitherSkeletonQuestRenderer::new);
+        EntityRendererRegistry.register(ModEntityType.WITHER_SKELETON_LEADER, WitherSkeletonQuestRenderer::new);
 
 
         if(CivilizedMobs.isTrinketsInstall){
