@@ -168,7 +168,9 @@ public class ModTagDataGen {
                     VillagerProfession.ARMORER,
                     VillagerProfession.BUTCHER,
                     VillagerProfession.WEAPONSMITH,
-                    VillagerProfession.TOOLSMITH
+                    VillagerProfession.TOOLSMITH,
+                    VillagerProfession.CLERIC,
+                    VillagerProfession.MASON
             );
 
 

@@ -4,6 +4,8 @@
     "minecraft:armorer",
     "minecraft:butcher",
     "minecraft:weaponsmith",
-    "minecraft:toolsmith"
+    "minecraft:toolsmith",
+    "minecraft:cleric",
+    "minecraft:mason"
   ]
 }

@@ -122,7 +122,6 @@ public class CivilizedMobs implements ModInitializer {
             ((StructureSpawnsAccessor)(Object)spawnMap.get(SpawnGroup.MONSTER)).setSpawns(Pool.of(entries));
             ((StructureConfigAccessor)(Object)fortressConfig).setSpawnOverrides(spawnMap);
             ((StructureAccessor) fortress).setConfig(fortressConfig);
-            LogUtils.getLogger().info(fortress.getStructureSpawns().get(SpawnGroup.MONSTER).spawns().getEntries().toString());
 
         }
     }

@@ -3,12 +3,11 @@ package net.firemuffin303.civilizedmobs.common.entity;
 import com.google.common.collect.Maps;
 import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
-import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.integration.muffinsQuest.ModQuests;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.firemuffin303.muffinsquestlib.common.item.QuestPaperItem;
 import net.firemuffin303.muffinsquestlib.common.quest.Quest;
-import net.firemuffin303.muffinsquestlib.common.registry.ModRegistries;
+import net.firemuffin303.muffinsquestlib.common.registry.QuestRegistries;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.EnchantmentLevelEntry;
@@ -703,11 +702,11 @@ public class ModWorkerOffers {
 
         @Override
         public @Nullable TradeOffer create(Entity entity, Random random) {
-            List<RegistryEntry.Reference<Quest>> quests = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).streamEntries().filter(questReference -> questReference.isIn(ModQuests.PIGLIN_QUEST)).toList();
+            List<RegistryEntry.Reference<Quest>> quests = entity.getWorld().getRegistryManager().get(QuestRegistries.QUEST_KEY).streamEntries().filter(questReference -> questReference.isIn(ModQuests.PIGLIN_QUEST)).toList();
 
             RegistryEntry.Reference<Quest> questReference = quests.get(random.nextInt(quests.size()-1));
 
-            Quest quest = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).get(questReference.registryKey().getValue());
+            Quest quest = entity.getWorld().getRegistryManager().get(QuestRegistries.QUEST_KEY).get(questReference.registryKey().getValue());
             int price;
             switch (quest.questRarity){
                 case UNCOMMON -> price = 24;
@@ -731,11 +730,11 @@ public class ModWorkerOffers {
 
         @Override
         public @Nullable TradeOffer create(Entity entity, Random random) {
-            List<RegistryEntry.Reference<Quest>> quests = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).streamEntries().filter(questReference -> questReference.isIn(this.questTagKey)).toList();
+            List<RegistryEntry.Reference<Quest>> quests = entity.getWorld().getRegistryManager().get(QuestRegistries.QUEST_KEY).streamEntries().filter(questReference -> questReference.isIn(this.questTagKey)).toList();
 
             RegistryEntry.Reference<Quest> questReference = quests.get(random.nextInt(quests.size()-1));
 
-            Quest quest = entity.getWorld().getRegistryManager().get(ModRegistries.QUEST_KEY).get(questReference.registryKey().getValue());
+            Quest quest = entity.getWorld().getRegistryManager().get(QuestRegistries.QUEST_KEY).get(questReference.registryKey().getValue());
             int price;
             int exp;
             switch (quest.questRarity){

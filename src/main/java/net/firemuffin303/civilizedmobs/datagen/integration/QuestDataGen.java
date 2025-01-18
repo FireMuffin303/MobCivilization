@@ -6,9 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.common.integration.muffinsQuest.ModQuests;
 import net.firemuffin303.muffinsquestlib.common.quest.Quest;
-import net.firemuffin303.muffinsquestlib.common.registry.ModRegistries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
+import net.firemuffin303.muffinsquestlib.common.registry.QuestRegistries;
 import net.minecraft.registry.RegistryWrapper;
 
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class QuestDataGen {
     public static class QuestTagProvider extends FabricTagProvider<Quest> {
         public QuestTagProvider(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registriesFuture) {
-            super(output, ModRegistries.QUEST_KEY, registriesFuture);
+            super(output, QuestRegistries.QUEST_KEY, registriesFuture);
         }
 
         @Override

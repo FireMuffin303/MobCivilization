@@ -8,7 +8,7 @@ import net.firemuffin303.civilizedmobs.datagen.integration.QuestDataGen;
 import net.firemuffin303.civilizedmobs.datagen.structure.FortressStructureData;
 import net.firemuffin303.civilizedmobs.datagen.structure.PillagerStructureData;
 import net.firemuffin303.civilizedmobs.datagen.structure.StructureData;
-import net.firemuffin303.muffinsquestlib.common.registry.ModRegistries;
+import net.firemuffin303.muffinsquestlib.common.registry.QuestRegistries;
 import net.minecraft.registry.RegistryBuilder;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
@@ -56,7 +56,7 @@ public class ModDataGen implements DataGeneratorEntrypoint {
         registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE,StructureData::placedFeatureBootstrap);
 
         //Quest Lib
-        registryBuilder.addRegistry(ModRegistries.QUEST_KEY, ModQuests::bootstrap);
+        registryBuilder.addRegistry(QuestRegistries.QUEST_KEY, ModQuests::bootstrap);
 
 
     }
