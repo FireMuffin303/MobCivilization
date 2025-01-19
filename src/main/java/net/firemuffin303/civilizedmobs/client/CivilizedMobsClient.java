@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
 import net.firemuffin303.civilizedmobs.client.renderer.*;
-import net.firemuffin303.civilizedmobs.client.renderer.model.WitherSkeletonWorkerEntityModel;
+import net.firemuffin303.civilizedmobs.client.renderer.model.witherSkeleton.WitherSkeletonWorkerEntityModel;
 import net.firemuffin303.civilizedmobs.client.renderer.trinkets.TrinketItemHeadRenderer;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.item.Items;

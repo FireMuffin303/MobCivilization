@@ -2,8 +2,10 @@
   "replace": false,
   "values": [
     "minecraft:armorer",
+    "minecraft:butcher",
     "minecraft:weaponsmith",
     "minecraft:toolsmith",
-    "minecraft:butcher"
+    "minecraft:cleric",
+    "minecraft:mason"
   ]
 }

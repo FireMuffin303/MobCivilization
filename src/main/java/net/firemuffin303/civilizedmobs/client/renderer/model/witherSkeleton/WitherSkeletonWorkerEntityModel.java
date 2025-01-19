@@ -1,4 +1,4 @@
-package net.firemuffin303.civilizedmobs.client.renderer.model;
+package net.firemuffin303.civilizedmobs.client.renderer.model.witherSkeleton;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

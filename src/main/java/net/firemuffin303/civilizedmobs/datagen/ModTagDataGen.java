@@ -127,9 +127,11 @@ public class ModTagDataGen {
 
             this.getOrCreateTagBuilder(ModTags.WITHER_SKELETON_ACQUIRABLE_JOB_SITE).add(
                     PointOfInterestTypes.ARMORER,
+                    PointOfInterestTypes.BUTCHER,
                     PointOfInterestTypes.WEAPONSMITH,
                     PointOfInterestTypes.TOOLSMITH,
-                    PointOfInterestTypes.BUTCHER
+                    PointOfInterestTypes.CLERIC,
+                    PointOfInterestTypes.MASON
             );
         }
     }

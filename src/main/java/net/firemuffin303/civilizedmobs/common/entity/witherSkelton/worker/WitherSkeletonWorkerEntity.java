@@ -39,6 +39,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.poi.PointOfInterestType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -46,7 +51,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 
-public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements InteractionObserver, Merchant, WorkerContainer {
+public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements InteractionObserver, Merchant, WorkerContainer, GeoEntity {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WitherSkeletonWorkerEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST =
             ImmutableMap.of(MemoryModuleType.JOB_SITE,(witherSkeletonEntity,registryEntity) ->{
                 return witherSkeletonEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntity);
@@ -69,6 +74,8 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
     private int experience;
     private VillagerGossips gossip;
     private long lastGossipDecayTime;
+
+    private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
     public WitherSkeletonWorkerEntity(EntityType<? extends WitherSkeletonEntity> entityType, World world) {
         super(entityType, world);
@@ -427,5 +434,15 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
     @Override
     public boolean canRefreshTrades() {
         return true;
+    }
+
+    //Geo
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return this.geoCache;
     }
 }
