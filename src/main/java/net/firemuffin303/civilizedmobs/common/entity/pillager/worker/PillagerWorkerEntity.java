@@ -1,11 +1,9 @@
 package net.firemuffin303.civilizedmobs.common.entity.pillager.worker;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
@@ -65,7 +63,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 public class PillagerWorkerEntity extends IllagerEntity implements InteractionObserver, Merchant, WorkerContainer, CrossbowUser, GeoEntity {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<PillagerWorkerEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST =

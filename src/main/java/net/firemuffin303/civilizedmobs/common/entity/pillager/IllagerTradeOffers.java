@@ -4,33 +4,22 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import net.firemuffin303.civilizedmobs.api.MobCivilizedOffersFactories;
+import net.firemuffin303.civilizedmobs.common.integration.muffinsQuest.ModQuests;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
 import net.minecraft.block.Blocks;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.item.EnchantedBookItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.map.MapIcon;
 import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
-import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.StructureTags;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
 import net.minecraft.village.raid.Raid;
-import org.jetbrains.annotations.Nullable;
+import net.firemuffin303.civilizedmobs.api.MobCivilizedOffersFactories.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -122,8 +111,8 @@ public class IllagerTradeOffers {
                             new TradeOffers.SellItemFactory(Items.SCUTE,8,2,8,1)
                     },
                     2,new TradeOffers.Factory[]{
-                            new WitchPotionFactory(10),
-                            new WitchPotionFactory(10)
+                            new MobCivilizedOffersFactories.WitchPotionFactory(10),
+                            new MobCivilizedOffersFactories.WitchPotionFactory(10)
                     }
             )
     );
@@ -255,20 +244,20 @@ public class IllagerTradeOffers {
             integerListHashMap.put(1,List.of(
                     new TradeOffers.BuyForOneEmeraldFactory(Items.PAPER, 24, 16, 2),
                     new TradeOffers.SellItemFactory(Blocks.BOOKSHELF.asItem(),9,1,12),
-                    new ToolEnchantBookFactory(1,Items.IRON_AXE)
+                    new MobCivilizedOffersFactories.ToolEnchantBookFactory(1,Items.IRON_AXE)
             ));
 
             integerListHashMap.put(2,List.of(
                     new TradeOffers.BuyForOneEmeraldFactory(Items.BOOK,4,12,10),
-                    new ToolEnchantBookFactory(5,Items.IRON_AXE),
-                    new ToolEnchantBookFactory(5,Items.CROSSBOW),
+                    new MobCivilizedOffersFactories.ToolEnchantBookFactory(5,Items.IRON_AXE),
+                    new MobCivilizedOffersFactories.ToolEnchantBookFactory(5,Items.CROSSBOW),
                     new TradeOffers.SellItemFactory(Items.LANTERN, 1, 1, 5)
             ));
 
             integerListHashMap.put(3,List.of(
                     new TradeOffers.BuyForOneEmeraldFactory(Items.INK_SAC, 5, 12, 20),
                     new TradeOffers.SellItemFactory(Items.GLASS, 1, 4, 10),
-                    new ToolEnchantBookFactory(5,Items.CROSSBOW)
+                    new MobCivilizedOffersFactories.ToolEnchantBookFactory(5,Items.CROSSBOW)
             ));
 
             integerListHashMap.put(4,List.of(
@@ -429,45 +418,13 @@ public class IllagerTradeOffers {
         }));
     });
 
-    public static class WitchPotionFactory implements TradeOffers.Factory{
-        private final int experience;
+    public static final Map<Integer,List<TradeOffers.Factory>> PILLAGER_QUSET_OFFER = Util.make(Maps.newHashMap(), questMap ->{
+        questMap.put(1,List.of(new QuestOfferFactory(Items.EMERALD, ModQuests.PILLAGER_QUEST)));
+        questMap.put(2,List.of(new QuestOfferFactory(Items.EMERALD,ModQuests.PILLAGER_QUEST)));
+        questMap.put(3,List.of(new QuestOfferFactory(Items.EMERALD,ModQuests.PILLAGER_QUEST)));
+        questMap.put(4,List.of(new QuestOfferFactory(Items.EMERALD,ModQuests.PILLAGER_QUEST)));
+        questMap.put(5,List.of(new QuestOfferFactory(Items.EMERALD,ModQuests.PILLAGER_QUEST)));
+    });
 
-        public WitchPotionFactory(int experience){
-            this.experience = experience;
-        }
 
-        @Override
-        public @Nullable TradeOffer create(Entity entity, Random random) {
-            List<Potion> potions = new ArrayList<>(IllagerTradeOffers.WITCH_POTIONS);
-            Collections.shuffle(potions);
-            Potion potion = potions.get(0);
-            return new TradeOffer(new ItemStack(Items.EMERALD,32 ),new ItemStack(Items.NETHER_WART,1),PotionUtil.setPotion(new ItemStack(Items.POTION),potion),12,this.experience,0.2f);
-        }
-    }
-
-    public static class ToolEnchantBookFactory implements TradeOffers.Factory{
-        private final int experience;
-        private final ItemStack itemStack;
-
-        public ToolEnchantBookFactory(int experience, Item item){
-            this.experience =experience;
-            this.itemStack = new ItemStack(item);
-        }
-
-        @Override
-        public @Nullable TradeOffer create(Entity entity, Random random) {
-            List<Enchantment> list = Registries.ENCHANTMENT.stream().filter(enchantment ->
-                    enchantment.isAvailableForEnchantedBookOffer() && enchantment.isAcceptableItem(this.itemStack) && enchantment != Enchantments.MENDING).toList();
-            Enchantment enchantment = list.get(random.nextInt(list.size()));
-            int i = MathHelper.nextInt(random, enchantment.getMinLevel(), enchantment.getMaxLevel());
-            ItemStack itemStack = EnchantedBookItem.forEnchantment(new EnchantmentLevelEntry(enchantment, i));
-            int j = 2 + random.nextInt(5 + i * 10) + 3 * i;
-            if (enchantment.isTreasure()) {
-                j *= 2;
-            }
-
-            j = Math.min(j,64);
-            return new TradeOffer(new ItemStack(Items.EMERALD, j), new ItemStack(Items.BOOK), itemStack, 12, this.experience, 0.2F);
-        }
-    }
 }

@@ -2,8 +2,7 @@ package net.firemuffin303.civilizedmobs.common.entity.piglin.quest;
 
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
-import net.firemuffin303.civilizedmobs.common.entity.piglin.worker.WorkerPiglinEntity;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinTradeOffers;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
 import net.minecraft.entity.*;
@@ -64,7 +63,7 @@ public class PiglinQuestEntity extends AbstractPiglinEntity implements GeoEntity
 
     public PiglinQuestEntity(EntityType<? extends AbstractPiglinEntity> entityType, World world) {
         super(entityType, world);
-        this.questData = new QuestData(this,ModWorkerOffers.PIGLIN_QUEST_OFFER);
+        this.questData = new QuestData(this, PiglinTradeOffers.PIGLIN_QUEST_OFFER);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }

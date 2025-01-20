@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
 import net.firemuffin303.civilizedmobs.common.entity.brain.WitherSkeletonNemesisSensor;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.WitherSkeletonTradeOffers;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.minecraft.entity.*;
@@ -40,7 +40,6 @@ import net.minecraft.world.poi.PointOfInterestType;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.util.GeckoLibUtil;
@@ -296,7 +295,7 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
     @Override
     public void fillTrade() {
         WorkerData workerData = this.getWorkerData();
-        Map<Integer, List<TradeOffers.Factory>> integerListMap = ModWorkerOffers.PIGLIN_TRADES.get(workerData.getProfession());
+        Map<Integer, List<TradeOffers.Factory>> integerListMap = WitherSkeletonTradeOffers.WITHER_TRADES.get(workerData.getProfession());
         if(integerListMap == null){ return; }
         List<TradeOffers.Factory> factories = integerListMap.get(workerData.getLevel());
         if(!factories.isEmpty()){

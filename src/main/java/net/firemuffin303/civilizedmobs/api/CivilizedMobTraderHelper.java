@@ -1,7 +1,8 @@
 package net.firemuffin303.civilizedmobs.api;
 
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinTradeOffers;
 import net.firemuffin303.civilizedmobs.common.entity.pillager.IllagerTradeOffers;
+import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.WitherSkeletonTradeOffers;
 import net.minecraft.potion.Potion;
 import net.minecraft.village.TradeOffers;
 import net.minecraft.village.VillagerProfession;
@@ -16,38 +17,20 @@ import java.util.function.Consumer;
 public class CivilizedMobTraderHelper {
 
     public static void addPiglinWorkerTrade(VillagerProfession profession, int level, Consumer<List<TradeOffers.Factory>> factory){
-        List<TradeOffers.Factory> newFactory = new ArrayList<>();
-        factory.accept(newFactory);
-        Map<Integer,List<TradeOffers.Factory>> fa = ModWorkerOffers.PIGLIN_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>());
-        List<TradeOffers.Factory> factories = new ArrayList<>(fa.computeIfAbsent(level, key -> new ArrayList<>()));
-        factories.addAll(newFactory);
-        ModWorkerOffers.PIGLIN_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>()).put(level,newFactory);
+        addWorkerTrade(PiglinTradeOffers.PIGLIN_TRADES,profession,level,factory);
     }
 
     public static void addPiglinQuestTrade(int level, Consumer<List<TradeOffers.Factory>> factory){
-        List<TradeOffers.Factory> newFactory = new ArrayList<>();
-        factory.accept(newFactory);
-        List<TradeOffers.Factory> factories = ModWorkerOffers.PIGLIN_QUEST_OFFER.computeIfAbsent(level,(key) -> new ArrayList<>());
-        factories.addAll(newFactory);
-        ModWorkerOffers.PIGLIN_QUEST_OFFER.put(level,factories);
+        addQuestTrade(PiglinTradeOffers.PIGLIN_QUEST_OFFER,level,factory);
     }
 
-    //Pillager
+    //---------Pillager------------
     public static void addPillagerWorkerTrade(VillagerProfession profession, int level, Consumer<List<TradeOffers.Factory>> factory){
-        List<TradeOffers.Factory> newFactory = new ArrayList<>();
-        factory.accept(newFactory);
-        Map<Integer,List<TradeOffers.Factory>> fa = IllagerTradeOffers.WORKER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>());
-        List<TradeOffers.Factory> factories = new ArrayList<>(fa.computeIfAbsent(level, key -> new ArrayList<>()));
-        factories.addAll(newFactory);
-        IllagerTradeOffers.WORKER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>()).put(level,newFactory);
+        addWorkerTrade(IllagerTradeOffers.WORKER_TRADES,profession,level,factory);
     }
 
     public static void addPillagerQuestTrade(int level, Consumer<List<TradeOffers.Factory>> factory){
-        List<TradeOffers.Factory> newFactory = new ArrayList<>();
-        factory.accept(newFactory);
-        List<TradeOffers.Factory> factories = ModWorkerOffers.PILLAGER_QUSET_OFFER.computeIfAbsent(level,(key) -> new ArrayList<>());
-        factories.addAll(newFactory);
-        ModWorkerOffers.PILLAGER_QUSET_OFFER.put(level,factories);
+        addQuestTrade(IllagerTradeOffers.PILLAGER_QUSET_OFFER,level,factory);
     }
 
     public static void addEvokerTrade(int level, Consumer<List<TradeOffers.Factory>> factory){
@@ -97,21 +80,30 @@ public class CivilizedMobTraderHelper {
     }
 
 
-    //Wither
+    //--------Wither---------------
     public static void addWitherWorkerTrade(VillagerProfession profession, int level, Consumer<List<TradeOffers.Factory>> factory){
-        List<TradeOffers.Factory> newFactory = new ArrayList<>();
-        factory.accept(newFactory);
-        Map<Integer,List<TradeOffers.Factory>> fa = ModWorkerOffers.WITHER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>());
-        List<TradeOffers.Factory> factories = new ArrayList<>(fa.computeIfAbsent(level, key -> new ArrayList<>()));
-        factories.addAll(newFactory);
-        ModWorkerOffers.WITHER_TRADES.computeIfAbsent(profession,(key) -> new HashMap<>()).put(level,newFactory);
+        addWorkerTrade(WitherSkeletonTradeOffers.WITHER_TRADES,profession,level,factory);
     }
 
     public static void addWitherQuestTrade(int level, Consumer<List<TradeOffers.Factory>> factory){
+        addQuestTrade(WitherSkeletonTradeOffers.WITHER_QUSET_OFFER,level,factory);
+    }
+
+    //--------------------
+    private static void addWorkerTrade(Map<VillagerProfession,Map<Integer, List<TradeOffers.Factory>>> villagerProfessionMapMap ,VillagerProfession profession, int level, Consumer<List<TradeOffers.Factory>> factory){
         List<TradeOffers.Factory> newFactory = new ArrayList<>();
         factory.accept(newFactory);
-        List<TradeOffers.Factory> factories = ModWorkerOffers.WITHER_QUSET_OFFER.computeIfAbsent(level,(key) -> new ArrayList<>());
+        Map<Integer,List<TradeOffers.Factory>> fa = villagerProfessionMapMap.computeIfAbsent(profession,(key) -> new HashMap<>());
+        List<TradeOffers.Factory> factories = new ArrayList<>(fa.computeIfAbsent(level, key -> new ArrayList<>()));
         factories.addAll(newFactory);
-        ModWorkerOffers.WITHER_QUSET_OFFER.put(level,factories);
+        villagerProfessionMapMap.computeIfAbsent(profession,(key) -> new HashMap<>()).put(level,factories);
+    }
+
+    private static void addQuestTrade(Map<Integer,List<TradeOffers.Factory>> trade,int level, Consumer<List<TradeOffers.Factory>> factory){
+        List<TradeOffers.Factory> newFactory = new ArrayList<>();
+        factory.accept(newFactory);
+        List<TradeOffers.Factory> factories = trade.computeIfAbsent(level,(key) -> new ArrayList<>());
+        factories.addAll(newFactory);
+        trade.put(level,factories);
     }
 }

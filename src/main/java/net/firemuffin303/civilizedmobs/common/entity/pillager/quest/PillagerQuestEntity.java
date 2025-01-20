@@ -2,14 +2,10 @@ package net.firemuffin303.civilizedmobs.common.entity.pillager.quest;
 
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.firemuffin303.civilizedmobs.common.entity.brain.IllagerHostileSensor;
-import net.firemuffin303.civilizedmobs.common.entity.brain.WitherSkeletonNemesisSensor;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.worker.PillagerWorkerEntity;
+import net.firemuffin303.civilizedmobs.common.entity.pillager.IllagerTradeOffers;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestContainer;
 import net.firemuffin303.civilizedmobs.common.entity.quest.QuestData;
-import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestBrain;
-import net.firemuffin303.civilizedmobs.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
@@ -73,7 +69,7 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
 
     public PillagerQuestEntity(EntityType<? extends IllagerEntity> entityType, World world) {
         super(entityType, world);
-        this.questData = new QuestData(this,ModWorkerOffers.PILLAGER_QUSET_OFFER);
+        this.questData = new QuestData(this, IllagerTradeOffers.PILLAGER_QUSET_OFFER);
         this.setPathfindingPenalty(PathNodeType.DANGER_FIRE,16.0f);
         this.setPathfindingPenalty(PathNodeType.DAMAGE_FIRE,-1);
     }

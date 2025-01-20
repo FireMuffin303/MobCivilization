@@ -4,10 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.civilizedmobs.CivilizedMobs;
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
+import net.firemuffin303.civilizedmobs.common.entity.piglin.PiglinTradeOffers;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerContainer;
 import net.firemuffin303.civilizedmobs.common.entity.WorkerData;
-import net.firemuffin303.civilizedmobs.common.entity.pillager.quest.PillagerQuestEntity;
 import net.firemuffin303.civilizedmobs.registry.ModEntityInteraction;
 import net.firemuffin303.civilizedmobs.registry.ModEntityType;
 import net.firemuffin303.civilizedmobs.registry.ModTags;
@@ -45,7 +44,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.village.*;
 import net.minecraft.world.LocalDifficulty;
@@ -509,7 +507,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     @Override
     public void fillTrade() {
         WorkerData workerData = this.getWorkerData();
-        Map<Integer,List<TradeOffers.Factory>> integerListMap = ModWorkerOffers.PIGLIN_TRADES.get(workerData.getProfession());
+        Map<Integer,List<TradeOffers.Factory>> integerListMap = PiglinTradeOffers.PIGLIN_TRADES.get(workerData.getProfession());
         if(integerListMap == null){ return; }
         List<TradeOffers.Factory> factories = integerListMap.get(workerData.getLevel());
         if(!factories.isEmpty()){

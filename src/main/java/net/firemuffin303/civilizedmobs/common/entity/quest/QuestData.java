@@ -1,7 +1,6 @@
 package net.firemuffin303.civilizedmobs.common.entity.quest;
 
 import com.google.common.collect.Maps;
-import net.firemuffin303.civilizedmobs.common.entity.ModWorkerOffers;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
