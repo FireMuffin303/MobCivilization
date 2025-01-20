@@ -1,0 +1,21 @@
+{
+  "entity.village_foe.piglin_leader": "Piglin Leader",
+  "entity.village_foe.piglin_worker": "Piglin Worker",
+  "entity.village_foe.pillager_leader": "Pillager Leader",
+  "entity.village_foe.pillager_worker": "Pillager Worker",
+  "entity.village_foe.wither_skeleton_leader": "Wither Skeleton Leader",
+  "entity.village_foe.wither_skeleton_worker": "Wither Skeleton Worker",
+  "filled_map.ancient_city": "Ancient City Map",
+  "filled_map.bastion": "Bastion Remnant Map",
+  "filled_map.fortress": "Nether Fortress Map",
+  "item.village_foe.piglin_leader_spawn_egg": "Piglin Leader Spawn Egg",
+  "item.village_foe.piglin_worker_spawn_egg": "Piglin Worker Spawn Egg",
+  "item.village_foe.pillager_leader_spawn_egg": "Pillager Leader Spawn Egg",
+  "item.village_foe.pillager_worker_spawn_egg": "Pillager Worker Spawn Egg",
+  "item.village_foe.wither_skeleton_leader_spawn_egg": "Wither Skeleton Leader Spawn Egg",
+  "item.village_foe.wither_skeleton_worker_spawn_egg": "Wither Skeleton Worker Spawn Egg",
+  "itemgroup.village_foe": "Village Foe",
+  "modmenu.descriptionTranslation.village_foe": "Added More Village Type!",
+  "modmenu.nameTranslation.village_foe": "Village Foe",
+  "modmenu.summaryTranslation.village_foe": "Added More Village Type!"
+}

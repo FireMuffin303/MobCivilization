@@ -17,7 +17,7 @@ loom {
             name "Fabric Data Generation"
             vmArg("-Dfabric-api.datagen")
             vmArg "-Dfabric-api.datagen.output-dir=${file('src/generated/resources')}"
-            vmArg("-Dfabric-api.datagen.modid=civil_mobs")
+            vmArg("-Dfabric-api.datagen.modid=village_foe")
             runDir "build/datagen"
         }
         client{
@@ -25,7 +25,7 @@ loom {
         }
     }
 
-    accessWidenerPath = file("src/main/resources/civil_mobs.accesswidener")
+    accessWidenerPath = file("src/main/resources/village_foe.accesswidener")
 
 }
 

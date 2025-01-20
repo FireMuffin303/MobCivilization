@@ -1,29 +1,32 @@
 {
   "schemaVersion": 1,
-  "id": "civil_mobs",
+  "id": "village_foe",
   "version": "${version}",
-  "name": "Civilized Mobs",
+  "name": "Village Foe",
   "description": "",
-  "authors": [],
-  "contact": {},
+  "authors": ["FireMuffin303"],
+  "contact": {
+
+  },
   "license": "MIT",
-  "icon": "assets/mobcivilization/icon.png",
+  "icon": "assets/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.firemuffin303.civilizedmobs.client.CivilizedMobsClient"
+      "net.firemuffin303.villagefoe.client.VillageFoeClient"
     ],
     "main": [
-      "net.firemuffin303.civilizedmobs.CivilizedMobs"
+      "net.firemuffin303.villagefoe.VillageFoe"
     ],
     "fabric-datagen": [
-      "net.firemuffin303.civilizedmobs.datagen.ModDataGen"
+      "net.firemuffin303.villagefoe.datagen.ModDataGen"
     ]
   },
   "mixins": [
-    "mobcivilization.mixins.json"
+    "village_foe.mixins.json"
   ],
   "depends": {
+    "muffins_questlib": ">=0.1.0-alpha",
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"

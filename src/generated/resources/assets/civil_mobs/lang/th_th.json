@@ -1,9 +1,0 @@
-{
-  "civil_mobs.item_group": "Civilized Mobs",
-  "entity.civil_mobs.piglin_leader": "หัวหน้าพิกลิน",
-  "entity.civil_mobs.piglin_worker": "พิกลินงาน",
-  "filled_map.bastion": "Bastion Remnant Map",
-  "filled_map.fortress": "Nether Fortress Map",
-  "item.civil_mobs.piglin_leader_spawn_egg": "ไข่เกิดหัวหน้าพิกลิน",
-  "item.civil_mobs.piglin_worker_spawn_egg": "ไข่เกิดพิกลินงาน"
-}

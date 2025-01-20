@@ -1,0 +1,21 @@
+{
+  "entity.village_foe.piglin_leader": "หัวหน้าพิกลิน",
+  "entity.village_foe.piglin_worker": "พิกลินงาน",
+  "entity.village_foe.pillager_leader": "หัวหน้ากองโจร",
+  "entity.village_foe.pillager_worker": "กองโจรงาน",
+  "entity.village_foe.wither_skeleton_leader": "หัวหน้ากระดูกวิทเธอร์",
+  "entity.village_foe.wither_skeleton_worker": "โครงกระดูกวิทเธอร์งาน",
+  "filled_map.ancient_city": "แผนที่เมืองโบราณ",
+  "filled_map.bastion": "แผนที่ป้อมปราการพิกลิน",
+  "filled_map.fortress": "แผนที่ปราสาทเนเธอร์",
+  "item.village_foe.piglin_leader_spawn_egg": "ไข่เกิดหัวหน้าพิกลิน",
+  "item.village_foe.piglin_worker_spawn_egg": "ไข่เกิดพิกลินงาน",
+  "item.village_foe.pillager_leader_spawn_egg": "ไข่เกิดหัวหน้ากองโจร",
+  "item.village_foe.pillager_worker_spawn_egg": "ไข่เกิดกองโจรงาน",
+  "item.village_foe.wither_skeleton_leader_spawn_egg": "ไข่เกิดโครงหัวหน้ากระดูกวิทเธอร์",
+  "item.village_foe.wither_skeleton_worker_spawn_egg": "ไข่เกิดโครงกระดูกวิทเธอร์งาน",
+  "itemgroup.village_foe": "Village Foe",
+  "modmenu.descriptionTranslation.village_foe": "เพิ่มรูปแบบหมู่บ้านให้กับมอนสเตอร์อื่น ๆ",
+  "modmenu.nameTranslation.village_foe": "Village Foe",
+  "modmenu.summaryTranslation.village_foe": "เพิ่มรูปแบบหมู่บ้านให้กับมอนสเตอร์อื่น ๆ"
+}

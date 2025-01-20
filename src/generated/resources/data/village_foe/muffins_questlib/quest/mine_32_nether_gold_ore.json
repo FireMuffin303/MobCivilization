@@ -1,0 +1,32 @@
+{
+  "definition": {
+    "experience": 40,
+    "reward_item": [
+      {
+        "Count": 1,
+        "id": "minecraft:enchanted_book",
+        "tag": {
+          "StoredEnchantments": [
+            {
+              "id": "minecraft:fortune",
+              "lvl": 2
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "description": "Mine 32 Nether Gold Ore",
+  "quest_type": {
+    "muffins_questlib:break_block": [
+      {
+        "type": "muffins_questlib:break_block",
+        "block_requirement": {
+          "amount": 32,
+          "block": "minecraft:nether_gold_ore"
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

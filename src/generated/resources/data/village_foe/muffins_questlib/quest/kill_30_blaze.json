@@ -1,0 +1,32 @@
+{
+  "definition": {
+    "experience": 80,
+    "reward_item": [
+      {
+        "Count": 24,
+        "id": "minecraft:blaze_powder"
+      },
+      {
+        "Count": 15,
+        "id": "minecraft:nether_wart"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:music_disc_pigstep"
+      }
+    ]
+  },
+  "description": "Kill 30 Blazes",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:blaze",
+          "amount": 30
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

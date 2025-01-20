@@ -1,0 +1,36 @@
+{
+  "definition": {
+    "experience": 80,
+    "reward_item": [
+      {
+        "Count": 64,
+        "id": "minecraft:leather"
+      },
+      {
+        "Count": 48,
+        "id": "minecraft:cooked_porkchop"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:piglin_banner_pattern"
+      },
+      {
+        "Count": 8,
+        "id": "minecraft:gold_block"
+      }
+    ]
+  },
+  "description": "Kill 30 Hoglins",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:hoglin",
+          "amount": 30
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

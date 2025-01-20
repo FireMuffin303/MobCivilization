@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:wither",
+    "minecraft:wither_skeleton",
+    "village_foe:wither_skeleton_worker",
+    "village_foe:wither_skeleton_leader"
+  ]
+}

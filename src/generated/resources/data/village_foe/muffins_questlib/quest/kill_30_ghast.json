@@ -1,0 +1,35 @@
+{
+  "definition": {
+    "experience": 80,
+    "reward_item": [
+      {
+        "Count": 16,
+        "id": "minecraft:gunpowder"
+      },
+      {
+        "Count": 32,
+        "id": "minecraft:ghast_tear"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:potion",
+        "tag": {
+          "Potion": "minecraft:regeneration"
+        }
+      }
+    ]
+  },
+  "description": "Kill 30 Ghaasts",
+  "quest_type": {
+    "muffins_questlib:kill_entity": [
+      {
+        "type": "muffins_questlib:kill_entity",
+        "entity_requirements": {
+          "type": "minecraft:ghast",
+          "amount": 30
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

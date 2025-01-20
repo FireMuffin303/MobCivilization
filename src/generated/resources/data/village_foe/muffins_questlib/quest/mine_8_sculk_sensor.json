@@ -1,0 +1,43 @@
+{
+  "definition": {
+    "experience": 40,
+    "reward_item": [
+      {
+        "Count": 1,
+        "id": "minecraft:sculk_catalyst"
+      },
+      {
+        "Count": 16,
+        "id": "minecraft:snowball"
+      },
+      {
+        "Count": 32,
+        "id": "minecraft:blue_wool"
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:potion",
+        "tag": {
+          "Potion": "minecraft:night_vision"
+        }
+      },
+      {
+        "Count": 1,
+        "id": "minecraft:diamond"
+      }
+    ]
+  },
+  "description": "Mine 8 Sculk Sensor",
+  "quest_type": {
+    "muffins_questlib:break_block": [
+      {
+        "type": "muffins_questlib:break_block",
+        "block_requirement": {
+          "amount": 8,
+          "block": "minecraft:sculk_sensor"
+        }
+      }
+    ]
+  },
+  "rarity": "UNCOMMON"
+}

@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "village_foe:kill_10_hoglins",
+    "village_foe:kill_20_hoglins",
+    "village_foe:kill_30_hoglins",
+    "village_foe:kill_10_wither_skeleton",
+    "village_foe:kill_20_wither_skeleton",
+    "village_foe:kill_30_wither_skeleton",
+    "village_foe:kill_10_magma_cream",
+    "village_foe:kill_20_magma_cream",
+    "village_foe:kill_30_magma_cream",
+    "village_foe:kill_10_ghast",
+    "village_foe:kill_20_ghast",
+    "village_foe:kill_30_ghast",
+    "village_foe:kill_10_blaze",
+    "village_foe:kill_20_blaze",
+    "village_foe:kill_30_blaze",
+    "village_foe:mine_32_nether_gold_ore"
+  ]
+}
