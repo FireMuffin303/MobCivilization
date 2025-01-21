@@ -71,11 +71,15 @@ public class PillagerWorkerBrain {
                         Pair.of(StrollTask.create(0.6f),2),
                         Pair.of(FindEntityTask.create(EntityType.PILLAGER,8,MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
                         Pair.of(FindEntityTask.create(EntityType.VINDICATOR,8,MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
+                        Pair.of(FindEntityTask.create(EntityType.EVOKER,8,MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
+                        Pair.of(FindEntityTask.create(EntityType.WITCH,8,MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
+                        Pair.of(FindEntityTask.create(EntityType.ILLUSIONER,8,MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
                         Pair.of(FindEntityTask.create(ModEntityType.PILLAGER_WORKER,8,MemoryModuleType.INTERACTION_TARGET,0.6f,2),2),
                         Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE,0.6f,2,100),2),
                         Pair.of(GoToIfNearbyTask.create(MemoryModuleType.JOB_SITE, 0.6F, 5), 2),
                         Pair.of(new WaitTask(30,60),1)
                 )),
+                new NeedLeaderTask<>(EntityType.PILLAGER,EntityType.VINDICATOR,EntityType.EVOKER,EntityType.WITCH,EntityType.ILLUSIONER,ModEntityType.PILLAGER_WORKER),
                 FindInteractionTargetTask.create(EntityType.PLAYER,4),
                 new PillagerAttackTask(),
                 ScheduleActivityTask.create()
@@ -182,7 +186,8 @@ public class PillagerWorkerBrain {
                 SensorType.NEAREST_LIVING_ENTITIES,
                 SensorType.NEAREST_PLAYERS,
                 SensorType.HURT_BY,
-                ModBrains.ILLAGER_HOSTILE
+                ModBrains.ILLAGER_HOSTILE,
+                ModBrains.PILLAGER_LEADER_LAST_SEEN
         );
 
         MEMORY_MODULES = ImmutableList.of(
@@ -211,7 +216,8 @@ public class PillagerWorkerBrain {
 
                 //Attack Stuff
                 MemoryModuleType.ANGRY_AT,
-                MemoryModuleType.ATTACK_TARGET
+                MemoryModuleType.ATTACK_TARGET,
+                ModBrains.LEADER_DETECTED_RECENTLY
         );
     }
 }

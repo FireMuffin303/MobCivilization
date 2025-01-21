@@ -37,8 +37,7 @@ public class CivilizedBlockAndItemLayer<T extends MobEntity & GeoAnimatable> ext
     @Override
     protected ModelTransformationMode getTransformTypeForStack(GeoBone bone, ItemStack stack, T animatable) {
         return switch (bone.getName()) {
-            case "right_arm_item" -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
-            case "left_arm_item" -> ModelTransformationMode.THIRD_PERSON_LEFT_HAND;
+            case "right_arm_item", "left_arm_item" -> ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
             case "head" -> ModelTransformationMode.HEAD;
             default -> super.getTransformTypeForStack(bone, stack, animatable);
         };

@@ -4,9 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.villagefoe.VillageFoe;
+import net.firemuffin303.villagefoe.common.entity.LeaderSummoner;
 import net.firemuffin303.villagefoe.common.entity.piglin.PiglinTradeOffers;
 import net.firemuffin303.villagefoe.common.entity.WorkerContainer;
 import net.firemuffin303.villagefoe.common.entity.WorkerData;
+import net.firemuffin303.villagefoe.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
+import net.firemuffin303.villagefoe.common.entity.witherSkelton.worker.WitherSkeletonWorkerEntity;
+import net.firemuffin303.villagefoe.registry.ModBrains;
 import net.firemuffin303.villagefoe.registry.ModEntityInteraction;
 import net.firemuffin303.villagefoe.registry.ModEntityType;
 import net.firemuffin303.villagefoe.registry.ModTags;
@@ -43,6 +47,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.village.*;
@@ -50,8 +55,10 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
+import net.minecraft.world.poi.PointOfInterest;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
+import net.minecraft.world.poi.PointOfInterestTypes;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -68,9 +75,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 //TODO : Turn Worker Logic to Interface for easier entity Setup;
-public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant, WorkerContainer,CrossbowUser {
+public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntity, InteractionObserver, Merchant, LeaderSummoner, WorkerContainer,CrossbowUser {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WorkerPiglinEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST;
     private static final TrackedData<WorkerData> PIGLIN_DATA;
     private long lastRestockTime;
@@ -321,6 +329,7 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
                 this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.GOLDEN_SWORD));
             }
         }
+        this.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,200L);
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
@@ -592,6 +601,39 @@ public class WorkerPiglinEntity extends AbstractPiglinEntity implements GeoEntit
     private PlayState registerControllers(AnimationState<GeoAnimatable> geoAnimatableAnimationState) {
         geoAnimatableAnimationState.setAnimation(RawAnimation.begin().then("animation.civil_piglin.idle", Animation.LoopType.LOOP));
         return PlayState.CONTINUE;
+    }
+
+    //------- Leader Summoner -----------
+    @Override
+    public void summonLeader(ServerWorld serverWorld, long worldTime) {
+        if(canSummonLeader()){
+            Box box = this.getBoundingBox().expand(10d,10d,10d);
+            Stream<PointOfInterest> pointOfInterestStream = serverWorld.getPointOfInterestStorage().getInSquare(
+                    registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING),
+                    this.getBlockPos(),
+                    8,
+                    PointOfInterestStorage.OccupationStatus.ANY
+            );
+
+            List<AbstractPiglinEntity> entities = serverWorld.getNonSpectatingEntities(AbstractPiglinEntity.class,box);
+
+            if(pointOfInterestStream.findFirst().isPresent() && entities.size() > 1){
+                if(LargeEntitySpawnHelper.trySpawnAt(ModEntityType.PIGLIN_LEADER_ENTITY,SpawnReason.MOB_SUMMONED,serverWorld,this.getBlockPos(),10,8,6, WitherSkeletonQuestEntity.WITHER_LEADER).isPresent()){
+                    this.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,12000L);
+                    for (AbstractPiglinEntity abstractPiglinEntity:entities){
+                        if(abstractPiglinEntity instanceof WorkerPiglinEntity workerPiglinEntity){
+                            workerPiglinEntity.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,12000L);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean canSummonLeader() {
+        return !this.brain.hasMemoryModule(ModBrains.LEADER_DETECTED_RECENTLY);
     }
 
     @Override

@@ -34,6 +34,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.Merchant;
 import net.minecraft.village.TradeOffer;
@@ -42,6 +43,7 @@ import net.minecraft.village.VillagerData;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 import org.jetbrains.annotations.Nullable;
@@ -64,6 +66,7 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     @Nullable private PlayerEntity customer;
 
     private static final TrackedData<Boolean> CHARGING = DataTracker.registerData(PillagerQuestEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
@@ -108,7 +111,7 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
                 this.setCustomer(player);
                 this.sendOffers(player,this.getDisplayName(),this.questData.getTrust(this.getCustomer().getUuid()).getLevel());
             }else if(this.getWorld().isClient){
-                this.playSound(SoundEvents.ENTITY_WITHER_SKELETON_HURT,this.getSoundVolume(),this.getSoundPitch());
+                this.playSound(SoundEvents.ENTITY_PILLAGER_AMBIENT,this.getSoundVolume(),this.getSoundPitch());
                 return ActionResult.success(this.getWorld().isClient);
             }
         }
@@ -145,6 +148,11 @@ public class PillagerQuestEntity extends IllagerEntity implements GeoEntity, Mer
     @Override
     public boolean canUseRangedWeapon(RangedWeaponItem weapon) {
         return weapon == Items.CROSSBOW;
+    }
+
+    @Override
+    public float getPathfindingFavor(BlockPos pos, WorldView world) {
+        return 0.0f;
     }
 
     //--- Brain ---

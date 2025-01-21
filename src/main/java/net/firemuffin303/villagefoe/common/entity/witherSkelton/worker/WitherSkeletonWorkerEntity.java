@@ -4,10 +4,13 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.villagefoe.VillageFoe;
+import net.firemuffin303.villagefoe.common.entity.LeaderSummoner;
 import net.firemuffin303.villagefoe.common.entity.WorkerContainer;
 import net.firemuffin303.villagefoe.common.entity.WorkerData;
 import net.firemuffin303.villagefoe.common.entity.brain.WitherSkeletonNemesisSensor;
 import net.firemuffin303.villagefoe.common.entity.witherSkelton.WitherSkeletonTradeOffers;
+import net.firemuffin303.villagefoe.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
+import net.firemuffin303.villagefoe.registry.ModBrains;
 import net.firemuffin303.villagefoe.registry.ModEntityInteraction;
 import net.firemuffin303.villagefoe.registry.ModEntityType;
 import net.minecraft.entity.*;
@@ -33,10 +36,14 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.*;
 import net.minecraft.world.World;
+import net.minecraft.world.poi.PointOfInterest;
+import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
+import net.minecraft.world.poi.PointOfInterestTypes;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -49,8 +56,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import java.util.stream.Stream;
 
-public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements InteractionObserver, Merchant, WorkerContainer, GeoEntity {
+public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements InteractionObserver, Merchant, WorkerContainer, LeaderSummoner, GeoEntity {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<WitherSkeletonWorkerEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST =
             ImmutableMap.of(MemoryModuleType.JOB_SITE,(witherSkeletonEntity,registryEntity) ->{
                 return witherSkeletonEntity.getWorkerData().getProfession().heldWorkstation().test(registryEntity);
@@ -262,8 +270,39 @@ public class WitherSkeletonWorkerEntity extends WitherSkeletonEntity implements 
         super.sendAiDebugData();
         DebugInfoSender.sendBrainDebugData(this);
     }
-    //----------------------------
+    //----- Summon Leader ------
+    public void summonLeader(ServerWorld serverWorld, long worldTime){
+        if(canSummonLeader()){
+            Box box = this.getBoundingBox().expand(10d,10d,10d);
+            Stream<PointOfInterest> pointOfInterestStream = serverWorld.getPointOfInterestStorage().getInSquare(
+                    registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING),
+                    this.getBlockPos(),
+                    8,
+                    PointOfInterestStorage.OccupationStatus.ANY
+            );
 
+            List<WitherSkeletonEntity> witherSkeletonEntities = serverWorld.getNonSpectatingEntities(WitherSkeletonEntity.class,box);
+
+            if(pointOfInterestStream.findFirst().isPresent() && witherSkeletonEntities.size() > 1){
+                if(LargeEntitySpawnHelper.trySpawnAt(ModEntityType.WITHER_SKELETON_LEADER,SpawnReason.MOB_SUMMONED,serverWorld,this.getBlockPos(),10,8,6,WitherSkeletonQuestEntity.WITHER_LEADER).isPresent()){
+                    this.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,12000L);
+                    for (WitherSkeletonEntity witherSkeletonEntity:witherSkeletonEntities){
+                        if(witherSkeletonEntity instanceof WitherSkeletonWorkerEntity witherSkeletonWorkerEntity){
+                            witherSkeletonWorkerEntity.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,12000L);
+                        }
+                    }
+
+                }
+            }
+        }
+
+    }
+
+    public boolean canSummonLeader(){
+        return !this.brain.hasMemoryModule(ModBrains.LEADER_DETECTED_RECENTLY);
+    }
+
+    //----------------------------
     //WorkerData
     @Override
     public void setWorkerData(WorkerData workerData) {

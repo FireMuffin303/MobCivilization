@@ -3,11 +3,9 @@ package net.firemuffin303.villagefoe.common.entity.witherSkelton.worker;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.firemuffin303.villagefoe.common.entity.task.ModLoseOnSiteLossTask;
-import net.firemuffin303.villagefoe.common.entity.task.ModWalkTowardJobsiteTask;
-import net.firemuffin303.villagefoe.common.entity.task.ModWorkTask;
-import net.firemuffin303.villagefoe.common.entity.task.WorkerGoToWorkTask;
+import net.firemuffin303.villagefoe.common.entity.task.*;
 import net.firemuffin303.villagefoe.registry.ModBrains;
+import net.firemuffin303.villagefoe.registry.ModEntityType;
 import net.firemuffin303.villagefoe.registry.ModTags;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -66,6 +64,8 @@ public class WitherSkeletonWorkerBrain {
                 new RandomTask<>(ImmutableList.of(
                         Pair.of(StrollTask.create(0.6F), 2),
                         Pair.of(FindEntityTask.create(EntityType.WITHER_SKELETON, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(FindEntityTask.create(ModEntityType.WITHER_SKELETON_WORKER, 8, MemoryModuleType.INTERACTION_TARGET, 0.6F, 2), 2),
+                        Pair.of(new NeedLeaderTask<>(EntityType.WITHER_SKELETON,ModEntityType.WITHER_SKELETON_WORKER),2),
                         Pair.of(GoToNearbyPositionTask.create(MemoryModuleType.JOB_SITE, 0.6F, 2, 100), 2),
                         Pair.of(GoToIfNearbyTask.create(MemoryModuleType.JOB_SITE, 0.6F, 5), 2),
                         Pair.of(new WaitTask(30, 60), 1))
@@ -136,7 +136,8 @@ public class WitherSkeletonWorkerBrain {
                 SensorType.NEAREST_PLAYERS,
                 SensorType.NEAREST_ITEMS,
                 SensorType.HURT_BY,
-                ModBrains.WITHER_SKELETON_NEMESIS
+                ModBrains.WITHER_SKELETON_NEMESIS,
+                ModBrains.WITHER_SKELETON_LEADER_LAST_SEEN
 
         );
 
@@ -162,6 +163,7 @@ public class WitherSkeletonWorkerBrain {
                 MemoryModuleType.ATTACK_COOLING_DOWN,
 
                 MemoryModuleType.NEAREST_HOSTILE,
-                MemoryModuleType.LAST_WORKED_AT_POI);
+                MemoryModuleType.LAST_WORKED_AT_POI,
+                ModBrains.LEADER_DETECTED_RECENTLY);
     }
 }

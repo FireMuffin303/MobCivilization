@@ -4,10 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.datafixers.util.Pair;
-import net.firemuffin303.villagefoe.common.entity.task.ModLoseOnSiteLossTask;
-import net.firemuffin303.villagefoe.common.entity.task.ModWorkTask;
-import net.firemuffin303.villagefoe.common.entity.task.WorkerGoToWorkTask;
-import net.firemuffin303.villagefoe.common.entity.task.ModWalkTowardJobsiteTask;
+import net.firemuffin303.villagefoe.common.entity.task.*;
 import net.firemuffin303.villagefoe.registry.ModBrains;
 import net.firemuffin303.villagefoe.registry.ModEntityType;
 import net.firemuffin303.villagefoe.registry.ModTags;
@@ -104,6 +101,7 @@ public class CivilPiglinBrain {
                 createUpdateAttackTarget(),
                 createAvoidNonPlayerGoldArmor(),
                 createAvoidNemesisTask(),
+                new NeedLeaderTask<>(EntityType.PIGLIN,EntityType.PIGLIN_BRUTE,ModEntityType.PIGLIN_WORKER),
 
                 FindInteractionTargetTask.create(EntityType.PLAYER, 4)));
     }
@@ -244,7 +242,8 @@ public class CivilPiglinBrain {
                 ModBrains.PIGLIN_REPELLENT,
                 ModBrains.PIGLIN_DETECT_GOLD_ARMOR_PLAYER,
                 ModBrains.PIGLIN_ZOMBIFIED,
-                ModBrains.PIGLIN_NEMESIS
+                ModBrains.PIGLIN_NEMESIS,
+                ModBrains.PIGLIN_LEADER_LAST_SEEN
         );
         MEMORY_MODULES = ImmutableList.of(
                 MemoryModuleType.HOME,
@@ -273,7 +272,8 @@ public class CivilPiglinBrain {
                 MemoryModuleType.ATTACK_TARGET,
                 MemoryModuleType.ATTACK_COOLING_DOWN,
 
-                MemoryModuleType.LAST_WORKED_AT_POI);
+                MemoryModuleType.LAST_WORKED_AT_POI,
+                ModBrains.LEADER_DETECTED_RECENTLY);
 
         POINTS_OF_INTEREST = ImmutableMap.of(
                 MemoryModuleType.JOB_SITE,(civilizedPiglinEntity, registryEntry) -> {

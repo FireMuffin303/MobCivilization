@@ -6,8 +6,13 @@ import net.firemuffin303.villagefoe.common.entity.brain.WitherSkeletonNemesisSen
 import net.firemuffin303.villagefoe.common.entity.quest.QuestContainer;
 import net.firemuffin303.villagefoe.common.entity.quest.QuestData;
 import net.firemuffin303.villagefoe.common.entity.witherSkelton.WitherSkeletonTradeOffers;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.LeavesBlock;
+import net.minecraft.block.StainedGlassBlock;
+import net.minecraft.block.StainedGlassPaneBlock;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ExperienceOrbEntity;
+import net.minecraft.entity.LargeEntitySpawnHelper;
 import net.minecraft.entity.ai.brain.Brain;
 import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.ai.pathing.PathNodeType;
@@ -59,6 +64,13 @@ public class WitherSkeletonQuestEntity extends WitherSkeletonEntity implements M
     private boolean levelingUp;
     @Nullable private PlayerEntity lastCustomer;
     @Nullable private PlayerEntity customer;
+
+    public static LargeEntitySpawnHelper.Requirements WITHER_LEADER = (world, pos, state, abovePos, aboveState) -> {
+        if(!state.isOf(Blocks.COBWEB) && !state.isOf(Blocks.CACTUS) && !state.isOf(Blocks.GLASS_PANE) && !(state.getBlock() instanceof StainedGlassPaneBlock) && !(state.getBlock() instanceof StainedGlassBlock) && !(state.getBlock() instanceof LeavesBlock) && !state.isOf(Blocks.CONDUIT) && !state.isOf(Blocks.ICE) && !state.isOf(Blocks.TNT) && !state.isOf(Blocks.GLOWSTONE) && !state.isOf(Blocks.BEACON) && !state.isOf(Blocks.SEA_LANTERN) && !state.isOf(Blocks.FROSTED_ICE) && !state.isOf(Blocks.TINTED_GLASS) && !state.isOf(Blocks.GLASS)){
+            return (aboveState.isAir() || aboveState.isLiquid()) && (state.isSolid() || state.isOf(Blocks.POWDER_SNOW));
+        }
+        return false;
+    };
 
     private final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 

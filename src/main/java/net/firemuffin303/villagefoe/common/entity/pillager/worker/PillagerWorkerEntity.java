@@ -1,13 +1,18 @@
 package net.firemuffin303.villagefoe.common.entity.pillager.worker;
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.logging.LogUtils;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.Dynamic;
 import net.firemuffin303.villagefoe.VillageFoe;
+import net.firemuffin303.villagefoe.common.entity.LeaderSummoner;
 import net.firemuffin303.villagefoe.common.entity.WorkerContainer;
 import net.firemuffin303.villagefoe.common.entity.WorkerData;
 import net.firemuffin303.villagefoe.common.entity.brain.IllagerHostileSensor;
+import net.firemuffin303.villagefoe.common.entity.piglin.worker.WorkerPiglinEntity;
 import net.firemuffin303.villagefoe.common.entity.pillager.IllagerTradeOffers;
+import net.firemuffin303.villagefoe.common.entity.witherSkelton.quest.WitherSkeletonQuestEntity;
+import net.firemuffin303.villagefoe.registry.ModBrains;
 import net.firemuffin303.villagefoe.registry.ModEntityInteraction;
 import net.firemuffin303.villagefoe.registry.ModEntityType;
 import net.firemuffin303.villagefoe.registry.ModTags;
@@ -24,10 +29,12 @@ import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.AbstractPiglinEntity;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.mob.IllagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.raid.RaiderEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.RangedWeaponItem;
@@ -43,11 +50,12 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.GlobalPos;
 import net.minecraft.village.*;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
+import net.minecraft.world.poi.PointOfInterest;
 import net.minecraft.world.poi.PointOfInterestStorage;
 import net.minecraft.world.poi.PointOfInterestType;
 import net.minecraft.world.poi.PointOfInterestTypes;
@@ -63,8 +71,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiPredicate;
+import java.util.stream.Stream;
 
-public class PillagerWorkerEntity extends IllagerEntity implements InteractionObserver, Merchant, WorkerContainer, CrossbowUser, GeoEntity {
+public class PillagerWorkerEntity extends IllagerEntity implements InteractionObserver, Merchant, WorkerContainer, LeaderSummoner, CrossbowUser, GeoEntity {
     public static final Map<MemoryModuleType<GlobalPos>, BiPredicate<PillagerWorkerEntity, RegistryEntry<PointOfInterestType>>> POINTS_OF_INTEREST =
             ImmutableMap.of(
                     MemoryModuleType.JOB_SITE,(workerEntity,registryEntry) ->{
@@ -280,7 +289,13 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     @Override
     public @Nullable EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason, @Nullable EntityData entityData, @Nullable NbtCompound entityNbt) {
         this.equipStack(EquipmentSlot.MAINHAND,new ItemStack(Items.CROSSBOW));
+        this.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,200L);
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
+    }
+
+    @Override
+    public float getPathfindingFavor(BlockPos pos, WorldView world) {
+        return 0.0f;
     }
 
     //Disable Despawn
@@ -358,6 +373,23 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     public @Nullable LivingEntity getTarget() {
         return this.brain.getOptionalRegisteredMemory(MemoryModuleType.ATTACK_TARGET).orElse(null);
     }
+
+    //----- Sound -------
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return SoundEvents.ENTITY_PILLAGER_AMBIENT;
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_PILLAGER_DEATH;
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.ENTITY_PILLAGER_HURT;
+    }
+    //----------
 
     @Override
     public void shoot(LivingEntity target, ItemStack crossbow, ProjectileEntity projectile, float multiShotSpray) {
@@ -572,6 +604,38 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
         return this.getWorld().isClient;
     }
 
+    @Override
+    public void summonLeader(ServerWorld serverWorld, long worldTime) {
+        if(canSummonLeader()){
+            Box box = this.getBoundingBox().expand(10d,10d,10d);
+            Stream<PointOfInterest> pointOfInterestStream = serverWorld.getPointOfInterestStorage().getInSquare(
+                    registryEntry -> registryEntry.matchesKey(PointOfInterestTypes.MEETING),
+                    this.getBlockPos(),
+                    8,
+                    PointOfInterestStorage.OccupationStatus.ANY
+            );
+
+            List<RaiderEntity> entities = serverWorld.getNonSpectatingEntities(RaiderEntity.class,box);
+
+            if(pointOfInterestStream.findFirst().isPresent() && entities.size() > 1){
+                if(LargeEntitySpawnHelper.trySpawnAt(ModEntityType.PILLAGER_LEADER,SpawnReason.MOB_SUMMONED,serverWorld,this.getBlockPos(),10,8,6, LargeEntitySpawnHelper.Requirements.IRON_GOLEM).isPresent()){
+                    this.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,12000L);
+                    for (RaiderEntity raiderEntity:entities){
+                        if(raiderEntity instanceof PillagerWorkerEntity pillagerWorkerEntity){
+                            pillagerWorkerEntity.brain.remember(ModBrains.LEADER_DETECTED_RECENTLY,true,12000L);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean canSummonLeader() {
+        return !this.brain.hasMemoryModule(ModBrains.LEADER_DETECTED_RECENTLY);
+    }
+
     //GeoEntity
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllerRegistrar) {
@@ -582,6 +646,7 @@ public class PillagerWorkerEntity extends IllagerEntity implements InteractionOb
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return this.geoCache;
     }
+
 
 
 }
