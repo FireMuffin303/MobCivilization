@@ -75,6 +75,44 @@
         },
         "element_type": "yungsapi:yung_single_element"
       }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "village_foe:betterfortresses/cleric",
+        "processors": "betterfortresses:main",
+        "projection": "rigid",
+        "name": "quarters",
+        "max_count": 2,
+        "condition": {
+          "type": "yungsapi:depth",
+          "min_required_depth": 20,
+          "max_possible_depth": 28
+        },
+        "enhanced_terrain_adaptation": {
+          "type": "yungsapi:none"
+        },
+        "element_type": "yungsapi:yung_single_element"
+      }
+    },
+    {
+      "weight": 3,
+      "element": {
+        "location": "village_foe:betterfortresses/mason",
+        "processors": "betterfortresses:main",
+        "projection": "rigid",
+        "name": "quarters",
+        "max_count": 2,
+        "condition": {
+          "type": "yungsapi:depth",
+          "min_required_depth": 20,
+          "max_possible_depth": 28
+        },
+        "enhanced_terrain_adaptation": {
+          "type": "yungsapi:none"
+        },
+        "element_type": "yungsapi:yung_single_element"
+      }
     }
   ],
   "fallback": "betterfortresses:halls_terminators"

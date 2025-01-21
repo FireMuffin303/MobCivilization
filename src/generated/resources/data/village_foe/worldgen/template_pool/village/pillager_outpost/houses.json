@@ -57,6 +57,24 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
+        "location": "village_foe:village/pillager_outpost/houses/cartographer",
+        "processors": "minecraft:mossify_10_percent",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
+        "location": "village_foe:village/pillager_outpost/houses/leatherworker",
+        "processors": "minecraft:mossify_10_percent",
+        "projection": "rigid"
+      },
+      "weight": 1
+    },
+    {
+      "element": {
+        "element_type": "minecraft:legacy_single_pool_element",
         "location": "village_foe:village/pillager_outpost/houses/general_01",
         "processors": "minecraft:empty",
         "projection": "rigid"

@@ -78,6 +78,8 @@ public class PillagerStructureData {
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/shepherd_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/tool_smith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/weaponsmith_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/cartographer",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
+                        Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/leatherworker",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/general_01",processorLookup.getOrThrow(StructureProcessorLists.EMPTY)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/generic_house_01",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),
                         Pair.of(StructureData.ofProcessedLegacySingle("village/pillager_outpost/houses/generic_house_02",processorLookup.getOrThrow(StructureProcessorLists.MOSSIFY_10_PERCENT)),1),

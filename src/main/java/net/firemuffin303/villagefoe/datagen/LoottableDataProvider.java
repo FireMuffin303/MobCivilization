@@ -33,6 +33,12 @@ public class LoottableDataProvider {
     public static final Identifier VILLAGE_PIGLIN_TENT = new Identifier(VillageFoe.MOD_ID,"chests/village/piglin/tent_01");
     public static final Identifier VILLAGE_PIGLIN_GENERIC_HOUSE = new Identifier(VillageFoe.MOD_ID,"chests/village/piglin/generic_house");
 
+    public static final Identifier VILLAGE_PILLAGER_ARMORER = new Identifier(VillageFoe.MOD_ID,"chests/village/pillager_outpost/armorer");
+    public static final Identifier VILLAGE_PILLAGER_FLECTHER = new Identifier(VillageFoe.MOD_ID,"chests/village/pillager_outpost/flecther");
+    public static final Identifier VILLAGE_PILLAGER_CARTOGRAPHER = new Identifier(VillageFoe.MOD_ID,"chests/village/pillager_outpost/cartographer");
+    public static final Identifier VILLAGE_PILLAGER_GENERAL_01 = new Identifier(VillageFoe.MOD_ID,"chests/village/pillager_outpost/general_01");
+    public static final Identifier VILLAGE_PILLAGER_TOOLSMITH = new Identifier(VillageFoe.MOD_ID,"chests/village/pillager_outpost/toolsmith");
+
     public static final Identifier PIGLIN_WORKER = new Identifier(VillageFoe.MOD_ID,"entities/piglin_worker");
     public static final Identifier PIGLIN_LEADER = new Identifier(VillageFoe.MOD_ID,"entities/piglin_leader");
     public static final Identifier PILLAGER_WORKER = new Identifier(VillageFoe.MOD_ID,"entities/pillager_worker");
@@ -203,6 +209,52 @@ public class LoottableDataProvider {
                             .build()
             ));
 
+            exporter.accept(LoottableDataProvider.VILLAGE_PILLAGER_ARMORER,LootTable.builder().pool(
+                    LootPool.builder().rolls(UniformLootNumberProvider.create(1.0f,5.0f))
+                            .with(ItemEntry.builder(Items.IRON_INGOT).weight(3))
+                            .with(ItemEntry.builder(Items.INK_SAC).weight(3))
+                            .with(ItemEntry.builder(Items.GLASS_PANE).weight(3))
+                            .with(ItemEntry.builder(Items.STICK).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .build()
+            ));
+
+            exporter.accept(LoottableDataProvider.VILLAGE_PILLAGER_FLECTHER,LootTable.builder().pool(
+                    LootPool.builder().rolls(UniformLootNumberProvider.create(1.0f,5.0f))
+                            .with(ItemEntry.builder(Items.ARROW).weight(3))
+                            .with(ItemEntry.builder(Items.WHEAT).weight(3))
+                            .with(ItemEntry.builder(Items.FEATHER).weight(3))
+                            .with(ItemEntry.builder(Items.STICK).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .with(ItemEntry.builder(Items.FLINT).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .build()
+            ));
+
+            exporter.accept(LoottableDataProvider.VILLAGE_PILLAGER_GENERAL_01,LootTable.builder().pool(
+                    LootPool.builder().rolls(UniformLootNumberProvider.create(1.0f,5.0f))
+                            .with(ItemEntry.builder(Items.BEETROOT_SEEDS).weight(3))
+                            .with(ItemEntry.builder(Items.WHEAT).weight(3))
+                            .with(ItemEntry.builder(Items.CARROT).weight(3))
+                            .with(ItemEntry.builder(Items.POTATO).weight(3))
+                            .with(ItemEntry.builder(Items.WHEAT_SEEDS).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .build()
+            ));
+
+            exporter.accept(LoottableDataProvider.VILLAGE_PILLAGER_CARTOGRAPHER,LootTable.builder().pool(
+                    LootPool.builder().rolls(UniformLootNumberProvider.create(1.0f,5.0f))
+                            .with(ItemEntry.builder(Items.PAPER).weight(3))
+                            .with(ItemEntry.builder(Items.INK_SAC).weight(3))
+                            .with(ItemEntry.builder(Items.GLASS_PANE).weight(3))
+                            .with(ItemEntry.builder(Items.FEATHER).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .build()
+            ));
+
+            exporter.accept(LoottableDataProvider.VILLAGE_PILLAGER_TOOLSMITH,LootTable.builder().pool(
+                    LootPool.builder().rolls(UniformLootNumberProvider.create(1.0f,5.0f))
+                            .with(ItemEntry.builder(Items.IRON_INGOT).weight(3))
+                            .with(ItemEntry.builder(Items.GOLD_NUGGET).weight(3))
+                            .with(ItemEntry.builder(Items.STICK).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .with(ItemEntry.builder(Items.IRON_NUGGET).weight(6).apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(1.0f,2.0f))))
+                            .build()
+            ));
         }
     }
 }
