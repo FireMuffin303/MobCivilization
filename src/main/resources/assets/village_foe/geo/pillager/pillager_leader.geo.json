@@ -21,6 +21,11 @@
 					]
 				},
 				{
+					"name": "head_item",
+					"parent": "head",
+					"pivot": [0, 24, 0]
+				},
+				{
 					"name": "body",
 					"pivot": [0, 24, 0],
 					"cubes": [
