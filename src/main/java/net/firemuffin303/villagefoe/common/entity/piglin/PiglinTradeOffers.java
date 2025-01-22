@@ -222,11 +222,11 @@ public class PiglinTradeOffers {
         villagerProfessionMapHashMap.put(VillagerProfession.WEAPONSMITH,Util.make(Maps.newHashMap(),integerListHashMap -> {
             integerListHashMap.put(1,List.of(
                     new GoldForItemFactory(new ItemStack(Items.EMERALD) ,4,12,2),
-                    new GoldForItemFactory(new ItemStack(Items.GOLDEN_SWORD),6,12,2)
+                    new GoldForItemFactory(new ItemStack(Items.IRON_SWORD),6,12,2)
             ));
 
             integerListHashMap.put(2,List.of(
-                    new GoldForItemFactory(new ItemStack(Items.GOLDEN_AXE),9,12,2)
+                    new GoldForItemFactory(new ItemStack(Items.IRON_AXE),9,12,2)
 
             ));
 
@@ -236,8 +236,8 @@ public class PiglinTradeOffers {
             ));
 
             integerListHashMap.put(4,List.of(
-                    new GoldForEnchantedTool(Items.GOLDEN_SWORD,12,16,15),
-                    new GoldForEnchantedTool(Items.GOLDEN_AXE,12,16,15)
+                    new GoldForEnchantedTool(Items.IRON_SWORD,12,16,15),
+                    new GoldForEnchantedTool(Items.IRON_AXE,12,16,15)
             ));
 
             integerListHashMap.put(5,List.of(
@@ -254,13 +254,13 @@ public class PiglinTradeOffers {
         villagerProfessionMapHashMap.put(VillagerProfession.TOOLSMITH,Util.make(Maps.newHashMap(),integerListHashMap -> {
             integerListHashMap.put(1,List.of(
                     new GoldForItemFactory(new ItemStack(Items.EMERALD) ,4,12,2),
-                    new GoldForItemFactory(new ItemStack(Items.GOLDEN_SHOVEL),9,12,2)
+                    new GoldForItemFactory(new ItemStack(Items.IRON_SHOVEL),9,12,2)
 
             ));
 
             integerListHashMap.put(2,List.of(
-                    new GoldForItemFactory(new ItemStack(Items.GOLDEN_PICKAXE),9,12,2),
-                    new GoldForItemFactory(new ItemStack(Items.GOLDEN_HOE),9,12,2)
+                    new GoldForItemFactory(new ItemStack(Items.IRON_PICKAXE),9,12,2),
+                    new GoldForItemFactory(new ItemStack(Items.IRON_HOE),9,12,2)
             ));
 
             integerListHashMap.put(3,List.of(
@@ -269,9 +269,9 @@ public class PiglinTradeOffers {
             ));
 
             integerListHashMap.put(4,List.of(
-                    new GoldForEnchantedTool(Items.GOLDEN_SHOVEL,12,16,15),
-                    new GoldForEnchantedTool(Items.GOLDEN_PICKAXE,12,16,15),
-                    new GoldForEnchantedTool(Items.GOLDEN_HOE,12,16,15)
+                    new GoldForEnchantedTool(Items.IRON_SHOVEL,12,16,15),
+                    new GoldForEnchantedTool(Items.IRON_PICKAXE,12,16,15),
+                    new GoldForEnchantedTool(Items.IRON_HOE,12,16,15)
             ));
 
             integerListHashMap.put(5,List.of(

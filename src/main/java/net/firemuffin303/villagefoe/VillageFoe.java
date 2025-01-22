@@ -56,7 +56,7 @@ public class VillageFoe implements ModInitializer {
 
     public static boolean isTrinketsInstall = false;
 
-    public static final GameRules.Key<GameRules.IntRule> QUEST_RESTOCK_TIME = GameRuleRegistry.register(MOD_ID+"_quest_restock_time", GameRules.Category.MOBS, GameRuleFactory.createIntRule(1800));
+    public static final GameRules.Key<GameRules.IntRule> QUEST_RESTOCK_TIME = GameRuleRegistry.register(MOD_ID+":quest_restock_time", GameRules.Category.MOBS, GameRuleFactory.createIntRule(1800));
 
     private static final ItemGroup ITEM_GROUP = FabricItemGroup.builder()
             .displayName(Text.translatable("itemgroup."+MOD_ID))
