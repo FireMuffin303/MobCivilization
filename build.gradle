@@ -85,7 +85,6 @@ dependencies {
         modRuntimeOnly("maven.modrinth:yungs-better-nether-fortresses:FL88RLRu")
         modRuntimeOnly("maven.modrinth:cloth-config:J3FLptsi")
     }
-
 }
 
 processResources {

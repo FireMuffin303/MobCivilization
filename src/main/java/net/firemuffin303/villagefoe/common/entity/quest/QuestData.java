@@ -31,6 +31,10 @@ public class QuestData {
     }
 
     public TradeOfferList getQuestList(Entity entity){
+        if(entity == null){
+            return new TradeOfferList();
+        }
+
         Trustful trustful = this.getTrust(entity.getUuid());
         if(trustful.tradeOffers == null){
             trustful.tradeOffers = new TradeOfferList();
