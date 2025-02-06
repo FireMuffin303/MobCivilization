@@ -74,7 +74,6 @@ dependencies {
 
     modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
     modImplementation("com.github.FireMuffin303:MuffinsQuestLib:${quest_lib}")
-    modRuntimeOnly("net.firemuffin303:muffinsdebugtools:${debugtools}")
     //modRuntimeOnly("maven.modrinth:axiom:${project.axiom_version}")
     modImplementation "dev.emi:trinkets:${trinkets_version}"
     implementation("com.eliotlash.mclib:mclib:20")
